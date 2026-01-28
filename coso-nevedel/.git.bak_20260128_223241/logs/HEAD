@@ -1,0 +1,6 @@
+0000000000000000000000000000000000000000 8c72f6a06a3ee46a853d7d05ba02d3857e30f8c4 peter <narakanakaru@gmail.com> 1769618366 +0100	clone: from https://github.com/petosvercic/coso-nevedel.git
+8c72f6a06a3ee46a853d7d05ba02d3857e30f8c4 d459327895e091a33087e614ef3bdde14617893f peter <narakanakaru@gmail.com> 1769618666 +0100	commit: Add pooling A helper (3 per category teaser)
+d459327895e091a33087e614ef3bdde14617893f 0d6585c33a2a46052704dab21268fbf1e6da2419 peter <narakanakaru@gmail.com> 1769618828 +0100	commit: Add coso-sites as submodule
+0d6585c33a2a46052704dab21268fbf1e6da2419 4ad4d53cfcefdc3e06a270b1a64cd69643911089 peter <narakanakaru@gmail.com> 1769635861 +0100	commit: snapshot: coso-nevedel content
+4ad4d53cfcefdc3e06a270b1a64cd69643911089 0000000000000000000000000000000000000000 peter <narakanakaru@gmail.com> 1769635861 +0100	Branch: renamed refs/heads/main to refs/heads/main
+4ad4d53cfcefdc3e06a270b1a64cd69643911089 4ad4d53cfcefdc3e06a270b1a64cd69643911089 peter <narakanakaru@gmail.com> 1769635861 +0100	Branch: renamed refs/heads/main to refs/heads/main

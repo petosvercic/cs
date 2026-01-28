@@ -1,0 +1,6 @@
+﻿{
+  "title": "Test edícia (repo)",
+  "sections": [
+    { "title": "Funguje to", "text": "API vracia JSON z repo/vendor/coso-sites/editions." }
+  ]
+}
