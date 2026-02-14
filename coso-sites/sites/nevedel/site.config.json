@@ -1,9 +1,0 @@
-﻿{
-  "slug": "nevedel",
-  "title": "Nevedel — štatistický profil",
-  "description": "Teaser + odomknutie plného výsledku po platbe.",
-  "pricing": { "currency": "EUR", "amountCents": 399, "stripePriceId": "price_xxx" },
-  "paywall": { "teaserPerCategory": 3 },
-  "engine": { "version": 1 },
-  "sharing": { "enabled": true, "certificate": true }
-}
