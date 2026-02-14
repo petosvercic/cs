@@ -21,7 +21,10 @@ export function defaultTemplateDir(): string {
   // dist/src/*.js => __dirname = <pkg>/dist/src
   // dist/*.js     => __dirname = <pkg>/dist
   // dist-test/src => __dirname = <pkg>/dist-test/src
+  const repoRoot = path.resolve(__dirname, "..", "..", "..", "..");
+
   const candidates = [
+    path.join(repoRoot, "packages", "coso-template", "template-root"),
     path.resolve(__dirname, "..", "template"),
     path.resolve(__dirname, "..", "..", "template"),
     path.resolve(process.cwd(), "template")
@@ -31,10 +34,8 @@ export function defaultTemplateDir(): string {
     if (existsDir(c)) return c;
   }
 
-  // posledný fallback: package root odvodíme z __dirname
-  const pkgRoot = path.resolve(__dirname, "..", "..", "..");
-  const c = path.join(pkgRoot, "template");
-  if (existsDir(c)) return c;
+  const legacyFallback = path.join(path.resolve(__dirname, "..", "..", ".."), "template");
+  if (existsDir(legacyFallback)) return legacyFallback;
 
-  throw new Error(`Template dir not found. Tried: ${candidates.join(", ")} and ${c}`);
+  throw new Error(`Template dir not found. Tried: ${candidates.join(", ")} and ${legacyFallback}`);
 }

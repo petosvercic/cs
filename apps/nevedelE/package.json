@@ -14,7 +14,7 @@
   },
   "scripts": {
     "dev": "next dev --webpack",
-    "prebuild": "npm --prefix ../../packages/coso-contract run build && npm --prefix ../../packages/coso-engine run build",
+    "prebuild": "npm --prefix ../../packages/coso-contract run build && npm --prefix ../../packages/coso-engine run build && npm --prefix ../../packages/coso-nevedel-core run build",
     "build": "next build",
     "start": "next start"
   },

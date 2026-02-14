@@ -34,6 +34,16 @@ export async function initFactory(rawConfig: unknown, opts: InitOptions): Promis
 
   await fs.cp(templateAbs, productDirAbs, { recursive: true, errorOnExist: true });
 
+  const packageJsonPath = path.join(productDirAbs, "package.json");
+  try {
+    const packageJsonRaw = await fs.readFile(packageJsonPath, "utf8");
+    const packageJson = JSON.parse(packageJsonRaw) as Record<string, unknown>;
+    packageJson.name = `coso-${config.productSlug}`;
+    await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2) + "\n", "utf8");
+  } catch {
+    // template package.json is optional
+  }
+
   await fs.writeFile(
     path.join(productDirAbs, "product.config.json"),
     JSON.stringify(config, null, 2) + "\n",
