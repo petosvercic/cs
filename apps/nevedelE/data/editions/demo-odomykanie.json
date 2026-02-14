@@ -1,0 +1,17 @@
+{
+  "title": "Demo odomykanie",
+  "engine": { "subject": "demo", "locale": "sk" },
+  "content": {
+    "form": {
+      "namePlaceholder": "Meno",
+      "birthPlaceholder": "DD. MM. YYYY",
+      "submitLabel": "Vypočítať"
+    },
+    "result": { "teaserTitle": "Náhľad" },
+    "paywall": {
+      "headline": "Pokračovanie",
+      "bullets": ["Plný výsledok po platbe", "Zostane odomknuté pre tento rid"],
+      "cta": "Pokračovať"
+    }
+  }
+}

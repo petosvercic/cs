@@ -1,0 +1,98 @@
+﻿diff --git a/apps/nevedelE/lib/redis.ts b/apps/nevedelE/lib/redis.ts
+index 19e0f0c..4b1dcf5 100644
+--- a/apps/nevedelE/lib/redis.ts
++++ b/apps/nevedelE/lib/redis.ts
+@@ -2,11 +2,27 @@ import { Redis } from "@upstash/redis";
+ 
+ let _redis: Redis | null = null;
+ 
++function pick(...vals: Array<string | undefined>) {
++  for (const v of vals) {
++    const t = (v || "").trim();
++    if (t) return t;
++  }
++  return "";
++}
++
+ export function getRedis(): Redis | null {
+   if (_redis) return _redis;
+ 
+-  const url = process.env.UPSTASH_REDIS_REST_URL;
+-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
++  const url = pick(
++    process.env.UPSTASH_REDIS_REST_API_URL,
++    process.env.UPSTASH_REDIS_REST_KV_REST_API_URL,
++    process.env.UPSTASH_REDIS_REST_URL,
++  );
++  const token = pick(
++    process.env.UPSTASH_REDIS_REST_API_TOKEN,
++    process.env.UPSTASH_REDIS_REST_KV_REST_API_TOKEN,
++    process.env.UPSTASH_REDIS_REST_TOKEN,
++  );
+ 
+   if (!url || !token) return null;
+ 
+diff --git a/apps/nevedelE/app/api/pay/status/route.ts b/apps/nevedelE/app/api/pay/status/route.ts
+index f5b2eed..7911c8a 100644
+--- a/apps/nevedelE/app/api/pay/status/route.ts
++++ b/apps/nevedelE/app/api/pay/status/route.ts
+@@ -1,17 +1,10 @@
+ import { NextResponse } from "next/server";
+-import { Redis } from "@upstash/redis";
+ import Stripe from "stripe";
++import { getRedis } from "../../../../lib/redis";
+ 
+ export const runtime = "nodejs";
+ export const dynamic = "force-dynamic";
+ 
+-function getRedis() {
+-  const url = process.env.UPSTASH_REDIS_REST_URL;
+-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+-  if (!url || !token) return null;
+-  return new Redis({ url, token });
+-}
+-
+ function stripeClient() {
+   const key = process.env.STRIPE_SECRET_KEY;
+   if (!key) return null;
+@@ -26,7 +19,7 @@ export async function GET(req: Request) {
+   const sessionId = (u.searchParams.get("session_id") ?? "").trim();
+ 
+   const redis = getRedis();
+-  const envOk = Boolean(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
++  const envOk = Boolean(redis);
+ 
+   if (!rid) {
+     return NextResponse.json({ paid: false, error: "missing rid", envOk }, { status: 200 });
+diff --git a/apps/nevedelE/app/api/stripe/checkout/route.ts b/apps/nevedelE/app/api/stripe/checkout/route.ts
+index 5461129..99cec7b 100644
+--- a/apps/nevedelE/app/api/stripe/checkout/route.ts
++++ b/apps/nevedelE/app/api/stripe/checkout/route.ts
+@@ -4,6 +4,12 @@ export const dynamic = "force-dynamic";
+ import { NextResponse } from "next/server";
+ import Stripe from "stripe";
+ 
++function slugFromReturnTo(returnTo: string) {
++  const m = returnTo.match(/^\/e\/([^/?#]+)/);
++  return m?.[1] ?? "";
++}
++
+ function safeReturnTo(x: unknown) {
+   if (typeof x !== "string") return null;
+   const s = x.trim();
+@@ -28,6 +34,7 @@ export async function POST(req: Request) {
+ 
+     const stripe = new Stripe(key);
+ 
++    const slug = slugFromReturnTo(returnTo);
+     const success = `${appUrl}${returnTo}?rid=${encodeURIComponent(rid)}&session_id={CHECKOUT_SESSION_ID}`;
+     const cancel  = `${appUrl}${returnTo}?rid=${encodeURIComponent(rid)}&canceled=1`;
+ 
+@@ -36,7 +43,7 @@ export async function POST(req: Request) {
+       line_items: [{ price: priceId, quantity: 1 }],
+       success_url: success,
+       cancel_url: cancel,
+-      metadata: { rid },
++      metadata: { rid, ...(slug ? { slug } : {}) },
+       client_reference_id: rid,
+     });

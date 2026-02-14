@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  release-check:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_APP_URL: "http://localhost:3000"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+            - name: Install dependencies
+        run: npm ci
+
+      - name: Validate root package.json
+        run: node -e "JSON.parse(require('fs').readFileSync('package.json','utf8')); console.log('package.json valid')"
+
+      - name: Validate env (if present)
+        run: npm run validate:env
+
+      - name: Release check (if present)
+        run: npm run release:check
+
+      - name: Build app
+        run: npm run build -w apps/nevedelE

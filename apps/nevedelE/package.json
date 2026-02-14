@@ -1,0 +1,33 @@
+{
+  "name": "coso-product-template",
+  "private": true,
+  "version": "0.0.0",
+  "dependencies": {
+    "@upstash/redis": "^1.36.2",
+    "coso-contract": "1.0.0",
+    "coso-engine": "1.0.0",
+    "next": "16.1.6",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "stripe": "^20.3.0",
+    "zod": "^4.3.6"
+  },
+  "scripts": {
+    "dev": "next dev --webpack",
+    "prebuild": "npm --prefix ../../packages/coso-contract run build && npm --prefix ../../packages/coso-engine run build",
+    "build": "next build",
+    "start": "next start"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/node": "^20.12.12",
+    "@types/react": "^19.0.10",
+    "autoprefixer": "^10.4.24",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.5.4",
+    "@types/react-dom": "^19.1.9"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

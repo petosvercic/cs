@@ -1,0 +1,23 @@
+.shellBody {
+  width: 100%;
+}
+
+.tapSurface {
+  outline: none;
+  border-radius: 0.75rem;
+}
+
+.tapSurface:focus-visible {
+  box-shadow: 0 0 0 3px rgba(82, 82, 82, 0.35);
+}
+
+.resultBlock {
+  max-width: 34ch;
+  margin-inline: auto;
+}
+
+@media (max-width: 640px) {
+  .resultBlock {
+    max-width: 30ch;
+  }
+}

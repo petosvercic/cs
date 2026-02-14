@@ -1,0 +1,353 @@
+{
+  "slug": "test-edicia-rovnovaha",
+  "title": "Test rovnováha",
+  "engine": {
+    "subject": "life_domain_balance",
+    "locale": "sk"
+  },
+  "content": {
+    "heroTitle": "Test rovnováha",
+    "heroSubtitle": "Mini edícia na overenie buildu a task poolu.",
+    "intro": {
+      "title": "Čo testujeme",
+      "text": "Táto edícia je test. Cieľ: overiť, že JSON je validný, že task pool sa normalizuje a že build prebehne bez zbytočných pravidiel o počtoch."
+    },
+    "form": {
+      "title": "Spusti test",
+      "nameLabel": "Meno (voliteľné)",
+      "birthDateLabel": "Dátum narodenia (YYYY-MM-DD, voliteľné)",
+      "submitLabel": "Spustiť"
+    },
+    "result": {
+      "teaserTitle": "Test prešiel",
+      "teaserNote": "Ak vidíš toto, build a validácia fungujú.",
+      "unlockHint": "Plný výsledok môže byť za paywallom, ale toto je len test."
+    },
+    "paywall": {
+      "headline": "Odomknúť plnú verziu",
+      "bullets": [
+        "Len testovací obsah",
+        "Overenie konzistencie UI",
+        "Overenie výberu otázok",
+        "Bez zbytočných komplikácií"
+      ],
+      "cta": "Odomknúť"
+    }
+  },
+  "tasks": {
+    "pickPerCategory": 2,
+    "categories": [
+      {
+        "key": "energia",
+        "title": "Energia",
+        "pool": [
+          {
+            "id": "t1-1",
+            "title": "Čo mi dnes dobilo baterky?",
+            "metricKey": "m_1_1",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo mi dnes dobilo baterky?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo mi dnes dobilo baterky?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo mi dnes dobilo baterky?"
+              }
+            ]
+          },
+          {
+            "id": "t1-2",
+            "title": "Čo mi dnes zožralo energiu?",
+            "metricKey": "m_1_2",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo mi dnes zožralo energiu?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo mi dnes zožralo energiu?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo mi dnes zožralo energiu?"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "vztahy",
+        "title": "Vzťahy",
+        "pool": [
+          {
+            "id": "t2-1",
+            "title": "Komu som dnes venoval pozornosť?",
+            "metricKey": "m_2_1",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Komu som dnes venoval pozornosť?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Komu som dnes venoval pozornosť?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Komu som dnes venoval pozornosť?"
+              }
+            ]
+          },
+          {
+            "id": "t2-2",
+            "title": "Kde som sa stiahol?",
+            "metricKey": "m_2_2",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Kde som sa stiahol?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Kde som sa stiahol?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Kde som sa stiahol?"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "myseľ",
+        "title": "Myseľ",
+        "pool": [
+          {
+            "id": "t3-1",
+            "title": "Čo mi dnes bežalo v hlave?",
+            "metricKey": "m_3_1",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo mi dnes bežalo v hlave?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo mi dnes bežalo v hlave?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo mi dnes bežalo v hlave?"
+              }
+            ]
+          },
+          {
+            "id": "t3-2",
+            "title": "Čo mi pomohlo sa upokojiť?",
+            "metricKey": "m_3_2",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo mi pomohlo sa upokojiť?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo mi pomohlo sa upokojiť?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo mi pomohlo sa upokojiť?"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "zmysel",
+        "title": "Zmysel",
+        "pool": [
+          {
+            "id": "t4-1",
+            "title": "Čo dnes dávalo zmysel aj bez výkonu?",
+            "metricKey": "m_4_1",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo dnes dávalo zmysel aj bez výkonu?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo dnes dávalo zmysel aj bez výkonu?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo dnes dávalo zmysel aj bez výkonu?"
+              }
+            ]
+          },
+          {
+            "id": "t4-2",
+            "title": "Kde som bol v súlade so sebou?",
+            "metricKey": "m_4_2",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Kde som bol v súlade so sebou?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Kde som bol v súlade so sebou?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Kde som bol v súlade so sebou?"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "plan",
+        "title": "Plán",
+        "pool": [
+          {
+            "id": "t5-1",
+            "title": "Čo je moja 1 priorita na zajtra?",
+            "metricKey": "m_5_1",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo je moja 1 priorita na zajtra?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo je moja 1 priorita na zajtra?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo je moja 1 priorita na zajtra?"
+              }
+            ]
+          },
+          {
+            "id": "t5-2",
+            "title": "Čo môže počkať bez následkov?",
+            "metricKey": "m_5_2",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo môže počkať bez následkov?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo môže počkať bez následkov?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo môže počkať bez následkov?"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "createdAt": "2026-02-13T12:49:21.050Z"
+}

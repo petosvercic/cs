@@ -1,0 +1,35 @@
+{
+  "impulses": {
+    "LIGHT": [
+      "Dnes môže ísť menej vecí proti sebe.",
+      "Dnes je medzi vecami viac miesta.",
+      "Nie všetko má dnes rovnaký tlak.",
+      "Dnes sa dá držať jednoduché tempo.",
+      "Deň je dnes o niečo ľahší."
+    ],
+    "NEUTRAL": [
+      "Dnes veci držia základný tvar.",
+      "Deň má bežnú váhu.",
+      "Dnes nič výrazne nevybočuje.",
+      "Rám dňa je stabilný.",
+      "Dnes je priestor bez extrému."
+    ],
+    "HEAVY": [
+      "Dnes je odpor citeľný.",
+      "Niektoré pohyby idú pomalšie.",
+      "Deň je dnes hustejší.",
+      "Veci dnes nesú viac váhy.",
+      "Dnes je napätie bližšie pri sebe."
+    ]
+  },
+  "meaningStates": [
+    {"id":"S1","title":"redšie","body":["Medzi prvkami sú medzery.","Kontakt nie je rovnaký.","Priestor ostáva voľný."],"spectra":["A"],"zones":["LOW"]},
+    {"id":"S2","title":"zahustené","body":["Prvky sú bližšie pri sebe.","Pohyb naráža na odpor.","Váha dňa je vyššia."],"spectra":["A"],"zones":["HIGH"]},
+    {"id":"S3","title":"vyvážené","body":["Nič výrazne neprevažuje.","Celok drží pokope.","Deň stojí stabilne."],"spectra":["A","B"],"zones":["MID"]},
+    {"id":"S4","title":"stojaté","body":["Vnútri je málo pohybu.","Nie je tlak ani ťah.","Poloha zostáva rovnaká."],"spectra":["B"],"zones":["LOW"]},
+    {"id":"S5","title":"mierny pohyb","body":["Objavuje sa drobný posun.","Smer nie je pevný.","Tempo ostáva nízke."],"spectra":["B"],"zones":["MID"]},
+    {"id":"S6","title":"v pohybe","body":["Vnútri je citeľný pohyb.","Nie je prudký.","Ale je prítomný."],"spectra":["B"],"zones":["HIGH"]},
+    {"id":"S7","title":"pootvorené","body":["Niektoré veci sú dnes otvorené.","Nie úplne.","Stačí malý odstup."],"spectra":["A","B"],"zones":["MID","HIGH"]},
+    {"id":"S8","title":"stiahnuté","body":["Priestor sa drží spolu.","Nie všetko ide navonok.","Stav ostáva stiahnutý."],"spectra":["A","B"],"zones":["LOW","MID"]}
+  ]
+}

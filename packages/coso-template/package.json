@@ -1,0 +1,27 @@
+{
+    "name":  "@coso/coso-template",
+    "private":  true,
+    "version":  "0.0.0",
+    "type":  "module",
+    "scripts":  {
+                    "dev":  "next dev --webpack -p 3005",
+                    "build":  "next build --webpack",
+                    "start":  "next start -p 3005"
+                },
+    "dependencies":  {
+                         "coso-contract":  "*",
+                         "coso-engine":  "*",
+                         "next":  "^16.1.4",
+                         "react":  "^19.0.0",
+                         "react-dom":  "^19.0.0"
+                     },
+    "devDependencies":  {
+                            "@tailwindcss/postcss":  "^4.1.18",
+                            "@types/node":  "25.1.0",
+                            "@types/react":  "19.2.10",
+                            "autoprefixer":  "^10.4.23",
+                            "postcss":  "^8.5.6",
+                            "tailwindcss":  "^4.1.18",
+                            "typescript":  "^5.9.3"
+                        }
+}

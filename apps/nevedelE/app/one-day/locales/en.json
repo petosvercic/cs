@@ -1,0 +1,14 @@
+{
+  "spectrum.a.left": "Light",
+  "spectrum.a.right": "Heavy",
+  "spectrum.a.aria": "Spectrum Light to Heavy",
+  "spectrum.b.left": "Still",
+  "spectrum.b.right": "Moving",
+  "spectrum.b.aria": "Spectrum Still to Moving",
+  "gold.deepLink": "deeper view",
+  "gold.success.title": "quiet confirmation",
+  "gold.success.text": "Payment completed. A deeper view is available for this session.",
+  "gold.cancel.title": "no change",
+  "gold.cancel.text": "Payment was not completed. The flow stays unchanged.",
+  "gold.result.extra": "A deeper view is open for this session."
+}

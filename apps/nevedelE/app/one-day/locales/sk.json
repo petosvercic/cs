@@ -1,0 +1,14 @@
+{
+  "spectrum.a.left": "Ľahké",
+  "spectrum.a.right": "Ťažké",
+  "spectrum.a.aria": "Spektrum Ľahké až Ťažké",
+  "spectrum.b.left": "Stojaté",
+  "spectrum.b.right": "Pohyblivé",
+  "spectrum.b.aria": "Spektrum Stojaté až Pohyblivé",
+  "gold.deepLink": "hlbší pohľad",
+  "gold.success.title": "tiché potvrdenie",
+  "gold.success.text": "Platba prešla. Hlbší pohľad je dostupný pre túto reláciu.",
+  "gold.cancel.title": "bez zmeny",
+  "gold.cancel.text": "Platba neprebehla. Tok zostáva rovnaký.",
+  "gold.result.extra": "Hlbší pohľad je otvorený pre túto reláciu."
+}

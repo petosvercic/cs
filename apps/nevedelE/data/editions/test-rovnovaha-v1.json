@@ -1,0 +1,1193 @@
+{
+  "slug": "test-rovnovaha-v1",
+  "title": "Test: Rovnováha (v1)",
+  "engine": {
+    "subject": "life_domain_balance",
+    "locale": "sk"
+  },
+  "content": {
+    "heroTitle": "Rovnováha v 5 oblastiach",
+    "heroSubtitle": "Krátky test: stabilný výstup, malé poole, žiadne prehnané sľuby.",
+    "intro": {
+      "title": "O čo ide",
+      "text": "Táto edícia je testovací balík. Cieľ je overiť, že workflow prebehne, že výber otázok je konzistentný a že UI vyzerá normálne aj s menším poolom."
+    },
+    "form": {
+      "title": "Spusti test",
+      "nameLabel": "Meno (voliteľné)",
+      "birthDateLabel": "Dátum narodenia (YYYY-MM-DD, voliteľné)",
+      "submitLabel": "Vyhodnotiť"
+    },
+    "result": {
+      "teaserTitle": "Náhľad výsledku",
+      "teaserNote": "Vidíš rýchly obraz: kde máš prebytok energie a kde deficit.",
+      "unlockHint": "Odomknutie pridá konkrétne kroky a odporúčania."
+    },
+    "paywall": {
+      "headline": "Odomknúť plnú verziu",
+      "bullets": [
+        "Konkrétne kroky na najbližších 7 dní",
+        "Odhalenie najväčších únikov energie",
+        "Jednoduchý plán bez moralizovania",
+        "Konzistentný výstup bez chaosu"
+      ],
+      "cta": "Odomknúť za 1 EUR"
+    }
+  },
+  "tasks": {
+    "pickPerCategory": 3,
+    "categories": [
+      {
+        "key": "energia",
+        "title": "Energia a výkon",
+        "pool": [
+          {
+            "id": "t1-1",
+            "title": "Čo mi dnes najviac dobilo energiu?",
+            "metricKey": "m_1_1",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo mi dnes najviac dobilo energiu?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo mi dnes najviac dobilo energiu?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo mi dnes najviac dobilo energiu?"
+              }
+            ]
+          },
+          {
+            "id": "t1-2",
+            "title": "Čo mi dnes najviac zožralo energiu?",
+            "metricKey": "m_1_2",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo mi dnes najviac zožralo energiu?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo mi dnes najviac zožralo energiu?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo mi dnes najviac zožralo energiu?"
+              }
+            ]
+          },
+          {
+            "id": "t1-3",
+            "title": "Ktorá jedna vec bola dnes fakt dôležitá?",
+            "metricKey": "m_1_3",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Ktorá jedna vec bola dnes fakt dôležitá?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Ktorá jedna vec bola dnes fakt dôležitá?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Ktorá jedna vec bola dnes fakt dôležitá?"
+              }
+            ]
+          },
+          {
+            "id": "t1-4",
+            "title": "Kde som sa rozptýlil a prečo?",
+            "metricKey": "m_1_4",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Kde som sa rozptýlil a prečo?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Kde som sa rozptýlil a prečo?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Kde som sa rozptýlil a prečo?"
+              }
+            ]
+          },
+          {
+            "id": "t1-5",
+            "title": "Čo by som zajtra zjednodušil?",
+            "metricKey": "m_1_5",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo by som zajtra zjednodušil?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo by som zajtra zjednodušil?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo by som zajtra zjednodušil?"
+              }
+            ]
+          },
+          {
+            "id": "t1-6",
+            "title": "Kde som išiel na silu namiesto systému?",
+            "metricKey": "m_1_6",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Kde som išiel na silu namiesto systému?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Kde som išiel na silu namiesto systému?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Kde som išiel na silu namiesto systému?"
+              }
+            ]
+          },
+          {
+            "id": "t1-7",
+            "title": "Čo som dnes spravil dobre a chcem to zopakovať?",
+            "metricKey": "m_1_7",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo som dnes spravil dobre a chcem to zopakovať?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo som dnes spravil dobre a chcem to zopakovať?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo som dnes spravil dobre a chcem to zopakovať?"
+              }
+            ]
+          },
+          {
+            "id": "t1-8",
+            "title": "Čo je jedna vec, ktorú môžem vypustiť bez škody?",
+            "metricKey": "m_1_8",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo je jedna vec, ktorú môžem vypustiť bez škody?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo je jedna vec, ktorú môžem vypustiť bez škody?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo je jedna vec, ktorú môžem vypustiť bez škody?"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "vztahy",
+        "title": "Vzťahy",
+        "pool": [
+          {
+            "id": "t2-1",
+            "title": "S kým som sa dnes cítil dobre a prečo?",
+            "metricKey": "m_2_1",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "S kým som sa dnes cítil dobre a prečo?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "S kým som sa dnes cítil dobre a prečo?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "S kým som sa dnes cítil dobre a prečo?"
+              }
+            ]
+          },
+          {
+            "id": "t2-2",
+            "title": "Kde som dnes zbytočne mlčal?",
+            "metricKey": "m_2_2",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Kde som dnes zbytočne mlčal?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Kde som dnes zbytočne mlčal?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Kde som dnes zbytočne mlčal?"
+              }
+            ]
+          },
+          {
+            "id": "t2-3",
+            "title": "Kde som mal povedať nie a nepovedal?",
+            "metricKey": "m_2_3",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Kde som mal povedať nie a nepovedal?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Kde som mal povedať nie a nepovedal?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Kde som mal povedať nie a nepovedal?"
+              }
+            ]
+          },
+          {
+            "id": "t2-4",
+            "title": "Komu by som mal poslať krátku správu?",
+            "metricKey": "m_2_4",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Komu by som mal poslať krátku správu?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Komu by som mal poslať krátku správu?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Komu by som mal poslať krátku správu?"
+              }
+            ]
+          },
+          {
+            "id": "t2-5",
+            "title": "Kde som dnes počúval namiesto obhajovania sa?",
+            "metricKey": "m_2_5",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Kde som dnes počúval namiesto obhajovania sa?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Kde som dnes počúval namiesto obhajovania sa?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Kde som dnes počúval namiesto obhajovania sa?"
+              }
+            ]
+          },
+          {
+            "id": "t2-6",
+            "title": "Kde som si pýtal to, čo potrebujem?",
+            "metricKey": "m_2_6",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Kde som si pýtal to, čo potrebujem?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Kde som si pýtal to, čo potrebujem?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Kde som si pýtal to, čo potrebujem?"
+              }
+            ]
+          },
+          {
+            "id": "t2-7",
+            "title": "Kde som sa snažil zapáčiť na úkor seba?",
+            "metricKey": "m_2_7",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Kde som sa snažil zapáčiť na úkor seba?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Kde som sa snažil zapáčiť na úkor seba?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Kde som sa snažil zapáčiť na úkor seba?"
+              }
+            ]
+          },
+          {
+            "id": "t2-8",
+            "title": "Čo je jeden malý krok k lepšiemu vzťahu zajtra?",
+            "metricKey": "m_2_8",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo je jeden malý krok k lepšiemu vzťahu zajtra?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo je jeden malý krok k lepšiemu vzťahu zajtra?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo je jeden malý krok k lepšiemu vzťahu zajtra?"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "myseľ",
+        "title": "Myseľ a pohoda",
+        "pool": [
+          {
+            "id": "t3-1",
+            "title": "Aká emócia u mňa dnes dominovala?",
+            "metricKey": "m_3_1",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Aká emócia u mňa dnes dominovala?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Aká emócia u mňa dnes dominovala?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Aká emócia u mňa dnes dominovala?"
+              }
+            ]
+          },
+          {
+            "id": "t3-2",
+            "title": "Čo ju spustilo?",
+            "metricKey": "m_3_2",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo ju spustilo?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo ju spustilo?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo ju spustilo?"
+              }
+            ]
+          },
+          {
+            "id": "t3-3",
+            "title": "Kde som sa zacyklil v hlave?",
+            "metricKey": "m_3_3",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Kde som sa zacyklil v hlave?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Kde som sa zacyklil v hlave?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Kde som sa zacyklil v hlave?"
+              }
+            ]
+          },
+          {
+            "id": "t3-4",
+            "title": "Čo mi dnes prinieslo pokoj?",
+            "metricKey": "m_3_4",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo mi dnes prinieslo pokoj?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo mi dnes prinieslo pokoj?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo mi dnes prinieslo pokoj?"
+              }
+            ]
+          },
+          {
+            "id": "t3-5",
+            "title": "Čo som dnes ignoroval, hoci to bolo jasné?",
+            "metricKey": "m_3_5",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo som dnes ignoroval, hoci to bolo jasné?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo som dnes ignoroval, hoci to bolo jasné?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo som dnes ignoroval, hoci to bolo jasné?"
+              }
+            ]
+          },
+          {
+            "id": "t3-6",
+            "title": "Kde som bol na seba zbytočne tvrdý?",
+            "metricKey": "m_3_6",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Kde som bol na seba zbytočne tvrdý?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Kde som bol na seba zbytočne tvrdý?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Kde som bol na seba zbytočne tvrdý?"
+              }
+            ]
+          },
+          {
+            "id": "t3-7",
+            "title": "Čo by som si dnes odpustil?",
+            "metricKey": "m_3_7",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo by som si dnes odpustil?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo by som si dnes odpustil?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo by som si dnes odpustil?"
+              }
+            ]
+          },
+          {
+            "id": "t3-8",
+            "title": "Čo je moja najmenšia rozumná zmena na zajtra?",
+            "metricKey": "m_3_8",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo je moja najmenšia rozumná zmena na zajtra?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo je moja najmenšia rozumná zmena na zajtra?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo je moja najmenšia rozumná zmena na zajtra?"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "zmysel",
+        "title": "Zmysel a smer",
+        "pool": [
+          {
+            "id": "t4-1",
+            "title": "Čo dnes dávalo zmysel aj bez výkonu?",
+            "metricKey": "m_4_1",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo dnes dávalo zmysel aj bez výkonu?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo dnes dávalo zmysel aj bez výkonu?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo dnes dávalo zmysel aj bez výkonu?"
+              }
+            ]
+          },
+          {
+            "id": "t4-2",
+            "title": "Kde som dnes žil v súlade so sebou?",
+            "metricKey": "m_4_2",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Kde som dnes žil v súlade so sebou?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Kde som dnes žil v súlade so sebou?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Kde som dnes žil v súlade so sebou?"
+              }
+            ]
+          },
+          {
+            "id": "t4-3",
+            "title": "Kde som sa odpojil od toho, čo je pre mňa dôležité?",
+            "metricKey": "m_4_3",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Kde som sa odpojil od toho, čo je pre mňa dôležité?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Kde som sa odpojil od toho, čo je pre mňa dôležité?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Kde som sa odpojil od toho, čo je pre mňa dôležité?"
+              }
+            ]
+          },
+          {
+            "id": "t4-4",
+            "title": "Čo je jedna vec, ktorú nechcem dlhodobo zanedbávať?",
+            "metricKey": "m_4_4",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo je jedna vec, ktorú nechcem dlhodobo zanedbávať?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo je jedna vec, ktorú nechcem dlhodobo zanedbávať?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo je jedna vec, ktorú nechcem dlhodobo zanedbávať?"
+              }
+            ]
+          },
+          {
+            "id": "t4-5",
+            "title": "Čo ma dnes inšpirovalo?",
+            "metricKey": "m_4_5",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo ma dnes inšpirovalo?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo ma dnes inšpirovalo?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo ma dnes inšpirovalo?"
+              }
+            ]
+          },
+          {
+            "id": "t4-6",
+            "title": "Kde som dnes spravil správnu vec, aj keď sa nechcelo?",
+            "metricKey": "m_4_6",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Kde som dnes spravil správnu vec, aj keď sa nechcelo?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Kde som dnes spravil správnu vec, aj keď sa nechcelo?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Kde som dnes spravil správnu vec, aj keď sa nechcelo?"
+              }
+            ]
+          },
+          {
+            "id": "t4-7",
+            "title": "Čo je moja definícia dobrého dňa?",
+            "metricKey": "m_4_7",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo je moja definícia dobrého dňa?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo je moja definícia dobrého dňa?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo je moja definícia dobrého dňa?"
+              }
+            ]
+          },
+          {
+            "id": "t4-8",
+            "title": "Čo je jedna hodnota, ktorú chcem zajtra posilniť?",
+            "metricKey": "m_4_8",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo je jedna hodnota, ktorú chcem zajtra posilniť?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo je jedna hodnota, ktorú chcem zajtra posilniť?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo je jedna hodnota, ktorú chcem zajtra posilniť?"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "plan",
+        "title": "Plán a hranice",
+        "pool": [
+          {
+            "id": "t5-1",
+            "title": "Čo je moja 1 priorita na zajtra?",
+            "metricKey": "m_5_1",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo je moja 1 priorita na zajtra?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo je moja 1 priorita na zajtra?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo je moja 1 priorita na zajtra?"
+              }
+            ]
+          },
+          {
+            "id": "t5-2",
+            "title": "Čo môže počkať bez následkov?",
+            "metricKey": "m_5_2",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo môže počkať bez následkov?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo môže počkať bez následkov?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo môže počkať bez následkov?"
+              }
+            ]
+          },
+          {
+            "id": "t5-3",
+            "title": "Kde som dnes preplánoval?",
+            "metricKey": "m_5_3",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Kde som dnes preplánoval?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Kde som dnes preplánoval?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Kde som dnes preplánoval?"
+              }
+            ]
+          },
+          {
+            "id": "t5-4",
+            "title": "Kde som dnes nechal veci plynúť a bolo to OK?",
+            "metricKey": "m_5_4",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Kde som dnes nechal veci plynúť a bolo to OK?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Kde som dnes nechal veci plynúť a bolo to OK?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Kde som dnes nechal veci plynúť a bolo to OK?"
+              }
+            ]
+          },
+          {
+            "id": "t5-5",
+            "title": "Kde som si nenechal rezervu?",
+            "metricKey": "m_5_5",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Kde som si nenechal rezervu?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Kde som si nenechal rezervu?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Kde som si nenechal rezervu?"
+              }
+            ]
+          },
+          {
+            "id": "t5-6",
+            "title": "Čo mi dnes zabilo čas?",
+            "metricKey": "m_5_6",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo mi dnes zabilo čas?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo mi dnes zabilo čas?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo mi dnes zabilo čas?"
+              }
+            ]
+          },
+          {
+            "id": "t5-7",
+            "title": "Čo mi dnes ušetrilo čas?",
+            "metricKey": "m_5_7",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Čo mi dnes ušetrilo čas?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Čo mi dnes ušetrilo čas?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Čo mi dnes ušetrilo čas?"
+              }
+            ]
+          },
+          {
+            "id": "t5-8",
+            "title": "Kde potrebujem nastaviť jasnejšiu hranicu?",
+            "metricKey": "m_5_8",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Kde potrebujem nastaviť jasnejšiu hranicu?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Kde potrebujem nastaviť jasnejšiu hranicu?"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Kde potrebujem nastaviť jasnejšiu hranicu?"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "createdAt": "2026-02-13T13:24:03.918Z"
+}

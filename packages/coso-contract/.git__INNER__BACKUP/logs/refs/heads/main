@@ -1,0 +1,2 @@
+0000000000000000000000000000000000000000 6848b9d28dd1e89a7d01df6bcb9543f57aa76a5a peter <narakanakaru@gmail.com> 1769712281 +0100	commit (initial): init coso-contract: types + zod schemas + tests
+6848b9d28dd1e89a7d01df6bcb9543f57aa76a5a 6848b9d28dd1e89a7d01df6bcb9543f57aa76a5a peter <narakanakaru@gmail.com> 1769712687 +0100	Branch: renamed refs/heads/master to refs/heads/main

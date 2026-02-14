@@ -1,0 +1,41 @@
+name: factory
+
+on:
+  workflow_dispatch:
+    inputs:
+      edition_json:
+        description: "LLM output JSON for new edition"
+        required: false
+        type: string
+      edition_json_gzip_b64:
+        description: "Gzipped+base64 edition JSON (for large payload fallback)"
+        required: false
+        type: string
+
+jobs:
+  build-edition:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+
+      - name: Append edition
+        env:
+          EDITION_JSON: ${{ inputs.edition_json }}
+          EDITION_JSON_GZIP_B64: ${{ inputs.edition_json_gzip_b64 }}
+        run: node scripts/factory-append.mjs
+
+      - name: Commit & push
+        run: |
+          git config user.name "coso-factory-bot"
+          git config user.email "factory-bot@users.noreply.github.com"
+          git add apps/nevedelE/data/editions.json apps/nevedelE/data/editions/*.json
+          git commit -m "chore(factory): add edition" || echo "nothing to commit"
+          git push

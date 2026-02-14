@@ -1,0 +1,152 @@
+{
+  "impulses": {
+    "LIGHT": [
+      "Some days are lighter than they look.",
+      "Today may feel lighter than expected.",
+      "Things may offer less resistance today.",
+      "Today can move without pressure.",
+      "The air feels slightly more open today."
+    ],
+    "NEUTRAL": [
+      "Today has its own weight.",
+      "The day is what it is.",
+      "Things hold their shape today.",
+      "Nothing needs to be forced today.",
+      "Balance is not empty."
+    ],
+    "HEAVY": [
+      "Some days resist.",
+      "Today the weight is more noticeable.",
+      "Things do not move on their own today.",
+      "The day feels denser.",
+      "Today carries more."
+    ]
+  },
+  "meaningStates": [
+    {
+      "id": "S1",
+      "title": "thinner",
+      "body": [
+        "More space appears.",
+        "Not everything touches.",
+        "Breathing feels possible."
+      ],
+      "spectra": [
+        "A"
+      ],
+      "zones": [
+        "LOW"
+      ]
+    },
+    {
+      "id": "S2",
+      "title": "dense",
+      "body": [
+        "Things are closer.",
+        "Movement meets resistance.",
+        "The day has weight."
+      ],
+      "spectra": [
+        "A"
+      ],
+      "zones": [
+        "HIGH"
+      ]
+    },
+    {
+      "id": "S3",
+      "title": "balanced",
+      "body": [
+        "Nothing stands out.",
+        "Things hold together.",
+        "The day stands on its own."
+      ],
+      "spectra": [
+        "A",
+        "B"
+      ],
+      "zones": [
+        "MID"
+      ]
+    },
+    {
+      "id": "S4",
+      "title": "still",
+      "body": [
+        "Inside, little moves today.",
+        "No pull and no push.",
+        "This is also a stance."
+      ],
+      "spectra": [
+        "B"
+      ],
+      "zones": [
+        "LOW"
+      ]
+    },
+    {
+      "id": "S5",
+      "title": "gentle motion",
+      "body": [
+        "Something shifts.",
+        "Without a clear direction.",
+        "Just so."
+      ],
+      "spectra": [
+        "B"
+      ],
+      "zones": [
+        "MID"
+      ]
+    },
+    {
+      "id": "S6",
+      "title": "in motion",
+      "body": [
+        "Something moves inside today.",
+        "Not abruptly.",
+        "But noticeably."
+      ],
+      "spectra": [
+        "B"
+      ],
+      "zones": [
+        "HIGH"
+      ]
+    },
+    {
+      "id": "S7",
+      "title": "partly open",
+      "body": [
+        "Some things are not closed today.",
+        "Not fully.",
+        "A little is enough."
+      ],
+      "spectra": [
+        "A",
+        "B"
+      ],
+      "zones": [
+        "MID",
+        "HIGH"
+      ]
+    },
+    {
+      "id": "S8",
+      "title": "drawn in",
+      "body": [
+        "Space holds closer today.",
+        "Not everything moves outward.",
+        "This is okay."
+      ],
+      "spectra": [
+        "A",
+        "B"
+      ],
+      "zones": [
+        "LOW",
+        "MID"
+      ]
+    }
+  ]
+}

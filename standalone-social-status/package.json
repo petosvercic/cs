@@ -1,0 +1,11 @@
+{
+  "name": "standalone-social-status",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Standalone daily social status system",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "check": "node --check src/server.js"
+  }
+}

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="sk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Denný sociálny status (standalone)</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>Denný sociálny status</h1>
+      <p class="subtitle">Samostatný MVP systém (free/premium + gold) nezávislý od zvyšku repa.</p>
+
+      <section class="card" id="user-card">
+        <h2>Profil</h2>
+        <div id="user-meta"></div>
+        <div class="row">
+          <button data-tier="free" class="tier-btn">Prepnúť na Free</button>
+          <button data-tier="premium" class="tier-btn">Prepnúť na Premium</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Dnešné spektrá</h2>
+        <div id="pool"></div>
+      </section>
+
+      <section class="card" id="question-card" hidden>
+        <h2 id="spectrum-title"></h2>
+        <form id="question-form"></form>
+        <button id="submit-btn">Vyhodnoť status</button>
+      </section>
+
+      <section class="card" id="result-card" hidden>
+        <h2>Výsledok</h2>
+        <div id="result"></div>
+      </section>
+
+      <section class="card">
+        <h2>Gold shop (simulácia)</h2>
+        <div class="row">
+          <button class="buy-btn" data-pack="mini">220 gold / 1.99€</button>
+          <button class="buy-btn" data-pack="plus">520 gold / 3.99€</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Sociálny prehľad (premium)</h2>
+        <button id="social-btn">Načítať sociálny prehľad</button>
+        <pre id="social-output"></pre>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
