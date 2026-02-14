@@ -1,25 +1,31 @@
 {
-  "name": "coso-product-template",
+  "name": "coso-nevedel",
+  "version": "0.1.0",
   "private": true,
-  "version": "0.0.0",
-  "dependencies": {
-    "coso-nevedel-core": "0.1.0",
-    "next": "16.1.6",
-    "react": "19.0.0",
-    "react-dom": "19.0.0"
-  },
   "scripts": {
-    "dev": "next dev --webpack",
-    "build": "next build --webpack",
-    "start": "next start"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^1.6.1",
+    "@vercel/kv": "^3.0.0",
+    "next": "16.1.4",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "stripe": "^20.2.0"
   },
   "devDependencies": {
-    "@types/node": "^20.12.12",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.1.9",
-    "typescript": "^5.5.4"
-  },
-  "engines": {
-    "node": ">=20"
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.4",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5"
   }
 }
