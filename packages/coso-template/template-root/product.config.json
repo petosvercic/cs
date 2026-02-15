@@ -1,6 +1,7 @@
-﻿{
-    "engine":  {
-                   "subject":  "template_subject"
-               },
-    "activePackId":  "default"
+{
+  "engine": {
+    "subject": "template_subject",
+    "activePackId": "default",
+    "availablePackIds": ["default", "demo"]
+  }
 }
