@@ -1,6 +1,11 @@
 {
   "editions": [
     {
+      "slug": "fialovy-baner-ritmus-smer",
+      "title": "Fialovy baner: Rytmus a smer",
+      "createdAt": "2026-02-15T02:11:40.302Z"
+    },
+    {
       "slug": "test-kanon-rovnovaha-v1",
       "title": "Test: Kanón rovnováhy (v1)",
       "createdAt": "2026-02-13T14:59:15.727Z"
