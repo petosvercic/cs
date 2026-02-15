@@ -159,8 +159,14 @@ export default function BuilderClient({ editions }: { editions: EditionIndexEntr
       return;
     }
 
-    setStatus({ kind: "ok", msg: `Workflow spusten , ?zA? , L? , ?a a ". ${data?.runUrl ? "Run: " + data.runUrl : ""}`.trim() });
-    setEditionJson("");
+    const okMsg =
+  typeof data?.message === "string" && data.message.trim()
+    ? data.message.trim()
+    : `OK. Edition saved to repo. slug=${String(data?.slug ?? "").trim()}`;
+
+setStatus({ kind: "ok", msg: okMsg });
+setEditionJson("");
+
   }
 
   return (
