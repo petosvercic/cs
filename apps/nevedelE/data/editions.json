@@ -1,6 +1,11 @@
 {
   "editions": [
     {
+      "slug": "fialovy-baner-ritmus-smerv4",
+      "title": "Fialovy baner: Rytmus a smer",
+      "createdAt": "2026-02-15T11:15:22.350Z"
+    },
+    {
       "slug": "fialovy-baner-ritmus-smerv3",
       "title": "Fialovy baner: Rytmus a smer",
       "createdAt": "2026-02-15T10:56:27.275Z"
