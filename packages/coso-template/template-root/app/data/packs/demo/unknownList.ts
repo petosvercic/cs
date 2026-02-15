@@ -1,0 +1,23 @@
+export const unknownItems = [
+  { title: "Koľko ľudí si ovplyvnil bez toho, aby si si to uvedomil.", blurredHint: "Demo pack: približne {n} ľudí." },
+  { title: "Koľkokrát si niekomu zmenil deň. Aj neúmyselne.", blurredHint: "Stalo sa to viac ráz, než by si tipoval." },
+  { title: "Koľko rozhodnutí si urobil len preto, aby bol pokoj.", blurredHint: "Približne {n} rozhodnutí." },
+  { title: "Koľko energie si minul na udržiavanie vzťahov, ktoré už dávno nefungovali.", blurredHint: "Viac, než by si dnes chcel priznať." },
+  { title: "Koľkokrát si vedel, že by si sa mal rozhodnúť inak.", blurredHint: "Toto číslo nie je malé." },
+  { title: "Koľko vecí si nechal tak, lebo sa ti nechcelo ich riešiť.", blurredHint: "Dosť na to, aby sa z toho stal zvyk." },
+  { title: "Koľko ľudí ťa pozná len povrchne. A koľko si si k tomu sám dopomohol.", blurredHint: "Viac, než by si povedal nahlas." },
+
+  { title: "Koľkokrát si sa prispôsobil, aj keď si cítil, že to nie si ty.", blurredHint: "Častejšie, než je zdravé." },
+  { title: "Koľko vecí si dokončil len silou vôle, nie chuťou.", blurredHint: "Približne {n} krát." },
+  { title: "Koľko ľudí ťa vníma ako silnejšieho, než sa vnútri cítiš.", blurredHint: "Viac, než by si čakal." },
+  { title: "Koľko „dôležitých“ dní si prežil bez toho, aby si to vtedy spoznal.", blurredHint: "Niekoľko. A to stačí." },
+  { title: "Koľkokrát si niečo odložil a potom už nemal chuť sa k tomu vrátiť.", blurredHint: "Viac ráz, než by si priznal." },
+  { title: "Koľko rozhodnutí si urobil kvôli tomu, ako ťa budú vnímať iní.", blurredHint: "Približne {n} rozhodnutí." },
+  { title: "Koľkokrát si zmenil názor len preto, aby sa veci nepokazili.", blurredHint: "Dosť na to, aby to malo vzorec." },
+  { title: "Koľko ľudí si chránil tým, že si nebol úprimný.", blurredHint: "Neznie to pekne. Preto to funguje." },
+  { title: "Koľko vzťahov prežilo len preto, že si v nich robil viac práce než druhá strana.", blurredHint: "Viac, než by si chcel mať na svedomí." },
+  { title: "Koľkokrát si sa rozhodol až vtedy, keď už nebolo kam cúvnuť.", blurredHint: "Približne {n} krát." },
+  { title: "Koľkokrát si povedal „som v pohode“, keď si len nechcel otvárať tému.", blurredHint: "Častejšie než raz. To je pointa." },
+  { title: "Koľko vecí si urobil lepšie, než si si vôbec dovolil uznať.", blurredHint: "Viac, než si dávaš kredit." },
+  { title: "Koľkokrát si sa zastavil tesne pred tým, než by sa niečo zmenilo.", blurredHint: "Skoro. A to bolí najviac." },
+] as const;
