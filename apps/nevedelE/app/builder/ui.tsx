@@ -1,3 +1,4 @@
+<img src="/brand/logo.png" alt="Brand" style={{ height: 48, width: "auto" }} />
 "use client";
 import { useMemo, useState } from "react";
 import { normalizeEditionJsonForBuilder, normalizeEditionJsonRaw, validateEditionJson } from "../../lib/edition-json";
