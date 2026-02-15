@@ -89,7 +89,7 @@ function buildPrompt(existingSlugs: string[]) {
     "- Are there exactly 5 categories?",
     "- Does each category have exactly 50 tasks?",
     "- pickPerCategory is 25?",
-    '- No "..." anywhere?',
+    '- No \"...\" anywhere?',
     "- Strict JSON only?",
     "",
     "Already deployed editions (MUST AVOID):",
@@ -164,14 +164,22 @@ export default function BuilderClient({ editions }: { editions: EditionIndexEntr
   }
 
   return (
-    <main className="min-h-screen bg-neutral-950 px-4 py-8 text-neutral-100">
-      <div className="mx-auto w-full max-w-4xl rounded-2xl border border-neutral-800 bg-neutral-900 p-6 shadow-xl">
-        <div className="mb-4">
-          <img src="/brand/logo.png" alt="Brand" style={{ height: 48, width: "auto" }} />
+    <main
+      className="min-h-screen px-4 py-10 text-neutral-100"
+      style={{
+        backgroundImage: "url(/brand/bg.png)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <div className="mx-auto w-full max-w-4xl translate-y-6 rounded-2xl border border-neutral-800 bg-neutral-900/70 p-6 shadow-xl backdrop-blur">
+        <div className="mb-6 flex justify-center">
+          <img src="/brand/logo.png" alt="Brand" style={{ height: 120, width: "auto" }} />
         </div>
 
         <h1 className="text-3xl font-semibold tracking-tight">Factory Builder</h1>
-        <p className="mt-2 text-sm leading-6 text-neutral-400">Prompt and list of editions (slugs) are used as input context.</p>
+        <p className="mt-2 text-sm leading-6 text-neutral-200/80">Prompt and list of editions (slugs) are used as input context.</p>
 
         <section className="mt-8 space-y-2">
           <h2 className="text-xl font-semibold">1) Prompt pre LLM</h2>
@@ -179,7 +187,7 @@ export default function BuilderClient({ editions }: { editions: EditionIndexEntr
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             rows={18}
-            className="w-full rounded-xl border border-neutral-700 bg-neutral-950 p-3 font-mono text-sm leading-6 outline-none focus:border-neutral-500"
+            className="w-full rounded-xl border border-neutral-700 bg-neutral-950/80 p-3 font-mono text-sm leading-6 outline-none focus:border-neutral-500"
           />
           <div className="mt-2 flex flex-wrap gap-3">
             <button className="rounded-lg bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-950" onClick={onCopyPrompt}>
@@ -191,7 +199,7 @@ export default function BuilderClient({ editions }: { editions: EditionIndexEntr
             <button className="rounded-lg bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-950" onClick={() => setPrompt(basePrompt)}>
               Reset prompt
             </button>
-            <a href="/list" className="rounded-lg border border-neutral-700 px-3 py-2 text-sm text-neutral-200">
+            <a href="/list" className="rounded-lg border border-neutral-200/40 bg-neutral-950/30 px-3 py-2 text-sm text-neutral-100">
               View deployed editions
             </a>
           </div>
@@ -204,7 +212,7 @@ export default function BuilderClient({ editions }: { editions: EditionIndexEntr
             onChange={(e) => setEditionJson(e.target.value)}
             rows={12}
             placeholder='You can paste plain JSON, a `json ... ` block, or text that contains a JSON object.'
-            className="w-full rounded-xl border border-neutral-700 bg-neutral-950 p-3 font-mono text-sm leading-6 outline-none focus:border-neutral-500"
+            className="w-full rounded-xl border border-neutral-700 bg-neutral-950/80 p-3 font-mono text-sm leading-6 outline-none focus:border-neutral-500"
           />
           <div className="mt-2 flex flex-wrap gap-3">
             <button
@@ -220,7 +228,7 @@ export default function BuilderClient({ editions }: { editions: EditionIndexEntr
               Dispatch build
             </button>
             <button
-              className="rounded-lg border border-neutral-700 px-3 py-2 text-sm"
+              className="rounded-lg border border-neutral-200/40 bg-neutral-950/30 px-3 py-2 text-sm text-neutral-100"
               onClick={() => {
                 const n = normalizeEditionJsonForBuilder(editionJson);
                 setEditionJson(n);
@@ -235,11 +243,11 @@ export default function BuilderClient({ editions }: { editions: EditionIndexEntr
             <p
               className={`mt-3 rounded-xl border p-3 text-sm ${
                 status.kind === "err"
-                  ? "border-red-500 text-red-300"
+                  ? "border-red-500 text-red-200"
                   : status.kind === "ok"
-                    ? "border-green-500 text-green-300"
-                    : "border-neutral-700 text-neutral-300"
-              }`}
+                    ? "border-green-500 text-green-200"
+                    : "border-neutral-200/40 text-neutral-100"
+              } bg-neutral-950/40`}
             >
               <strong>{status.kind === "err" ? "Error" : status.kind === "ok" ? "OK" : "Info"}:</strong> {status.msg}
             </p>
