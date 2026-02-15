@@ -1,0 +1,3573 @@
+{
+  "slug": "fialovy-baner-ritmus-smerv5",
+  "title": "Fialovy baner: Rytmus a smer",
+  "engine": {
+    "subject": "rytmus_a_smer",
+    "locale": "sk"
+  },
+  "content": {
+    "heroTitle": "Rytmus, ktory ta nesie",
+    "heroSubtitle": "Denn y kompas pre focus, energiu a rozhodnutia bez chaosu.",
+    "intro": {
+      "title": "Jedna tema, 5 oblast i",
+      "text": "Tato edicia je o tom, aby si mal(a) kazdy den jasny start, cisty stred a kludny koniec. Ziadne velke sluby. Len male kroky, ktore robia velky rozdiel, ked sa opakuju."
+    },
+    "form": {
+      "title": "Spusti vyhodnotenie",
+      "nameLabel": "Meno (volitelne)",
+      "birthDateLabel": "Datum narodenia (YYYY-MM-DD)",
+      "submitLabel": "Vypocitaj"
+    },
+    "result": {
+      "teaserTitle": "Tvoj dnesny rytmus",
+      "teaserNote": "Vidis zakladny smer a kratky nahlad. Plna verzia prida detaily a konkretne odporucania.",
+      "unlockHint": "Odomkni plny vystup: detailny profil, vysvetlenie a personalizovane kroky."
+    },
+    "paywall": {
+      "headline": "Odomkni plny kompas rytmu",
+      "bullets": [
+        "Detailny rozpad tvojho rytmu a slabych miest",
+        "Personalizovane odporucania pre start, stred a koniec dna",
+        "Vyber 25 najlepsich taskov pre dnesny fokus",
+        "Jasne hranice a mikro-kroky bez prepalovania"
+      ],
+      "cta": "Odomknut plnu verziu"
+    }
+  },
+  "tasks": {
+    "pickPerCategory": 5,
+    "categories": [
+      {
+        "key": "cat-1",
+        "title": "Start dna",
+        "pool": [
+          {
+            "id": "c1t1-001",
+            "title": "Write 1 sentence: what matters today.",
+            "metricKey": "c1_t1",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Write 1 sentence: what matters today."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Write 1 sentence: what matters today. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Write 1 sentence: what matters today. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t2-001",
+            "title": "Choose 1 priority and name it.",
+            "metricKey": "c1_t2",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Choose 1 priority and name it."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Choose 1 priority and name it. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Choose 1 priority and name it. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t3-001",
+            "title": "Open a window and take 10 slow breaths.",
+            "metricKey": "c1_t3",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Open a window and take 10 slow breaths."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Open a window and take 10 slow breaths. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Open a window and take 10 slow breaths. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t4-001",
+            "title": "Drink a glass of water before anything else.",
+            "metricKey": "c1_t4",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Drink a glass of water before anything else."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Drink a glass of water before anything else. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Drink a glass of water before anything else. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t5-001",
+            "title": "Make your bed or clear 1 surface.",
+            "metricKey": "c1_t5",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Make your bed or clear 1 surface."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Make your bed or clear 1 surface. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Make your bed or clear 1 surface. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t6-001",
+            "title": "Set a 25 minute focus timer.",
+            "metricKey": "c1_t6",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Set a 25 minute focus timer."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Set a 25 minute focus timer. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Set a 25 minute focus timer. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t7-001",
+            "title": "Turn off notifications for 60 minutes.",
+            "metricKey": "c1_t7",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Turn off notifications for 60 minutes."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Turn off notifications for 60 minutes. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Turn off notifications for 60 minutes. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t8-001",
+            "title": "List 3 tasks; circle only one.",
+            "metricKey": "c1_t8",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "List 3 tasks; circle only one."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "List 3 tasks; circle only one. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "List 3 tasks; circle only one. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t9-001",
+            "title": "Decide your first break time.",
+            "metricKey": "c1_t9",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Decide your first break time."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Decide your first break time. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Decide your first break time. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t10-001",
+            "title": "Do a 2 minute stretch routine.",
+            "metricKey": "c1_t10",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Do a 2 minute stretch routine."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Do a 2 minute stretch routine. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Do a 2 minute stretch routine. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t11-001",
+            "title": "Put phone in another room for 30 minutes.",
+            "metricKey": "c1_t11",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Put phone in another room for 30 minutes."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Put phone in another room for 30 minutes. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Put phone in another room for 30 minutes. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t12-001",
+            "title": "Write a simple plan: start, middle, end.",
+            "metricKey": "c1_t12",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Write a simple plan: start, middle, end."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Write a simple plan: start, middle, end. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Write a simple plan: start, middle, end. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t13-001",
+            "title": "Pick a soundtrack or silence for focus.",
+            "metricKey": "c1_t13",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Pick a soundtrack or silence for focus."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Pick a soundtrack or silence for focus. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Pick a soundtrack or silence for focus. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t14-001",
+            "title": "Clean your desk for 3 minutes.",
+            "metricKey": "c1_t14",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Clean your desk for 3 minutes."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Clean your desk for 3 minutes. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Clean your desk for 3 minutes. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t15-001",
+            "title": "Say no to one optional thing today.",
+            "metricKey": "c1_t15",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Say no to one optional thing today."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Say no to one optional thing today. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Say no to one optional thing today. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t16-001",
+            "title": "Prepare a quick snack for later.",
+            "metricKey": "c1_t16",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Prepare a quick snack for later."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Prepare a quick snack for later. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Prepare a quick snack for later. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t17-001",
+            "title": "Check calendar only once, then close it.",
+            "metricKey": "c1_t17",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Check calendar only once, then close it."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Check calendar only once, then close it. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Check calendar only once, then close it. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t18-001",
+            "title": "Define success as one finished thing.",
+            "metricKey": "c1_t18",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Define success as one finished thing."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Define success as one finished thing. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Define success as one finished thing. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t19-001",
+            "title": "Choose your working place intentionally.",
+            "metricKey": "c1_t19",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Choose your working place intentionally."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Choose your working place intentionally. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Choose your working place intentionally. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t20-001",
+            "title": "Do 10 bodyweight squats or a short walk.",
+            "metricKey": "c1_t20",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Do 10 bodyweight squats or a short walk."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Do 10 bodyweight squats or a short walk. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Do 10 bodyweight squats or a short walk. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t21-001",
+            "title": "Write one helpful self-talk line.",
+            "metricKey": "c1_t21",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Write one helpful self-talk line."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Write one helpful self-talk line. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Write one helpful self-talk line. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t22-001",
+            "title": "Set a hard stop time for today.",
+            "metricKey": "c1_t22",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Set a hard stop time for today."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Set a hard stop time for today. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Set a hard stop time for today. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t23-001",
+            "title": "Pick a reward for finishing the priority.",
+            "metricKey": "c1_t23",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Pick a reward for finishing the priority."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Pick a reward for finishing the priority. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Pick a reward for finishing the priority. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t24-001",
+            "title": "Write one risk and one mitigation.",
+            "metricKey": "c1_t24",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Write one risk and one mitigation."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Write one risk and one mitigation. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Write one risk and one mitigation. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c1t25-001",
+            "title": "Start immediately for 2 minutes, no thinking.",
+            "metricKey": "c1_t25",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Start immediately for 2 minutes, no thinking."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Start immediately for 2 minutes, no thinking. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Start immediately for 2 minutes, no thinking. (deep)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "cat-2",
+        "title": "Focus a rozhodnutia",
+        "pool": [
+          {
+            "id": "c2t1-001",
+            "title": "Block 45 minutes for deep work.",
+            "metricKey": "c2_t1",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Block 45 minutes for deep work."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Block 45 minutes for deep work. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Block 45 minutes for deep work. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t2-001",
+            "title": "Do one task until done, no switching.",
+            "metricKey": "c2_t2",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Do one task until done, no switching."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Do one task until done, no switching. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Do one task until done, no switching. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t3-001",
+            "title": "Write the next physical action step.",
+            "metricKey": "c2_t3",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Write the next physical action step."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Write the next physical action step. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Write the next physical action step. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t4-001",
+            "title": "If stuck, reduce the task to 5 minutes.",
+            "metricKey": "c2_t4",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "If stuck, reduce the task to 5 minutes."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "If stuck, reduce the task to 5 minutes. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "If stuck, reduce the task to 5 minutes. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t5-001",
+            "title": "Close all tabs except the one you need.",
+            "metricKey": "c2_t5",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Close all tabs except the one you need."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Close all tabs except the one you need. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Close all tabs except the one you need. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t6-001",
+            "title": "Use a timer: 25/5 twice.",
+            "metricKey": "c2_t6",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Use a timer: 25/5 twice."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Use a timer: 25/5 twice. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Use a timer: 25/5 twice. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t7-001",
+            "title": "Write down distractions instead of acting on them.",
+            "metricKey": "c2_t7",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Write down distractions instead of acting on them."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Write down distractions instead of acting on them. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Write down distractions instead of acting on them. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t8-001",
+            "title": "Choose a default: do not check messages now.",
+            "metricKey": "c2_t8",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Choose a default: do not check messages now."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Choose a default: do not check messages now. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Choose a default: do not check messages now. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t9-001",
+            "title": "Ask: what is the simplest correct move?",
+            "metricKey": "c2_t9",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Ask: what is the simplest correct move?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Ask: what is the simplest correct move? (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Ask: what is the simplest correct move? (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t10-001",
+            "title": "Make one decision in under 2 minutes.",
+            "metricKey": "c2_t10",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Make one decision in under 2 minutes."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Make one decision in under 2 minutes. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Make one decision in under 2 minutes. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t11-001",
+            "title": "If unsure, pick a reversible option.",
+            "metricKey": "c2_t11",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "If unsure, pick a reversible option."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "If unsure, pick a reversible option. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "If unsure, pick a reversible option. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t12-001",
+            "title": "Define a clear finish line for the task.",
+            "metricKey": "c2_t12",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Define a clear finish line for the task."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Define a clear finish line for the task. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Define a clear finish line for the task. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t13-001",
+            "title": "Stop polishing at 80 percent quality.",
+            "metricKey": "c2_t13",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Stop polishing at 80 percent quality."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Stop polishing at 80 percent quality. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Stop polishing at 80 percent quality. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t14-001",
+            "title": "Do the hardest step first for 10 minutes.",
+            "metricKey": "c2_t14",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Do the hardest step first for 10 minutes."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Do the hardest step first for 10 minutes. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Do the hardest step first for 10 minutes. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t15-001",
+            "title": "Batch small tasks into one 15 minute slot.",
+            "metricKey": "c2_t15",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Batch small tasks into one 15 minute slot."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Batch small tasks into one 15 minute slot. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Batch small tasks into one 15 minute slot. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t16-001",
+            "title": "Say no to one new request today.",
+            "metricKey": "c2_t16",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Say no to one new request today."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Say no to one new request today. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Say no to one new request today. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t17-001",
+            "title": "If you overthink, write 3 facts only.",
+            "metricKey": "c2_t17",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "If you overthink, write 3 facts only."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "If you overthink, write 3 facts only. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "If you overthink, write 3 facts only. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t18-001",
+            "title": "Use a checklist for repeated steps.",
+            "metricKey": "c2_t18",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Use a checklist for repeated steps."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Use a checklist for repeated steps. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Use a checklist for repeated steps. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t19-001",
+            "title": "Take a 60 second reset breath between blocks.",
+            "metricKey": "c2_t19",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Take a 60 second reset breath between blocks."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Take a 60 second reset breath between blocks. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Take a 60 second reset breath between blocks. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t20-001",
+            "title": "Write a one-line update to future you.",
+            "metricKey": "c2_t20",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Write a one-line update to future you."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Write a one-line update to future you. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Write a one-line update to future you. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t21-001",
+            "title": "Pick a single metric for progress.",
+            "metricKey": "c2_t21",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Pick a single metric for progress."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Pick a single metric for progress. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Pick a single metric for progress. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t22-001",
+            "title": "If tired, switch to a low-energy task list.",
+            "metricKey": "c2_t22",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "If tired, switch to a low-energy task list."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "If tired, switch to a low-energy task list. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "If tired, switch to a low-energy task list. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t23-001",
+            "title": "Do a quick review: what changed since morning?",
+            "metricKey": "c2_t23",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Do a quick review: what changed since morning?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Do a quick review: what changed since morning? (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Do a quick review: what changed since morning? (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t24-001",
+            "title": "Set a deadline for a decision and honor it.",
+            "metricKey": "c2_t24",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Set a deadline for a decision and honor it."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Set a deadline for a decision and honor it. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Set a deadline for a decision and honor it. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c2t25-001",
+            "title": "Finish one open loop before starting new.",
+            "metricKey": "c2_t25",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Finish one open loop before starting new."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Finish one open loop before starting new. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Finish one open loop before starting new. (deep)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "cat-3",
+        "title": "Komunikacia a hranice",
+        "pool": [
+          {
+            "id": "c3t1-001",
+            "title": "Write one clear message you are avoiding.",
+            "metricKey": "c3_t1",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Write one clear message you are avoiding."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Write one clear message you are avoiding. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Write one clear message you are avoiding. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t2-001",
+            "title": "Ask one clarifying question instead of guessing.",
+            "metricKey": "c3_t2",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Ask one clarifying question instead of guessing."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Ask one clarifying question instead of guessing. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Ask one clarifying question instead of guessing. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t3-001",
+            "title": "Set one boundary with a short sentence.",
+            "metricKey": "c3_t3",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Set one boundary with a short sentence."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Set one boundary with a short sentence. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Set one boundary with a short sentence. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t4-001",
+            "title": "Delay reply by 20 minutes if emotional.",
+            "metricKey": "c3_t4",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Delay reply by 20 minutes if emotional."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Delay reply by 20 minutes if emotional. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Delay reply by 20 minutes if emotional. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t5-001",
+            "title": "Replace excuses with a simple yes or no.",
+            "metricKey": "c3_t5",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Replace excuses with a simple yes or no."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Replace excuses with a simple yes or no. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Replace excuses with a simple yes or no. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t6-001",
+            "title": "Request a concrete date or time.",
+            "metricKey": "c3_t6",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Request a concrete date or time."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Request a concrete date or time. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Request a concrete date or time. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t7-001",
+            "title": "Confirm scope: what is included and excluded.",
+            "metricKey": "c3_t7",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Confirm scope: what is included and excluded."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Confirm scope: what is included and excluded. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Confirm scope: what is included and excluded. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t8-001",
+            "title": "Say: I can do X, I cannot do Y.",
+            "metricKey": "c3_t8",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Say: I can do X, I cannot do Y."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Say: I can do X, I cannot do Y. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Say: I can do X, I cannot do Y. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t9-001",
+            "title": "Send one status update in 2 sentences.",
+            "metricKey": "c3_t9",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Send one status update in 2 sentences."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Send one status update in 2 sentences. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Send one status update in 2 sentences. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t10-001",
+            "title": "Remove one ambiguous word from a message.",
+            "metricKey": "c3_t10",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Remove one ambiguous word from a message."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Remove one ambiguous word from a message. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Remove one ambiguous word from a message. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t11-001",
+            "title": "Use fewer words: cut your draft in half.",
+            "metricKey": "c3_t11",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Use fewer words: cut your draft in half."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Use fewer words: cut your draft in half. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Use fewer words: cut your draft in half. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t12-001",
+            "title": "State a need without blaming anyone.",
+            "metricKey": "c3_t12",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "State a need without blaming anyone."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "State a need without blaming anyone. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "State a need without blaming anyone. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t13-001",
+            "title": "Ask for one example to reduce confusion.",
+            "metricKey": "c3_t13",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Ask for one example to reduce confusion."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Ask for one example to reduce confusion. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Ask for one example to reduce confusion. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t14-001",
+            "title": "Decline politely with one alternative.",
+            "metricKey": "c3_t14",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Decline politely with one alternative."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Decline politely with one alternative. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Decline politely with one alternative. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t15-001",
+            "title": "Stop one ongoing argument by pausing it.",
+            "metricKey": "c3_t15",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Stop one ongoing argument by pausing it."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Stop one ongoing argument by pausing it. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Stop one ongoing argument by pausing it. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t16-001",
+            "title": "Clarify ownership: who does what next?",
+            "metricKey": "c3_t16",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Clarify ownership: who does what next?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Clarify ownership: who does what next? (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Clarify ownership: who does what next? (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t17-001",
+            "title": "Schedule a call only if text fails twice.",
+            "metricKey": "c3_t17",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Schedule a call only if text fails twice."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Schedule a call only if text fails twice. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Schedule a call only if text fails twice. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t18-001",
+            "title": "Set a response window: today or tomorrow.",
+            "metricKey": "c3_t18",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Set a response window: today or tomorrow."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Set a response window: today or tomorrow. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Set a response window: today or tomorrow. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t19-001",
+            "title": "Write your boundary and repeat it once.",
+            "metricKey": "c3_t19",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Write your boundary and repeat it once."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Write your boundary and repeat it once. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Write your boundary and repeat it once. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t20-001",
+            "title": "Thank someone briefly, no extra fluff.",
+            "metricKey": "c3_t20",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Thank someone briefly, no extra fluff."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Thank someone briefly, no extra fluff. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Thank someone briefly, no extra fluff. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t21-001",
+            "title": "Ask: what would make this easy for you?",
+            "metricKey": "c3_t21",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Ask: what would make this easy for you?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Ask: what would make this easy for you? (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Ask: what would make this easy for you? (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t22-001",
+            "title": "Name the priority and ask for alignment.",
+            "metricKey": "c3_t22",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Name the priority and ask for alignment."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Name the priority and ask for alignment. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Name the priority and ask for alignment. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t23-001",
+            "title": "If its not urgent, put it into a queue.",
+            "metricKey": "c3_t23",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "If its not urgent, put it into a queue."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "If its not urgent, put it into a queue. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "If its not urgent, put it into a queue. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t24-001",
+            "title": "End a chat after the decision is made.",
+            "metricKey": "c3_t24",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "End a chat after the decision is made."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "End a chat after the decision is made. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "End a chat after the decision is made. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c3t25-001",
+            "title": "Write one sentence: what outcome do we want?",
+            "metricKey": "c3_t25",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Write one sentence: what outcome do we want?"
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Write one sentence: what outcome do we want? (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Write one sentence: what outcome do we want? (deep)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "cat-4",
+        "title": "Regeneracia a energia",
+        "pool": [
+          {
+            "id": "c4t1-001",
+            "title": "Take a 10 minute walk outside.",
+            "metricKey": "c4_t1",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Take a 10 minute walk outside."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Take a 10 minute walk outside. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Take a 10 minute walk outside. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t2-001",
+            "title": "Eat something simple with protein.",
+            "metricKey": "c4_t2",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Eat something simple with protein."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Eat something simple with protein. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Eat something simple with protein. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t3-001",
+            "title": "Drink water and add a pinch of salt if needed.",
+            "metricKey": "c4_t3",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Drink water and add a pinch of salt if needed."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Drink water and add a pinch of salt if needed. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Drink water and add a pinch of salt if needed. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t4-001",
+            "title": "Do a 5 minute eyes-off-screen break.",
+            "metricKey": "c4_t4",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Do a 5 minute eyes-off-screen break."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Do a 5 minute eyes-off-screen break. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Do a 5 minute eyes-off-screen break. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t5-001",
+            "title": "Stretch neck and shoulders for 2 minutes.",
+            "metricKey": "c4_t5",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Stretch neck and shoulders for 2 minutes."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Stretch neck and shoulders for 2 minutes. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Stretch neck and shoulders for 2 minutes. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t6-001",
+            "title": "Take a 15 minute nap or quiet rest.",
+            "metricKey": "c4_t6",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Take a 15 minute nap or quiet rest."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Take a 15 minute nap or quiet rest. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Take a 15 minute nap or quiet rest. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t7-001",
+            "title": "Lower lights for 10 minutes.",
+            "metricKey": "c4_t7",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Lower lights for 10 minutes."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Lower lights for 10 minutes. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Lower lights for 10 minutes. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t8-001",
+            "title": "Put on calming music for one block.",
+            "metricKey": "c4_t8",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Put on calming music for one block."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Put on calming music for one block. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Put on calming music for one block. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t9-001",
+            "title": "Do a short mobility routine.",
+            "metricKey": "c4_t9",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Do a short mobility routine."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Do a short mobility routine. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Do a short mobility routine. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t10-001",
+            "title": "Stand up and breathe into your belly.",
+            "metricKey": "c4_t10",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Stand up and breathe into your belly."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Stand up and breathe into your belly. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Stand up and breathe into your belly. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t11-001",
+            "title": "Stop caffeine after your chosen cutoff time.",
+            "metricKey": "c4_t11",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Stop caffeine after your chosen cutoff time."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Stop caffeine after your chosen cutoff time. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Stop caffeine after your chosen cutoff time. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t12-001",
+            "title": "Schedule one fun thing for later.",
+            "metricKey": "c4_t12",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Schedule one fun thing for later."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Schedule one fun thing for later. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Schedule one fun thing for later. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t13-001",
+            "title": "Do not multitask while eating.",
+            "metricKey": "c4_t13",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Do not multitask while eating."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Do not multitask while eating. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Do not multitask while eating. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t14-001",
+            "title": "Take a warm shower or wash face slowly.",
+            "metricKey": "c4_t14",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Take a warm shower or wash face slowly."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Take a warm shower or wash face slowly. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Take a warm shower or wash face slowly. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t15-001",
+            "title": "Write down what you are grateful for (1 item).",
+            "metricKey": "c4_t15",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Write down what you are grateful for (1 item)."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Write down what you are grateful for (1 item). (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Write down what you are grateful for (1 item). (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t16-001",
+            "title": "Remove one stressor from your environment.",
+            "metricKey": "c4_t16",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Remove one stressor from your environment."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Remove one stressor from your environment. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Remove one stressor from your environment. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t17-001",
+            "title": "Do a 3 minute tidy to reduce mental noise.",
+            "metricKey": "c4_t17",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Do a 3 minute tidy to reduce mental noise."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Do a 3 minute tidy to reduce mental noise. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Do a 3 minute tidy to reduce mental noise. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t18-001",
+            "title": "Unclench jaw and relax tongue for 30 seconds.",
+            "metricKey": "c4_t18",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Unclench jaw and relax tongue for 30 seconds."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Unclench jaw and relax tongue for 30 seconds. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Unclench jaw and relax tongue for 30 seconds. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t19-001",
+            "title": "Do box breathing 4-4-4-4 for 2 minutes.",
+            "metricKey": "c4_t19",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Do box breathing 4-4-4-4 for 2 minutes."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Do box breathing 4-4-4-4 for 2 minutes. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Do box breathing 4-4-4-4 for 2 minutes. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t20-001",
+            "title": "Choose an early bedtime target.",
+            "metricKey": "c4_t20",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Choose an early bedtime target."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Choose an early bedtime target. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Choose an early bedtime target. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t21-001",
+            "title": "Set phone to grayscale for the evening.",
+            "metricKey": "c4_t21",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Set phone to grayscale for the evening."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Set phone to grayscale for the evening. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Set phone to grayscale for the evening. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t22-001",
+            "title": "Read 2 pages of something light.",
+            "metricKey": "c4_t22",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Read 2 pages of something light."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Read 2 pages of something light. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Read 2 pages of something light. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t23-001",
+            "title": "Prepare tomorrow clothes or bag now.",
+            "metricKey": "c4_t23",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Prepare tomorrow clothes or bag now."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Prepare tomorrow clothes or bag now. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Prepare tomorrow clothes or bag now. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t24-001",
+            "title": "Stop work 15 minutes earlier than usual.",
+            "metricKey": "c4_t24",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Stop work 15 minutes earlier than usual."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Stop work 15 minutes earlier than usual. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Stop work 15 minutes earlier than usual. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c4t25-001",
+            "title": "End the day with a simple warm drink.",
+            "metricKey": "c4_t25",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "End the day with a simple warm drink."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "End the day with a simple warm drink. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "End the day with a simple warm drink. (deep)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "cat-5",
+        "title": "Zaver a smer",
+        "pool": [
+          {
+            "id": "c5t1-001",
+            "title": "Write: what worked today in 1 line.",
+            "metricKey": "c5_t1",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Write: what worked today in 1 line."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Write: what worked today in 1 line. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Write: what worked today in 1 line. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t2-001",
+            "title": "Write: what did not work in 1 line.",
+            "metricKey": "c5_t2",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Write: what did not work in 1 line."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Write: what did not work in 1 line. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Write: what did not work in 1 line. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t3-001",
+            "title": "Pick one lesson and name it.",
+            "metricKey": "c5_t3",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Pick one lesson and name it."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Pick one lesson and name it. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Pick one lesson and name it. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t4-001",
+            "title": "Choose one tiny improvement for tomorrow.",
+            "metricKey": "c5_t4",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Choose one tiny improvement for tomorrow."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Choose one tiny improvement for tomorrow. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Choose one tiny improvement for tomorrow. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t5-001",
+            "title": "Close your workspace: reset to zero.",
+            "metricKey": "c5_t5",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Close your workspace: reset to zero."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Close your workspace: reset to zero. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Close your workspace: reset to zero. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t6-001",
+            "title": "Plan the first task for tomorrow.",
+            "metricKey": "c5_t6",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Plan the first task for tomorrow."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Plan the first task for tomorrow. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Plan the first task for tomorrow. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t7-001",
+            "title": "Move unfinished tasks to a list, not your head.",
+            "metricKey": "c5_t7",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Move unfinished tasks to a list, not your head."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Move unfinished tasks to a list, not your head. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Move unfinished tasks to a list, not your head. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t8-001",
+            "title": "Send one final update if needed, then stop.",
+            "metricKey": "c5_t8",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Send one final update if needed, then stop."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Send one final update if needed, then stop. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Send one final update if needed, then stop. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t9-001",
+            "title": "Do a 2 minute stretch to mark the end.",
+            "metricKey": "c5_t9",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Do a 2 minute stretch to mark the end."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Do a 2 minute stretch to mark the end. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Do a 2 minute stretch to mark the end. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t10-001",
+            "title": "Write your stop time and respect it.",
+            "metricKey": "c5_t10",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Write your stop time and respect it."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Write your stop time and respect it. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Write your stop time and respect it. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t11-001",
+            "title": "Review your calendar for tomorrow once.",
+            "metricKey": "c5_t11",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Review your calendar for tomorrow once."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Review your calendar for tomorrow once. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Review your calendar for tomorrow once. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t12-001",
+            "title": "Prepare a simple breakfast plan.",
+            "metricKey": "c5_t12",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Prepare a simple breakfast plan."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Prepare a simple breakfast plan. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Prepare a simple breakfast plan. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t13-001",
+            "title": "Identify one risk for tomorrow and counter it.",
+            "metricKey": "c5_t13",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Identify one risk for tomorrow and counter it."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Identify one risk for tomorrow and counter it. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Identify one risk for tomorrow and counter it. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t14-001",
+            "title": "Set a single intention for the morning.",
+            "metricKey": "c5_t14",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Set a single intention for the morning."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Set a single intention for the morning. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Set a single intention for the morning. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t15-001",
+            "title": "Choose one thing to let go of tonight.",
+            "metricKey": "c5_t15",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Choose one thing to let go of tonight."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Choose one thing to let go of tonight. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Choose one thing to let go of tonight. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t16-001",
+            "title": "Put phone away 30 minutes before sleep.",
+            "metricKey": "c5_t16",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Put phone away 30 minutes before sleep."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Put phone away 30 minutes before sleep. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Put phone away 30 minutes before sleep. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t17-001",
+            "title": "Write a short note to future you.",
+            "metricKey": "c5_t17",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Write a short note to future you."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Write a short note to future you. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Write a short note to future you. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t18-001",
+            "title": "Check that you ate and drank enough.",
+            "metricKey": "c5_t18",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Check that you ate and drank enough."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Check that you ate and drank enough. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Check that you ate and drank enough. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t19-001",
+            "title": "Name one person you can thank tomorrow.",
+            "metricKey": "c5_t19",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Name one person you can thank tomorrow."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Name one person you can thank tomorrow. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Name one person you can thank tomorrow. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t20-001",
+            "title": "Set a small reward for completing priority.",
+            "metricKey": "c5_t20",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Set a small reward for completing priority."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Set a small reward for completing priority. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Set a small reward for completing priority. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t21-001",
+            "title": "Turn off screens and dim lights.",
+            "metricKey": "c5_t21",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Turn off screens and dim lights."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Turn off screens and dim lights. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Turn off screens and dim lights. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t22-001",
+            "title": "Read 5 minutes, then sleep routine.",
+            "metricKey": "c5_t22",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Read 5 minutes, then sleep routine."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Read 5 minutes, then sleep routine. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Read 5 minutes, then sleep routine. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t23-001",
+            "title": "Do a quick body scan for 60 seconds.",
+            "metricKey": "c5_t23",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Do a quick body scan for 60 seconds."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Do a quick body scan for 60 seconds. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Do a quick body scan for 60 seconds. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t24-001",
+            "title": "Say out loud: the day is done.",
+            "metricKey": "c5_t24",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Say out loud: the day is done."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Say out loud: the day is done. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Say out loud: the day is done. (deep)"
+              }
+            ]
+          },
+          {
+            "id": "c5t25-001",
+            "title": "Sleep is part of the plan, not a bonus.",
+            "metricKey": "c5_t25",
+            "variants": [
+              {
+                "when": {
+                  "lte": 33
+                },
+                "text": "Sleep is part of the plan, not a bonus."
+              },
+              {
+                "when": {
+                  "between": [
+                    34,
+                    66
+                  ]
+                },
+                "text": "Sleep is part of the plan, not a bonus. (quick)"
+              },
+              {
+                "when": {
+                  "gte": 67
+                },
+                "text": "Sleep is part of the plan, not a bonus. (deep)"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "createdAt": "2026-02-15T11:30:56.136Z"
+}
