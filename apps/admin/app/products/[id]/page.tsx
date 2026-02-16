@@ -3,6 +3,7 @@ import { Badge } from "@/app/ui/badge";
 import { Card } from "@/app/ui/card";
 import { adminFetch } from "@/lib/api-client";
 import { ProductDetailResponse } from "@/lib/types";
+import { getProduct } from "@/lib/products";
 
 type PageProps = {
   params: Promise<{ id: string }>;
