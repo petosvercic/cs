@@ -194,14 +194,16 @@ a:hover {
   white-space: pre-wrap;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
-html, body {
-  min-height: 100%;
-}
+html, body { min-height: 100%; }
 
 body {
   background-image: url("/brand/bg.png");
-  background-size: cover;
-  background-position: center;
+  background-repeat: no-repeat;
+  background-position: center center;
   background-attachment: fixed;
+
+  /* menej agresívne než cover, aby sa menej orezávalo */
+  background-size: 110% auto;
 }
+
 
