@@ -55,15 +55,17 @@ export default function BuilderUi({ initialEditions }: BuilderUiProps) {
 
       if (!response.ok || !json?.ok || !Array.isArray(json?.editions)) {
         setStatus({ kind: "err", msg: `Refresh failed: ${json?.error ?? response.status}` });
-        return;
+        return false;
       }
 
       const nextEditions: EditionIndexEntry[] = json.editions;
       setEditions(nextEditions);
       setExistingSlugs(nextEditions.map((item) => item.slug));
       setStatus({ kind: "ok", msg: `Refresh OK (${nextEditions.length} slugs).` });
+      return true;
     } catch (error: any) {
       setStatus({ kind: "err", msg: String(error?.message ?? "Refresh failed") });
+      return false;
     }
   }
 
@@ -120,8 +122,19 @@ export default function BuilderUi({ initialEditions }: BuilderUiProps) {
         return;
       }
 
-      setStatus({ kind: "ok", msg: `Publish OK: ${json?.slug ?? edition.slug}` });
-      await refreshSlugs();
+      const publishedSlug = String(json?.slug ?? edition.slug);
+      const publishedTitle = String(edition.title ?? publishedSlug);
+      setStatus({ kind: "ok", msg: `Publish OK: ${publishedSlug}` });
+
+      const refreshed = await refreshSlugs();
+      if (!refreshed) {
+        setEditions((prev) => {
+          if (prev.some((item) => item.slug === publishedSlug)) return prev;
+          return [{ slug: publishedSlug, title: publishedTitle }, ...prev];
+        });
+        setExistingSlugs((prev) => (prev.includes(publishedSlug) ? prev : [publishedSlug, ...prev]));
+        setStatus({ kind: "ok", msg: `Publish OK: ${publishedSlug} (optimistic refresh).` });
+      }
     } catch (error: any) {
       setStatus({ kind: "err", msg: String(error?.message ?? "Publish failed") });
     } finally {
