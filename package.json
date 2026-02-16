@@ -2,8 +2,8 @@
     "name": "coso-system",
     "private": true,
     "workspaces": [
-        "packages/*",
-        "apps/*"
+        "apps/*",
+        "packages/*"
     ],
     "packageManager": "npm@10",
     "engines": {
