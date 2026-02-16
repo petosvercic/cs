@@ -4,12 +4,8 @@ import { NextResponse } from "next/server";
 export function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
 
-  // allow Next internals + health
-  if (
-    pathname.startsWith("/_next") ||
-    pathname === "/favicon.ico" ||
-    pathname === "/api/health"
-  ) {
+  // allow Next internals
+  if (pathname.startsWith("/_next") || pathname === "/favicon.ico") {
     return NextResponse.next();
   }
 
@@ -24,5 +20,6 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next|favicon.ico).*)"],
+  // protect UI only, NOT /api/*
+  matcher: ["/((?!_next|favicon.ico|api).*)"],
 };
