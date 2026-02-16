@@ -1,21 +1,24 @@
-export type AdminProduct = {
+﻿export type ProductRegistryItem = {
   id: string;
-  name: string;
+  title: string;
+  baseUrl: string;
   description: string;
-  appUrl: string;
-  vercelProjectUrl: string;
 };
 
-export const adminProducts: AdminProduct[] = [
+function normalizeBaseUrl(value: string | undefined, fallback: string) {
+  const raw = (value || fallback).trim();
+  return raw.replace(/\/+$/, "");
+}
+
+export const products: ProductRegistryItem[] = [
   {
     id: "nevedelE",
-    name: "nevedelE",
-    description: "Main product app with content packs and builder flows.",
-    appUrl: "/",
-    vercelProjectUrl: "https://vercel.com/<team>/nevedele"
-  }
+    title: "nevedelE",
+    baseUrl: normalizeBaseUrl(process.env.NEVEDEL_BASE_URL, "http://localhost:3000"),
+    description: "Production app bridge",
+  },
 ];
 
-export function getProductById(id: string): AdminProduct | undefined {
-  return adminProducts.find((product) => product.id === id);
+export function getProduct(id: string): ProductRegistryItem | undefined {
+  return products.find((item) => item.id === id);
 }
