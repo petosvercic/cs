@@ -1,5 +1,4 @@
-@'
-import fs from "node:fs/promises";
+﻿import fs from "node:fs/promises";
 import path from "node:path";
 
 export type ProductItem = {
@@ -60,16 +59,11 @@ export async function resolveRepoRoot(): Promise<string> {
 
   for (let i = 0; i < 6; i += 1) {
     const packageJsonPath = path.join(cursor, "package.json");
-    const packageJson = await readJsonFile<{ workspaces?: string[] }>(packageJsonPath);
-
-    if (packageJson?.workspaces?.includes("apps/*")) {
-      return cursor;
-    }
+    const pkg = await readJsonFile<{ workspaces?: string[] }>(packageJsonPath);
+    if (pkg?.workspaces?.includes("apps/*")) return cursor;
 
     const parent = path.dirname(cursor);
-    if (parent === cursor) {
-      break;
-    }
+    if (parent === cursor) break;
     cursor = parent;
   }
 
@@ -90,7 +84,7 @@ export async function listProducts(): Promise<ProductItem[]> {
   try {
     entries = await fs.readdir(appsDir);
   } catch {
-    // admin-only deploy nemusí mať monorepo FS; v tom prípade vráť prázdno
+    // admin-only deploy môže byť izolovaný -> vráť prázdno (alebo neskôr registry)
     return [];
   }
 
@@ -98,9 +92,7 @@ export async function listProducts(): Promise<ProductItem[]> {
 
   for (const entry of entries) {
     const fullPath = path.join(appsDir, entry);
-    if (!(await appLooksLikeNextApp(fullPath))) {
-      continue;
-    }
+    if (!(await appLooksLikeNextApp(fullPath))) continue;
 
     items.push({
       id: entry,
@@ -118,15 +110,15 @@ export async function getProductDetail(productId: string): Promise<ProductDetail
   const productDir = path.join(repoRoot, "apps", productId);
 
   const exists = await pathExists(productDir);
-  if (!exists) {
-    return null;
-  }
+  if (!exists) return null;
 
   const packageJsonPath = path.join(productDir, "package.json");
   const packageJson =
-    (await readJsonFile<{ name?: string; scripts?: Record<string, string>; dependencies?: Record<string, string> }>(
-      packageJsonPath
-    )) ?? {};
+    (await readJsonFile<{
+      name?: string;
+      scripts?: Record<string, string>;
+      dependencies?: Record<string, string>;
+    }>(packageJsonPath)) ?? {};
 
   let lastModified: string | null = null;
   try {
@@ -155,9 +147,18 @@ export async function getProductDetail(productId: string): Promise<ProductDetail
 
 function normalizeEditionsPayload(payload: unknown): EditionItem[] {
   if (!payload) return [];
-
   const obj = payload as any;
-  const list = Array.isArray(obj) ? obj : Array.isArray(obj.items) ? obj.items : [];
+
+  // SUPPORT: { editions: [...] } (your current format)
+  // ALSO: { items: [...] } (older/admin format)
+  // ALSO: [ ... ] (raw array)
+  const list = Array.isArray(obj)
+    ? obj
+    : Array.isArray(obj.editions)
+      ? obj.editions
+      : Array.isArray(obj.items)
+        ? obj.items
+        : [];
 
   return list
     .map((item: any) => {
@@ -165,11 +166,10 @@ function normalizeEditionsPayload(payload: unknown): EditionItem[] {
       const title = String(item?.title ?? item?.name ?? "").trim();
       const updatedAt =
         item?.updatedAt ? String(item.updatedAt) : item?.updated ? String(item.updated) : undefined;
-
       if (!slug || !title) return null;
       return { slug, title, updatedAt } as EditionItem;
     })
-    .filter((x: any) => Boolean(x));
+    .filter(Boolean) as EditionItem[];
 }
 
 function getGithubEnv() {
@@ -185,9 +185,7 @@ async function readGithubJsonFile<T>(repoPath: string): Promise<T | null> {
   const env = getGithubEnv();
   if (!env) return null;
 
-  const url = `https://api.github.com/repos/${env.owner}/${env.repo}/contents/${repoPath}?ref=${encodeURIComponent(
-    env.ref
-  )}`;
+  const url = `https://api.github.com/repos/${env.owner}/${env.repo}/contents/${repoPath}?ref=${encodeURIComponent(env.ref)}`;
 
   const res = await fetch(url, {
     headers: {
@@ -200,12 +198,9 @@ async function readGithubJsonFile<T>(repoPath: string): Promise<T | null> {
   if (!res.ok) return null;
 
   const data: any = await res.json();
-  const content = data?.content;
-  const encoding = data?.encoding;
+  if (!data?.content || data?.encoding !== "base64") return null;
 
-  if (!content || encoding !== "base64") return null;
-
-  const raw = Buffer.from(content, "base64").toString("utf8");
+  const raw = Buffer.from(data.content, "base64").toString("utf8");
   try {
     return JSON.parse(raw) as T;
   } catch {
@@ -228,15 +223,12 @@ export async function listEditionsForProduct(productId: string): Promise<Edition
     "app/editions/index.json"
   ];
 
-  const localSearchedPaths = candidates.map((candidate) =>
-    path.join(productDir, candidate).replace(/\\/g, "/")
-  );
+  const localSearchedPaths = candidates.map((c) => path.join(productDir, c).replace(/\\/g, "/"));
 
   // 1) Local FS (dev / monorepo root deploy)
   for (const candidate of candidates) {
     const absolutePath = path.join(productDir, candidate);
     const payload = await readJsonFile<unknown>(absolutePath);
-
     if (payload === null) continue;
 
     return {
@@ -249,11 +241,10 @@ export async function listEditionsForProduct(productId: string): Promise<Edition
   }
 
   // 2) GitHub fallback (admin-only deploy)
-  const githubSearchedPaths = candidates.map((candidate) => `apps/${productId}/${candidate}`);
+  const githubSearchedPaths = candidates.map((c) => `apps/${productId}/${c}`);
   for (const candidate of candidates) {
     const repoPath = `apps/${productId}/${candidate}`;
     const payload = await readGithubJsonFile<unknown>(repoPath);
-
     if (payload === null) continue;
 
     return {
@@ -276,8 +267,7 @@ export async function listEditionsForProduct(productId: string): Promise<Edition
 
 export async function getRootBuildCommands(): Promise<string[]> {
   const repoRoot = await resolveRepoRoot();
-  const rootPackage = await readJsonFile<{ scripts?: Record<string, string> }>(path.join(repoRoot, "package.json"));
-  const scripts = rootPackage?.scripts ?? {};
+  const rootPkg = await readJsonFile<{ scripts?: Record<string, string> }>(path.join(repoRoot, "package.json"));
+  const scripts = rootPkg?.scripts ?? {};
   return Object.entries(scripts).map(([name, cmd]) => `${name}  # ${cmd}`);
 }
-'@ | Out-File -FilePath "apps/admin/lib/repo-data.ts" -Encoding utf8
