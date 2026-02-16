@@ -1,16 +1,21 @@
-import { NextResponse, type NextRequest } from "next/server";
+﻿import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+export function middleware(req: NextRequest) {
+  const expected = (process.env.ADMIN_TOKEN ?? "").trim();
 
-  if (pathname.startsWith("/_next") || pathname === "/favicon.ico" || pathname === "/api/health") {
+  // allow health and next assets
+  const path = req.nextUrl.pathname;
+  if (path.startsWith("/_next") || path === "/favicon.ico" || path === "/api/health" || path === "/api/login") {
     return NextResponse.next();
   }
 
-  const expected = (process.env.ADMIN_TOKEN || "").trim();
-  const actual = (request.headers.get("x-admin-token") || "").trim();
+  const headerToken = (req.headers.get("x-admin-token") ?? "").trim();
+  const cookieAuthed = req.cookies.get("admin")?.value === "1";
 
-  if (!expected || actual !== expected) {
+  const ok = Boolean(expected) && (headerToken === expected || cookieAuthed);
+
+  if (!ok) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
@@ -18,5 +23,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next|favicon.ico|api).*)"],
+  matcher: ["/((?!_next|favicon.ico).*)"],
 };
