@@ -1,16 +1,37 @@
 import Link from "next/link";
+import { headers } from "next/headers";
 import { listEditions } from "../../lib/editions-store";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
-export default function ListPage() {
-  const editions = listEditions();
+type EditionsResponse = {
+  ok: boolean;
+  editions?: { slug: string; title: string; createdAt?: string; updatedAt?: string }[];
+};
+
+async function fetchEditionsFromApi() {
+  const h = await headers();
+  const host = h.get("host") || "localhost:3000";
+  const proto = h.get("x-forwarded-proto") || "https";
+  const response = await fetch(`${proto}://${host}/api/editions/slugs`, { cache: "no-store" });
+  const json = (await response.json().catch(() => null)) as EditionsResponse | null;
+
+  if (!response.ok || !json?.ok || !Array.isArray(json?.editions)) {
+    return [];
+  }
+
+  return json.editions;
+}
+
+export default async function ListPage() {
+  const editions = process.env.VERCEL ? await fetchEditionsFromApi() : listEditions();
 
   return (
     <main className="min-h-screen bg-neutral-950 text-neutral-100 px-4 py-10">
       <div className="mx-auto w-full max-w-3xl">
         <h1 className="text-3xl font-semibold tracking-tight">Zoznam edícií</h1>
-        <p className="mt-2 text-sm text-neutral-400">Zdroj: data/editions.json + data/editions/*.json</p>
+        <p className="mt-2 text-sm text-neutral-400">Zdroj: editions index</p>
 
         <div className="mt-6 grid gap-3">
           {editions.map((e) => (
