@@ -9,13 +9,12 @@ export function middleware(req: NextRequest) {
 
   const ok = Boolean(expected) && (headerToken === expected || cookieAuthed);
 
-  if (!ok) {
-    return new NextResponse("Unauthorized", { status: 401 });
-  }
+  if (!ok) return new NextResponse("Unauthorized", { status: 401 });
 
   return NextResponse.next();
 }
 
 export const config = {
+  // middleware chrani iba UI routy, nie /api/*
   matcher: ["/((?!_next|favicon.ico|api).*)"],
 };
