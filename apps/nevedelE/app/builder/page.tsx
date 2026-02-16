@@ -1,7 +1,9 @@
-import BuilderClient from "./ui";
+import BuilderUi from "./ui";
 import { listEditions } from "../../lib/editions-store";
 
-export default function BuilderPage() {
+export const dynamic = "force-dynamic";
+
+export default function Page() {
   const editions = listEditions();
-  return <BuilderClient editions={editions} />;
+  return <BuilderUi initialEditions={editions} />;
 }
