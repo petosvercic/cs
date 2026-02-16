@@ -1,7 +1,8 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Badge } from "@/app/ui/badge";
 import { Card } from "@/app/ui/card";
-import { getProduct } from "@/lib/products";
+import { adminFetch } from "@/lib/api-client";
+import { ProductDetailResponse } from "@/lib/types";
 
 type PageProps = {
   params: Promise<{ id: string }>;

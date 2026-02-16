@@ -215,3 +215,6 @@ export default function BuilderUi({ initialEditions }: BuilderUiProps) {
     </main>
   );
 }
+﻿import { FactoryBuilder } from "@coso/coso-factory-ui";
+
+export default FactoryBuilder;
