@@ -199,11 +199,16 @@ html, body { min-height: 100%; }
 body {
   background-image: url("/brand/bg.png");
   background-repeat: no-repeat;
-  background-position: center center;
   background-attachment: fixed;
 
-  /* menej agresívne než cover, aby sa menej orezávalo */
-  background-size: 110% auto;
+  /* toto je to, čo chceš: NEOREZAŤ */
+  background-size: contain;
+
+  /* nech to sedí viac dole (aby logo dole bolo viditeľné) */
+  background-position: center bottom;
+
+  /* aby nebol content nalepený na topbar */
+  padding-top: 12px;
 }
 
 
