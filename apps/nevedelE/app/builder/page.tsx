@@ -1,7 +1,5 @@
-import BuilderClient from "./ui";
-import { listEditions } from "../../lib/editions-store";
+import { FactoryBuilder } from "@coso/coso-factory-ui";
 
-export default function BuilderPage() {
-  const editions = listEditions();
-  return <BuilderClient editions={editions} />;
+export default function Page() {
+  return <FactoryBuilder />;
 }

@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { NextResponse } from "next/server";
-import { generateFacts } from "coso-nevedel-core";
+import { generateFacts } from "@/app/lib/generateFacts";
 
 type ProductConfig = {
   engine?: {
