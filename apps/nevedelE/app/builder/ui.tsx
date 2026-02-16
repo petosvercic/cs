@@ -1,5 +1,10 @@
-﻿import BuilderUI from "@coso/coso-factory-ui";
+﻿type Props = { initialEditions?: unknown };
 
-export default function BuilderUi({ initialEditions }: { initialEditions: any }) {
-  return <BuilderUI editions={initialEditions} />;
+export default function BuilderUi(_props: Props) {
+  return (
+    <main style={{ padding: 16 }}>
+      <h1>Builder</h1>
+      <p>Builder UI module placeholder. Wire real UI here.</p>
+    </main>
+  );
 }
