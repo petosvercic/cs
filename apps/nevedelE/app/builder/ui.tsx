@@ -1,3 +1,11 @@
-﻿import { NevedelEBuilderUi } from "<PACKAGE_NAME>";
+﻿import { FactoryBuilder } from "@coso/coso-factory-ui";
 
-export default NevedelEBuilderUi;
+type Props = {
+  initialEditions: unknown;
+};
+
+export default function BuilderUi({ initialEditions }: Props) {
+  // FactoryBuilder chce "editions" (EditionIndexEntry[]).
+  // page.tsx už posiela listEditions(), takže to je správny tvar.
+  return <FactoryBuilder editions={initialEditions as any} />;
+}
