@@ -1,5 +1,9 @@
-import { FactoryBuilder } from "@coso/coso-factory-ui";
+import BuilderUi from "./ui";
+import { listEditions } from "../../lib/editions-store";
+
+export const dynamic = "force-dynamic";
 
 export default function Page() {
-  return <FactoryBuilder />;
+  const editions = listEditions();
+  return <BuilderUi initialEditions={editions} />;
 }

@@ -194,21 +194,3 @@ a:hover {
   white-space: pre-wrap;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
-html, body { min-height: 100%; }
-
-body {
-  background-image: url("/brand/bg.png");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-
-  /* toto je to, čo chceš: NEOREZAŤ */
-  background-size: contain;
-
-  /* nech to sedí viac dole (aby logo dole bolo viditeľné) */
-  background-position: center bottom;
-
-  /* aby nebol content nalepený na topbar */
-  padding-top: 12px;
-}
-
-

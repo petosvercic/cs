@@ -1,7 +1,8 @@
-﻿import { Button } from "../ui/button";
+import { Button } from "../ui/button";
 import { EmptyState } from "../ui/empty-state";
 import { Table } from "../ui/table";
-import { listEditionsForProduct } from "@/lib/repo-data";
+import { adminFetch } from "@/lib/api-client";
+import { EditionsResponse } from "@/lib/types";
 
 type PageProps = {
   searchParams?: Promise<{ product?: string }>;
@@ -12,7 +13,7 @@ export const dynamic = "force-dynamic";
 export default async function EditionsPage({ searchParams }: PageProps) {
   const resolved = (await searchParams) ?? {};
   const product = (resolved.product ?? "nevedelE").trim() || "nevedelE";
-  const editions = await listEditionsForProduct(product);
+  const editions = await adminFetch<EditionsResponse>(`/api/editions?product=${encodeURIComponent(product)}`);
 
   return (
     <div className="stack">

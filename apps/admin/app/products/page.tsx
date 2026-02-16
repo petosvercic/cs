@@ -1,13 +1,13 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { Table } from "../ui/table";
-import { listProducts } from "@/lib/repo-data";
+import { adminFetch } from "@/lib/api-client";
+import { ProductListResponse } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
 export default async function ProductsPage() {
-  const products = await listProducts();
-
-  const rows = products.map((product) => [
+  const response = await adminFetch<ProductListResponse>("/api/products");
+  const rows = response.items.map((product) => [
     product.id,
     product.path,
     product.exists ? "yes" : "no",

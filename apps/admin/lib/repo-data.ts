@@ -1,4 +1,4 @@
-﻿import fs from "node:fs/promises";
+import fs from "node:fs/promises";
 import path from "node:path";
 
 export type ProductItem = {
@@ -59,11 +59,16 @@ export async function resolveRepoRoot(): Promise<string> {
 
   for (let i = 0; i < 6; i += 1) {
     const packageJsonPath = path.join(cursor, "package.json");
-    const pkg = await readJsonFile<{ workspaces?: string[] }>(packageJsonPath);
-    if (pkg?.workspaces?.includes("apps/*")) return cursor;
+    const packageJson = await readJsonFile<{ workspaces?: string[] }>(packageJsonPath);
+
+    if (packageJson?.workspaces?.includes("apps/*")) {
+      return cursor;
+    }
 
     const parent = path.dirname(cursor);
-    if (parent === cursor) break;
+    if (parent === cursor) {
+      break;
+    }
     cursor = parent;
   }
 
@@ -80,132 +85,132 @@ export async function listProducts(): Promise<ProductItem[]> {
   const repoRoot = await resolveRepoRoot();
   const appsDir = path.join(repoRoot, "apps");
 
-  let entries: string[] = [];
-  try {
-    entries = await fs.readdir(appsDir);
-  } catch {
-    // admin-only deploy môže byť izolovaný -> vráť prázdno (alebo neskôr registry)
-    return [];
-  }
-
-  const items: ProductItem[] = [];
+  const entries = await fs.readdir(appsDir, { withFileTypes: true }).catch(() => []);
+  const products: ProductItem[] = [];
 
   for (const entry of entries) {
-    const fullPath = path.join(appsDir, entry);
-    if (!(await appLooksLikeNextApp(fullPath))) continue;
+    if (!entry.isDirectory()) {
+      continue;
+    }
 
-    items.push({
-      id: entry,
-      title: entry,
-      path: path.relative(repoRoot, fullPath).replace(/\\/g, "/"),
+    const appDir = path.join(appsDir, entry.name);
+    const isNextApp = await appLooksLikeNextApp(appDir);
+    if (!isNextApp) {
+      continue;
+    }
+
+    products.push({
+      id: entry.name,
+      title: entry.name,
+      path: path.relative(repoRoot, appDir).replace(/\\/g, "/"),
       exists: true
     });
   }
 
-  return items.sort((a, b) => a.id.localeCompare(b.id));
+  products.sort((a, b) => a.id.localeCompare(b.id));
+  return products;
 }
 
 export async function getProductDetail(productId: string): Promise<ProductDetail | null> {
   const repoRoot = await resolveRepoRoot();
-  const productDir = path.join(repoRoot, "apps", productId);
+  const appDir = path.join(repoRoot, "apps", productId);
+  const packageJsonPath = path.join(appDir, "package.json");
 
-  const exists = await pathExists(productDir);
-  if (!exists) return null;
+  const exists = await appLooksLikeNextApp(appDir);
+  if (!exists) {
+    return null;
+  }
 
-  const packageJsonPath = path.join(productDir, "package.json");
-  const packageJson =
+  const pkg =
     (await readJsonFile<{
       name?: string;
       scripts?: Record<string, string>;
       dependencies?: Record<string, string>;
+      devDependencies?: Record<string, string>;
     }>(packageJsonPath)) ?? {};
 
-  let lastModified: string | null = null;
-  try {
-    const stat = await fs.stat(packageJsonPath);
-    lastModified = stat.mtime.toISOString();
-  } catch {
-    lastModified = null;
-  }
+  const deps = {
+    ...(pkg.dependencies ?? {}),
+    ...(pkg.devDependencies ?? {})
+  };
 
-  const deps = packageJson.dependencies ? Object.keys(packageJson.dependencies) : [];
+  const stats = await fs.stat(packageJsonPath).catch(() => null);
 
   return {
     id: productId,
-    name: packageJson.name ?? productId,
+    name: pkg.name ?? productId,
     title: productId,
-    path: path.relative(repoRoot, productDir).replace(/\\/g, "/"),
-    exists: true,
-    scripts: packageJson.scripts ?? {},
+    path: path.relative(repoRoot, appDir).replace(/\\/g, "/"),
+    exists,
+    scripts: pkg.scripts ?? {},
     dependenciesSummary: {
-      count: deps.length,
-      names: deps.sort((a, b) => a.localeCompare(b))
+      count: Object.keys(deps).length,
+      names: Object.keys(deps).sort()
     },
-    lastModified
+    lastModified: stats?.mtime.toISOString() ?? null
   };
 }
 
-function normalizeEditionsPayload(payload: unknown): EditionItem[] {
-  if (!payload) return [];
-  const obj = payload as any;
-
-  // SUPPORT: { editions: [...] } (your current format)
-  // ALSO: { items: [...] } (older/admin format)
-  // ALSO: [ ... ] (raw array)
-  const list = Array.isArray(obj)
-    ? obj
-    : Array.isArray(obj.editions)
-      ? obj.editions
-      : Array.isArray(obj.items)
-        ? obj.items
-        : [];
-
-  return list
-    .map((item: any) => {
-      const slug = String(item?.slug ?? item?.id ?? "").trim();
-      const title = String(item?.title ?? item?.name ?? "").trim();
-      const updatedAt =
-        item?.updatedAt ? String(item.updatedAt) : item?.updated ? String(item.updated) : undefined;
-      if (!slug || !title) return null;
-      return { slug, title, updatedAt } as EditionItem;
-    })
-    .filter(Boolean) as EditionItem[];
-}
-
-function getGithubEnv() {
-  const token = process.env.GITHUB_TOKEN;
-  const owner = process.env.GITHUB_OWNER;
-  const repo = process.env.GITHUB_REPO;
-  const ref = process.env.GITHUB_BASE_BRANCH ?? "main";
-  if (!token || !owner || !repo) return null;
-  return { token, owner, repo, ref };
-}
-
-async function readGithubJsonFile<T>(repoPath: string): Promise<T | null> {
-  const env = getGithubEnv();
-  if (!env) return null;
-
-  const url = `https://api.github.com/repos/${env.owner}/${env.repo}/contents/${repoPath}?ref=${encodeURIComponent(env.ref)}`;
-
-  const res = await fetch(url, {
-    headers: {
-      Authorization: `token ${env.token}`,
-      Accept: "application/vnd.github+json"
-    },
-    cache: "no-store"
-  });
-
-  if (!res.ok) return null;
-
-  const data: any = await res.json();
-  if (!data?.content || data?.encoding !== "base64") return null;
-
-  const raw = Buffer.from(data.content, "base64").toString("utf8");
-  try {
-    return JSON.parse(raw) as T;
-  } catch {
+function normalizeEditionRecord(value: unknown): EditionItem | null {
+  if (!value || typeof value !== "object") {
     return null;
   }
+
+  const item = value as Record<string, unknown>;
+  const slug =
+    (typeof item.slug === "string" && item.slug) ||
+    (typeof item.id === "string" && item.id) ||
+    (typeof item.code === "string" && item.code) ||
+    "";
+
+  if (!slug) {
+    return null;
+  }
+
+  const title =
+    (typeof item.title === "string" && item.title) ||
+    (typeof item.name === "string" && item.name) ||
+    slug;
+
+  const updatedAt =
+    (typeof item.updatedAt === "string" && item.updatedAt) ||
+    (typeof item.updated_at === "string" && item.updated_at) ||
+    undefined;
+
+  return { slug, title, updatedAt };
+}
+
+function normalizeEditionsPayload(payload: unknown): EditionItem[] {
+  if (Array.isArray(payload)) {
+    return payload.map(normalizeEditionRecord).filter((item): item is EditionItem => Boolean(item));
+  }
+
+  if (payload && typeof payload === "object") {
+    const obj = payload as Record<string, unknown>;
+
+    if (Array.isArray(obj.editions)) {
+      return obj.editions
+        .map(normalizeEditionRecord)
+        .filter((item): item is EditionItem => Boolean(item));
+    }
+
+    return Object.entries(obj)
+      .map(([slug, raw]) => {
+        if (raw && typeof raw === "object") {
+          const source = raw as Record<string, unknown>;
+          return normalizeEditionRecord({ slug, ...source });
+        }
+
+        if (typeof raw === "string") {
+          return { slug, title: raw };
+        }
+
+        return null;
+      })
+      .filter((item): item is EditionItem => Boolean(item));
+  }
+
+  return [];
 }
 
 export async function listEditionsForProduct(productId: string): Promise<EditionsResult> {
@@ -223,36 +228,24 @@ export async function listEditionsForProduct(productId: string): Promise<Edition
     "app/editions/index.json"
   ];
 
-  const localSearchedPaths = candidates.map((c) => path.join(productDir, c).replace(/\\/g, "/"));
+  const searchedPaths = candidates.map((candidate) =>
+    path.join(productDir, candidate).replace(/\\/g, "/")
+  );
 
-  // 1) Local FS (dev / monorepo root deploy)
   for (const candidate of candidates) {
     const absolutePath = path.join(productDir, candidate);
     const payload = await readJsonFile<unknown>(absolutePath);
-    if (payload === null) continue;
+
+    if (payload === null) {
+      continue;
+    }
 
     return {
       product: productId,
       items: normalizeEditionsPayload(payload),
       sourceNotFound: false,
       sourcePath: path.relative(repoRoot, absolutePath).replace(/\\/g, "/"),
-      searchedPaths: localSearchedPaths
-    };
-  }
-
-  // 2) GitHub fallback (admin-only deploy)
-  const githubSearchedPaths = candidates.map((c) => `apps/${productId}/${c}`);
-  for (const candidate of candidates) {
-    const repoPath = `apps/${productId}/${candidate}`;
-    const payload = await readGithubJsonFile<unknown>(repoPath);
-    if (payload === null) continue;
-
-    return {
-      product: productId,
-      items: normalizeEditionsPayload(payload),
-      sourceNotFound: false,
-      sourcePath: repoPath,
-      searchedPaths: [...localSearchedPaths, ...githubSearchedPaths]
+      searchedPaths
     };
   }
 
@@ -261,13 +254,17 @@ export async function listEditionsForProduct(productId: string): Promise<Edition
     items: [],
     sourceNotFound: true,
     sourcePath: null,
-    searchedPaths: [...localSearchedPaths, ...githubSearchedPaths]
+    searchedPaths
   };
 }
 
 export async function getRootBuildCommands(): Promise<string[]> {
   const repoRoot = await resolveRepoRoot();
-  const rootPkg = await readJsonFile<{ scripts?: Record<string, string> }>(path.join(repoRoot, "package.json"));
-  const scripts = rootPkg?.scripts ?? {};
-  return Object.entries(scripts).map(([name, cmd]) => `${name}  # ${cmd}`);
+  const rootPackage =
+    (await readJsonFile<{ scripts?: Record<string, string> }>(path.join(repoRoot, "package.json"))) ?? {};
+
+  const scripts = rootPackage.scripts ?? {};
+  return Object.entries(scripts)
+    .map(([name, command]) => `npm run ${name}  # ${command}`)
+    .slice(0, 12);
 }
