@@ -18,10 +18,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <ul className="nav-list">
               <li><NavLink href="/">Dashboard</NavLink></li>
               <li><NavLink href="/products">Products</NavLink></li>
-              <li><NavLink href="/editions">Editions</NavLink></li>
-              <li><NavLink href="/deploy">Deploy</NavLink></li>
-              <li><NavLink href="/settings">Settings</NavLink></li>
-              <li><NavLink href="/publish">Publish</NavLink></li>
             </ul>
           </aside>
           <div className="main-pane">
