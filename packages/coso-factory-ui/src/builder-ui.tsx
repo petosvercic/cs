@@ -1,6 +1,6 @@
 "use client";
 import { useMemo, useState } from "react";
-import { normalizeEditionJsonForBuilder, normalizeEditionJsonRaw, validateEditionJson } from "../../lib/edition-json";
+import { normalizeEditionJsonForBuilder, normalizeEditionJsonRaw, validateEditionJson } from "../../../apps/nevedelE/lib/edition-json";
 
 type EditionIndexEntry = { slug: string; title: string; createdAt?: string };
 
