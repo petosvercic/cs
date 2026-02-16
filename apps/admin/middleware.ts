@@ -1,18 +1,16 @@
-﻿import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
-export function middleware(req: NextRequest) {
-  const pathname = req.nextUrl.pathname;
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
 
-  // allow Next internals
-  if (pathname.startsWith("/_next") || pathname === "/favicon.ico") {
+  if (pathname.startsWith("/_next") || pathname === "/favicon.ico" || pathname === "/api/health") {
     return NextResponse.next();
   }
 
-  const expected = process.env.ADMIN_TOKEN;
-  const token = req.headers.get("x-admin-token");
+  const expected = (process.env.ADMIN_TOKEN || "").trim();
+  const actual = (request.headers.get("x-admin-token") || "").trim();
 
-  if (!expected || token !== expected) {
+  if (!expected || actual !== expected) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
@@ -20,6 +18,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  // protect UI only, NOT /api/*
   matcher: ["/((?!_next|favicon.ico|api).*)"],
 };
