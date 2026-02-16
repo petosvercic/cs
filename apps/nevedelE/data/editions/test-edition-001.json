@@ -1,0 +1,39 @@
+{
+  "slug": "test-edition-001",
+  "title": "Test Edition",
+  "engine": {
+    "subject": "test_subject",
+    "locale": "sk"
+  },
+  "content": {
+    "heroTitle": "Test",
+    "heroSubtitle": "Len test",
+    "intro": {
+      "title": "Intro",
+      "text": "Text."
+    },
+    "form": {
+      "title": "Form",
+      "nameLabel": "Meno",
+      "birthDateLabel": "Datum",
+      "submitLabel": "Vyhodnotit"
+    },
+    "result": {
+      "teaserTitle": "Teaser",
+      "teaserNote": "Preview",
+      "unlockHint": "Unlock"
+    },
+    "paywall": {
+      "headline": "Odomkni",
+      "bullets": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "cta": "Zaplatit"
+    }
+  },
+  "createdAt": "2026-02-16T15:59:43.474Z",
+  "updatedAt": "2026-02-16T15:59:43.474Z"
+}
