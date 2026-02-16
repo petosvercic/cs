@@ -1,6 +1,12 @@
 {
   "editions": [
     {
+      "slug": "test-edition-001",
+      "title": "Test Edition",
+      "createdAt": "2026-02-16T15:59:43.474Z",
+      "updatedAt": "2026-02-16T15:59:43.474Z"
+    },
+    {
       "slug": "fialovy-baner-ritmus-smerv5",
       "title": "Fialovy baner: Rytmus a smer",
       "createdAt": "2026-02-15T11:30:56.136Z"
