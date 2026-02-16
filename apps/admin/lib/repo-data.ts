@@ -148,7 +148,17 @@ export async function getProductDetail(productId: string): Promise<ProductDetail
 function normalizeEditionsPayload(payload: unknown): EditionItem[] {
   if (!payload) return [];
   const obj = payload as any;
-  const list = Array.isArray(obj) ? obj : Array.isArray(obj.items) ? obj.items : [];
+
+  // SUPPORT: { editions: [...] } (your current format)
+  // ALSO: { items: [...] } (older/admin format)
+  // ALSO: [ ... ] (raw array)
+  const list = Array.isArray(obj)
+    ? obj
+    : Array.isArray(obj.editions)
+      ? obj.editions
+      : Array.isArray(obj.items)
+        ? obj.items
+        : [];
 
   return list
     .map((item: any) => {
