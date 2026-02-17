@@ -1,264 +1,216 @@
 "use client";
+
 import { useMemo, useState } from "react";
-import { normalizeEditionJsonForBuilder, normalizeEditionJsonRaw, validateEditionJson } from "../../lib/edition-json";
+import EditionClient from "../e/[slug]/ui";
+import { validateEditionJson } from "../../lib/edition-json";
 
 type EditionIndexEntry = { slug: string; title: string; createdAt?: string };
 
-function buildPrompt(existingSlugs: string[]) {
-  const deployed = existingSlugs.map((s) => `- ${s}`).join("\n");
+type BuilderUiProps = {
+  initialEditions: EditionIndexEntry[];
+};
 
-  // Canonical universal production prompt (ASCII-only).
-  // Only dynamic part is the deployed slugs list appended at the end.
-  const base = [
-    "ROLE: You generate COSO edition JSON for a deployed Next.js app.",
-    "",
-    "YOU MUST RETURN:",
-    "- Exactly ONE JSON object.",
-    "- No markdown, no code fences, no comments, no explanations, no trailing text.",
-    "- Output must be strict JSON (double quotes only, no trailing commas).",
-    "",
-    "GOAL:",
-    "- Invent a NEW coherent edition concept by yourself (theme, title, tasks) that fits the product.",
-    "- Make it safe, practical, and usable as a daily/self-reflection tool.",
-    "",
-    "PRODUCT CONTEXT:",
-    "- Each edition is a page at /e/<slug>.",
-    "- User enters optional name and birthDate (YYYY-MM-DD).",
-    "- Engine computes result from engine.subject + inputs.",
-    "- Without payment show only teaser; full result behind paywall (Stripe).",
-    "",
-    "HARD REQUIREMENTS (MUST PASS):",
-    "1) slug:",
-    "- lowercase-hyphen, 3-64 chars",
-    "- MUST be unique and MUST NOT be in the deployed list provided below",
-    "",
-    "2) engine.locale:",
-    '- must be "sk"',
-    "",
-    "3) engine.subject:",
-    "- snake_case, 3-40 chars",
-    "- should match the theme (unique per edition idea)",
-    "",
-    "4) content:",
-    '- ALL fields must be filled with real text (NO "..." placeholders anywhere)',
-    "- language: Slovak preferred BUT ASCII ONLY (no diacritics) to avoid encoding issues",
-    "",
-    "5) tasks:",
-    "- pickPerCategory must be 25",
-    "- categories must be EXACTLY 5 items",
-    "- each category.tasks must be EXACTLY 50 strings",
-    "- every task string must be non-empty, actionable, and unique within its category",
-    "- avoid duplicates across categories if possible",
-    "",
-    "SAFETY:",
-    "- No medical diagnosis, no therapy claims, no hate, no violence, no illegal instructions.",
-    "- Keep it reflective/productive: habits, focus, communication, planning, creativity, boundaries, self-awareness.",
-    "",
-    "QUALITY RULES:",
-    "- Make the edition concept coherent: title + hero + intro + tasks must match one clear theme.",
-    "- Paywall bullets must describe what user unlocks (more depth, breakdowns, personalized output).",
-    "- Teaser should be meaningful but incomplete.",
-    "",
-    "JSON SCHEMA (MUST MATCH EXACTLY THESE KEYS):",
-    "{",
-    '  "slug": "...",',
-    '  "title": "...",',
-    '  "engine": { "subject": "...", "locale": "sk" },',
-    '  "content": {',
-    '    "heroTitle": "...",',
-    '    "heroSubtitle": "...",',
-    '    "intro": { "title": "...", "text": "..." },',
-    '    "form": { "title": "...", "nameLabel": "...", "birthDateLabel": "...", "submitLabel": "..." },',
-    '    "result": { "teaserTitle": "...", "teaserNote": "...", "unlockHint": "..." },',
-    '    "paywall": { "headline": "...", "bullets": ["...", "...", "...", "..."], "cta": "..." }',
-    "  },",
-    '  "tasks": {',
-    '    "pickPerCategory": 25,',
-    '    "categories": [',
-    '      { "title": "...", "tasks": [50 strings] },',
-    '      { "title": "...", "tasks": [50 strings] },',
-    '      { "title": "...", "tasks": [50 strings] },',
-    '      { "title": "...", "tasks": [50 strings] },',
-    '      { "title": "...", "tasks": [50 strings] }',
-    "    ]",
-    "  }",
-    "}",
-    "",
-    "FINAL SELF-CHECK (DO THIS SILENTLY BEFORE OUTPUT):",
-    "- Is slug unique vs deployed list?",
-    "- Are there exactly 5 categories?",
-    "- Does each category have exactly 50 tasks?",
-    "- pickPerCategory is 25?",
-    '- No \"...\" anywhere?',
-    "- Strict JSON only?",
-    "",
-    "Already deployed editions (MUST AVOID):",
-    deployed || "- (none)",
-  ].join("\n");
+const FIXED_PROMPT_TEMPLATE = [
+  "ROLE: Generate exactly one valid COSO edition JSON object.",
+  "",
+  "OUTPUT RULES:",
+  "- Return only ONE JSON object.",
+  "- No markdown/code fences/comments/explanations.",
+  "- Strict JSON with double quotes.",
+  "",
+  "SCHEMA RULES:",
+  "- Required keys: slug, title, engine, content.",
+  "- slug must be lowercase-hyphen, 3-64 chars.",
+  "- engine.locale must be 'sk'.",
+  "- content must contain real non-empty strings.",
+  "",
+  "EXISTING SLUGS (DO NOT USE):"
+].join("\n");
 
-  return base;
+function isSlugValid(slug: string) {
+  return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) && slug.length >= 3 && slug.length <= 64;
 }
 
-export default function BuilderClient({ editions }: { editions: EditionIndexEntry[] }) {
-  const [existingSlugs, setExistingSlugs] = useState<string[]>(editions.map((e) => e.slug));
-  const basePrompt = useMemo(() => buildPrompt(existingSlugs), [existingSlugs]);
-  const [prompt, setPrompt] = useState(basePrompt);
-  const [editionJson, setEditionJson] = useState("");
-  const [status, setStatus] = useState<{ kind: "idle" | "ok" | "err"; msg: string }>({ kind: "idle", msg: "" });
+function formatPrompt(existingSlugs: string[]) {
+  const list = existingSlugs.length ? existingSlugs.join(", ") : "(none)";
+  return `${FIXED_PROMPT_TEMPLATE} ${list}`;
+}
 
-  async function onCopyPrompt() {
+export default function BuilderUi({ initialEditions }: BuilderUiProps) {
+  const [editions, setEditions] = useState<EditionIndexEntry[]>(initialEditions);
+  const [existingSlugs, setExistingSlugs] = useState<string[]>(initialEditions.map((item) => item.slug));
+  const [jsonInput, setJsonInput] = useState("");
+  const [previewEdition, setPreviewEdition] = useState<any | null>(null);
+  const [status, setStatus] = useState<{ kind: "idle" | "ok" | "err"; msg: string }>({ kind: "idle", msg: "" });
+  const [publishBusy, setPublishBusy] = useState(false);
+
+  const prompt = useMemo(() => formatPrompt(existingSlugs), [existingSlugs]);
+
+  async function refreshSlugs() {
+    setStatus({ kind: "idle", msg: "Refreshing slugs..." });
+
+    try {
+      const response = await fetch("/api/editions/slugs", { cache: "no-store" });
+      const json = await response.json().catch(() => null);
+
+      if (!response.ok || !json?.ok || !Array.isArray(json?.editions)) {
+        setStatus({ kind: "err", msg: `Refresh failed: ${json?.error ?? response.status}` });
+        return false;
+      }
+
+      const nextEditions: EditionIndexEntry[] = json.editions;
+      setEditions(nextEditions);
+      setExistingSlugs(nextEditions.map((item) => item.slug));
+      setStatus({ kind: "ok", msg: `Refresh OK (${nextEditions.length} slugs).` });
+      return true;
+    } catch (error: any) {
+      setStatus({ kind: "err", msg: String(error?.message ?? "Refresh failed") });
+      return false;
+    }
+  }
+
+  async function copyPrompt() {
     try {
       await navigator.clipboard.writeText(prompt);
       setStatus({ kind: "ok", msg: "Prompt copied." });
-    } catch (e) {
+    } catch {
       setStatus({ kind: "err", msg: "Copy failed." });
     }
   }
 
-  async function onRefreshSlugs() {
-    setStatus({ kind: "idle", msg: "Starting factory workflow..." });
-    try {
-      const res = await fetch("/api/editions/slugs", { cache: "no-store" });
-      const data = await res.json().catch(() => null);
+  function validateInput() {
+    const trimmed = jsonInput.trim();
+    if (!trimmed) {
+      setStatus({ kind: "err", msg: "Input JSON is empty." });
+      return null;
+    }
 
-      if (!res.ok || !data?.ok || !Array.isArray(data?.slugs)) {
-        setStatus({ kind: "err", msg: `Refresh failed: ${data?.error ?? res.status}`.trim() });
+    const parsed = validateEditionJson(trimmed, existingSlugs);
+    if (!parsed.ok) {
+      setStatus({ kind: "err", msg: `Validation failed: ${parsed.error}${parsed.details ? ` (${parsed.details})` : ""}` });
+      return null;
+    }
+
+    const slug = parsed.obj.slug.trim();
+    if (!isSlugValid(slug)) {
+      setStatus({ kind: "err", msg: "Validation failed: BAD_SLUG_FORMAT" });
+      return null;
+    }
+
+    setPreviewEdition(parsed.obj);
+    setStatus({ kind: "ok", msg: `Validation OK for slug '${slug}'.` });
+    return parsed.obj;
+  }
+
+  async function publishEdition() {
+    const edition = validateInput();
+    if (!edition) return;
+
+    setPublishBusy(true);
+    setStatus({ kind: "idle", msg: "Publishing..." });
+
+    try {
+      const response = await fetch("/api/factory/dispatch", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ edition, rawEditionJson: jsonInput })
+      });
+
+      const json = await response.json().catch(() => null);
+      if (!response.ok || !json?.ok) {
+        setStatus({ kind: "err", msg: `Publish failed: ${json?.error ?? response.status} ${json?.message ?? ""}`.trim() });
         return;
       }
 
-      const slugs = data.slugs.map((x: any) => String(x)).filter(Boolean);
-      setExistingSlugs(slugs);
-      setPrompt(buildPrompt(slugs));
-      setStatus({ kind: "ok", msg: `Refresh OK. Slugs loaded: ${slugs.length}` });
-    } catch (e) {
-      setStatus({ kind: "err", msg: "Refresh failed." });
+      const publishedSlug = String(json?.slug ?? edition.slug);
+      const publishedTitle = String(edition.title ?? publishedSlug);
+      setStatus({ kind: "ok", msg: `Publish OK: ${publishedSlug}` });
+
+      const refreshed = await refreshSlugs();
+      if (!refreshed) {
+        setEditions((prev) => {
+          if (prev.some((item) => item.slug === publishedSlug)) return prev;
+          return [{ slug: publishedSlug, title: publishedTitle }, ...prev];
+        });
+        setExistingSlugs((prev) => (prev.includes(publishedSlug) ? prev : [publishedSlug, ...prev]));
+        setStatus({ kind: "ok", msg: `Publish OK: ${publishedSlug} (optimistic refresh).` });
+      }
+    } catch (error: any) {
+      setStatus({ kind: "err", msg: String(error?.message ?? "Publish failed") });
+    } finally {
+      setPublishBusy(false);
     }
-  }
-
-  async function onDispatch() {
-    const v = validateEditionJson(editionJson, existingSlugs);
-    if (!v.ok) {
-      setStatus({
-        kind: "err",
-        msg: `Neplatn , ?zA? , L? , ?a a " JSON: ${v.error}${v.details ? ` (${v.details})` : ""}; found root keys: ${((v as any)?.debug?.foundRootKeys ?? []).join(", ") || "(none)"}; first 120 chars of normalized input: ${((v as any)?.debug?.normalizedStart ?? "").replace(/\s+/g, " ")}`,
-      });
-      return;
-    }
-
-    setStatus({ kind: "idle", msg: "Starting factory workflow..." });
-
-    const res = await fetch("/api/factory/dispatch", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ edition: v.obj, rawEditionJson: editionJson }),
-    });
-
-    const data = await res.json().catch(() => null);
-    if (!res.ok || !data?.ok) {
-      setStatus({ kind: "err", msg: `Dispatch zlyhal: ${data?.error ?? res.status} ${data?.message ?? ""}`.trim() });
-      return;
-    }
-
-    const okMsg =
-  typeof data?.message === "string" && data.message.trim()
-    ? data.message.trim()
-    : `OK. Edition saved to repo. slug=${String(data?.slug ?? "").trim()}`;
-
-setStatus({ kind: "ok", msg: okMsg });
-setEditionJson("");
-
   }
 
   return (
-    <main
-      className="min-h-screen px-4 py-10 text-neutral-100"
-      style={{
-        backgroundImage: "url(/brand/bg.png)",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-      <div className="mx-auto w-full max-w-4xl translate-y-6 rounded-2xl border border-neutral-800 bg-neutral-900/70 p-6 shadow-xl backdrop-blur">
-        <div className="mb-6 flex justify-center">
-          <img src="/brand/logo.png" alt="Brand" style={{ height: 120, width: "auto" }} />
-        </div>
+    <main className="min-h-screen px-4 py-10 text-neutral-100">
+      <div className="mx-auto w-full max-w-6xl rounded-3xl border border-neutral-800 bg-neutral-950/80 p-6 shadow-2xl">
+        <h1 className="text-3xl font-semibold">Builder (manual workflow)</h1>
 
-        <h1 className="text-3xl font-semibold tracking-tight">Factory Builder</h1>
-        <p className="mt-2 text-sm leading-6 text-neutral-200/80">Prompt and list of editions (slugs) are used as input context.</p>
+        <section className="mt-6 rounded-2xl border border-neutral-800 bg-neutral-900/70 p-4">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+            <h2 className="text-lg font-semibold">1) Existing slugs + Prompt</h2>
+            <button className="rounded-lg bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-950" onClick={refreshSlugs}>
+              Refresh existing slugs
+            </button>
+          </div>
 
-        <section className="mt-8 space-y-2">
-          <h2 className="text-xl font-semibold">1) Prompt pre LLM</h2>
-          <textarea
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            rows={18}
-            className="w-full rounded-xl border border-neutral-700 bg-neutral-950/80 p-3 font-mono text-sm leading-6 outline-none focus:border-neutral-500"
-          />
-          <div className="mt-2 flex flex-wrap gap-3">
-            <button className="rounded-lg bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-950" onClick={onCopyPrompt}>
+          <p className="mb-2 text-sm text-neutral-300">Source of truth: <code>apps/nevedelE/data/editions.json</code></p>
+          <textarea readOnly value={prompt} rows={10} className="w-full rounded-xl border border-neutral-700 bg-neutral-950/80 p-3 font-mono text-xs" />
+          <div className="mt-3 flex flex-wrap gap-3">
+            <button className="rounded-lg bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-950" onClick={copyPrompt}>
               Copy prompt
             </button>
-            <button className="rounded-lg bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-950" onClick={onRefreshSlugs}>
-              Refresh
-            </button>
-            <button className="rounded-lg bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-950" onClick={() => setPrompt(basePrompt)}>
-              Reset prompt
-            </button>
-            <a href="/list" className="rounded-lg border border-neutral-200/40 bg-neutral-950/30 px-3 py-2 text-sm text-neutral-100">
-              View deployed editions
-            </a>
+            <span className="text-xs text-neutral-400">Slugs loaded: {editions.length}</span>
           </div>
         </section>
 
-        <section className="mt-8 space-y-2">
-          <h2 className="text-xl font-semibold">2) Paste LLM JSON and build the edition</h2>
+        <section className="mt-6 rounded-2xl border border-neutral-800 bg-neutral-900/70 p-4">
+          <h2 className="text-lg font-semibold">2) Paste / Import JSON</h2>
+          <p className="mt-1 text-sm text-neutral-300">Paste exactly one JSON object (no markdown).</p>
           <textarea
-            value={editionJson}
-            onChange={(e) => setEditionJson(e.target.value)}
-            rows={12}
-            placeholder='You can paste plain JSON, a `json ... ` block, or text that contains a JSON object.'
-            className="w-full rounded-xl border border-neutral-700 bg-neutral-950/80 p-3 font-mono text-sm leading-6 outline-none focus:border-neutral-500"
+            value={jsonInput}
+            onChange={(e) => setJsonInput(e.target.value)}
+            rows={14}
+            className="mt-3 w-full rounded-xl border border-neutral-700 bg-neutral-950/80 p-3 font-mono text-xs"
+            placeholder='{"slug":"my-edition","title":"...","engine":{"locale":"sk"},"content":{}}'
           />
-          <div className="mt-2 flex flex-wrap gap-3">
-            <button
-              className="rounded-lg bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-950"
-              onClick={() => {
-                const v = validateEditionJson(editionJson, existingSlugs);
-                setStatus(v.ok ? { kind: "ok", msg: "JSON looks valid." } : { kind: "err", msg: `Invalid JSON: ${v.error}` });
-              }}
-            >
+          <div className="mt-3 flex flex-wrap gap-3">
+            <button className="rounded-lg bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-950" onClick={validateInput}>
               Validate
             </button>
-            <button className="rounded-lg bg-emerald-300 px-3 py-2 text-sm font-semibold text-emerald-950" onClick={onDispatch}>
-              Dispatch build
-            </button>
             <button
-              className="rounded-lg border border-neutral-200/40 bg-neutral-950/30 px-3 py-2 text-sm text-neutral-100"
-              onClick={() => {
-                const n = normalizeEditionJsonForBuilder(editionJson);
-                setEditionJson(n);
-                setStatus({ kind: "ok", msg: `JSON normalized (${n.length} chars). Missing title/slug/content were auto-filled.` });
-              }}
+              className="rounded-lg bg-emerald-300 px-3 py-2 text-sm font-semibold text-emerald-950 disabled:opacity-50"
+              onClick={publishEdition}
+              disabled={publishBusy}
             >
-              Normalize JSON
+              {publishBusy ? "Publishing..." : "Publish"}
             </button>
           </div>
-
-          {status.msg && (
-            <p
-              className={`mt-3 rounded-xl border p-3 text-sm ${
-                status.kind === "err"
-                  ? "border-red-500 text-red-200"
-                  : status.kind === "ok"
-                    ? "border-green-500 text-green-200"
-                    : "border-neutral-200/40 text-neutral-100"
-              } bg-neutral-950/40`}
-            >
-              <strong>{status.kind === "err" ? "Error" : status.kind === "ok" ? "OK" : "Info"}:</strong> {status.msg}
-            </p>
-          )}
         </section>
+
+        {status.msg ? (
+          <p
+            className={`mt-4 rounded-xl border p-3 text-sm ${
+              status.kind === "err"
+                ? "border-red-500 bg-red-950/40 text-red-200"
+                : status.kind === "ok"
+                  ? "border-emerald-500 bg-emerald-950/30 text-emerald-200"
+                  : "border-neutral-700 bg-neutral-900/70 text-neutral-200"
+            }`}
+          >
+            {status.msg}
+          </p>
+        ) : null}
+
+        {previewEdition ? (
+          <section className="mt-6">
+            <h2 className="mb-2 text-lg font-semibold">3) Preview (no paywall gating)</h2>
+            <div className="rounded-2xl border border-neutral-800 bg-neutral-900/70 p-2">
+              <EditionClient slug={previewEdition.slug} edition={previewEdition} previewMode />
+            </div>
+          </section>
+        ) : null}
       </div>
     </main>
   );
