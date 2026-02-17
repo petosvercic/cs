@@ -19,6 +19,7 @@ export const products: ProductRegistryItem[] = [
   },
 ];
 
-export function getProduct(id: string): ProductRegistryItem | undefined {
-  return products.find((item) => item.id === id);
+export function getProduct(id: string) {
+  return products.find((p) => p.id === id);
 }
+
