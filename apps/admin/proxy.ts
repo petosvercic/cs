@@ -1,7 +1,7 @@
 ﻿import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const expected = (process.env.ADMIN_TOKEN ?? "").trim();
 
   const headerToken = (req.headers.get("x-admin-token") ?? "").trim();
@@ -18,3 +18,4 @@ export const config = {
   // middleware chrani iba UI routy, nie /api/*
   matcher: ["/((?!_next|favicon.ico|api).*)"],
 };
+
