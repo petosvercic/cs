@@ -10,7 +10,8 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "stripe": "^20.3.0",
-    "zod": "^4.3.6"
+    "zod": "^4.3.6",
+    "@coso/coso-factory-ui": "*"
   },
   "scripts": {
     "dev": "next dev --webpack",

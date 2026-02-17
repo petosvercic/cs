@@ -1,8 +1,10 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Badge } from "@/app/ui/badge";
 import { Card } from "@/app/ui/card";
+import { adminFetch } from "@/lib/api-client";
+import { ProductDetailResponse } from "@/lib/types";
 import { getProduct } from "@/lib/products";
-import { EditionsPanel } from "./editions-panel";
+import Link from "next/link";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -21,28 +23,27 @@ export default async function ProductDetailPage({ params }: PageProps) {
   const slugsUrl = `${product.baseUrl}/api/editions/slugs`;
   const response = await fetch(slugsUrl, { cache: "no-store" }).catch(() => null);
 
-  let initialSlugs: string[] = [];
-  let initialError: { status: number | string; message: string } | null = null;
+  let slugs: string[] = [];
+  let fetchError: { status: number | string; message: string } | null = null;
 
   if (!response) {
-    initialError = { status: "network", message: "Failed to connect." };
+    fetchError = { status: "network", message: "Failed to connect." };
   } else {
     const text = await response.text();
 
     if (!response.ok) {
-      initialError = {
+      fetchError = {
         status: response.status,
         message: text.slice(0, 220)
       };
     } else {
       try {
         const json = JSON.parse(text) as { editions?: Array<{ slug?: string }> };
-        if (!Array.isArray(json.editions)) {
-          throw new Error("unexpected-shape");
-        }
-        initialSlugs = json.editions.map((item) => String(item.slug || "")).filter(Boolean);
+        slugs = Array.isArray(json.editions)
+          ? json.editions.map((item) => String(item.slug || "")).filter(Boolean)
+          : [];
       } catch {
-        initialError = { status: response.status, message: "Could not load editions" };
+        fetchError = { status: response.status, message: "Invalid JSON response." };
       }
     }
   }
@@ -57,11 +58,22 @@ export default async function ProductDetailPage({ params }: PageProps) {
       </Card>
 
       <Card title="Editions slugs (server-side fetch, no-store)">
-        <EditionsPanel
-          baseUrl={product.baseUrl}
-          initialSlugs={initialSlugs}
-          initialError={initialError}
-        />
+        {!fetchError ? (
+          slugs.length > 0 ? (
+            <ul>
+              {slugs.map((slug) => (
+                <li key={slug}><code>{slug}</code></li>
+              ))}
+            </ul>
+          ) : (
+            <p>No slugs returned.</p>
+          )
+        ) : (
+          <div>
+            <p><strong>Status:</strong> <code>{String(fetchError.status)}</code></p>
+            <p><strong>Message:</strong> <code>{fetchError.message}</code></p>
+          </div>
+        )}
       </Card>
     </div>
   );

@@ -26,4 +26,8 @@ export default async function DashboardPage() {
       </div>
     </div>
   );
+﻿import { redirect } from "next/navigation";
+
+export default function Home() {
+  redirect("/products");
 }
