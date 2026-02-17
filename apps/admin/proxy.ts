@@ -1,26 +1,21 @@
-import { NextResponse, type NextRequest } from "next/server";
+﻿import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+export function proxy(req: NextRequest) {
+  const expected = (process.env.ADMIN_TOKEN ?? "").trim();
 
-  if (
-    pathname.startsWith("/_next") ||
-    pathname.startsWith("/api/") ||
-    pathname === "/favicon.ico"
-  ) {
-    return NextResponse.next();
-  }
+  const headerToken = (req.headers.get("x-admin-token") ?? "").trim();
+  const cookieAuthed = req.cookies.get("admin")?.value === "1";
 
-  const expected = (process.env.ADMIN_TOKEN || "").trim();
-  const actual = (request.headers.get("x-admin-token") || "").trim();
+  const ok = Boolean(expected) && (headerToken === expected || cookieAuthed);
 
-  if (!expected || actual !== expected) {
-    return new NextResponse("Unauthorized", { status: 401 });
-  }
+  if (!ok) return new NextResponse("Unauthorized", { status: 401 });
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|api).*)"]
+  // middleware chrani iba UI routy, nie /api/*
+  matcher: ["/((?!_next|favicon.ico|api).*)"],
 };
+
