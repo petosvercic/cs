@@ -1,86 +1,80 @@
+import { notFound } from "next/navigation";
+import { Badge } from "@/app/ui/badge";
+import { Card } from "@/app/ui/card";
+import { adminFetch } from "@/lib/api-client";
+import { ProductDetailResponse } from "@/lib/types";
+import { getProduct } from "@/lib/products";
 import Link from "next/link";
-import { products } from "../../../lib/products";
 
-type EditionItem = {
-  slug: string;
-  title?: string;
-  createdAt?: string;
-  updatedAt?: string;
+type PageProps = {
+  params: Promise<{ id: string }>;
 };
 
-async function fetchEditions(baseUrl: string): Promise<EditionItem[] | null> {
-  const url = `${baseUrl.replace(/\/+$/, "")}/api/editions/slugs`;
-  try {
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) return null;
-    const data = await res.json();
-    if (!data || data.ok !== true || !Array.isArray(data.editions)) return null;
-    return data.editions as EditionItem[];
-  } catch {
-    return null;
-  }
-}
+export const dynamic = "force-dynamic";
 
-export default async function ProductDetailPage(props: { params: Promise<{ id: string }> }) {
-  const { id } = await props.params;
+export default async function ProductDetailPage({ params }: PageProps) {
+  const { id } = await params;
+  const product = getProduct(id);
 
-  const product = products.find((p) => p.id === id);
   if (!product) {
-    return (
-      <main style={{ padding: 24 }}>
-        <h1>Product not found</h1>
-      </main>
-    );
+    notFound();
   }
 
-  const baseUrl = product.baseUrl.replace(/\/+$/, "");
-  const editions = await fetchEditions(baseUrl);
+  const slugsUrl = `${product.baseUrl}/api/editions/slugs`;
+  const response = await fetch(slugsUrl, { cache: "no-store" }).catch(() => null);
+
+  let slugs: string[] = [];
+  let fetchError: { status: number | string; message: string } | null = null;
+
+  if (!response) {
+    fetchError = { status: "network", message: "Failed to connect." };
+  } else {
+    const text = await response.text();
+
+    if (!response.ok) {
+      fetchError = {
+        status: response.status,
+        message: text.slice(0, 220)
+      };
+    } else {
+      try {
+        const json = JSON.parse(text) as { editions?: Array<{ slug?: string }> };
+        slugs = Array.isArray(json.editions)
+          ? json.editions.map((item) => String(item.slug || "")).filter(Boolean)
+          : [];
+      } catch {
+        fetchError = { status: response.status, message: "Invalid JSON response." };
+      }
+    }
+  }
 
   return (
-    <main style={{ padding: 24 }}>
-      <h1 style={{ fontSize: 24, fontWeight: 600 }}>{product.id}</h1>
+    <div className="stack">
+      <h2 className="page-title">Product: {product.title}</h2>
 
-      <p style={{ marginTop: 8 }}>
-        Base URL:{" "}
-        <a href={baseUrl} target="_blank" rel="noreferrer">
-          {baseUrl}
-        </a>
-      </p>
+      <Card title="Bridge info">
+        <p><strong>baseUrl:</strong> <code>{product.baseUrl}</code></p>
+        <p><Link href={`${product.baseUrl}/list`}>Open {product.title} /list</Link></p>
+      </Card>
 
-      <p style={{ marginTop: 8 }}>
-        <a href={`${baseUrl}/list`} target="_blank" rel="noreferrer">
-          Open /list
-        </a>
-      </p>
-
-      <section style={{ marginTop: 24 }}>
-        <h2 style={{ fontSize: 18, fontWeight: 600 }}>Editions</h2>
-
-        {editions ? (
-          editions.length ? (
-            <ul style={{ marginTop: 12, paddingLeft: 18 }}>
-              {editions.map((e) => (
-                <li key={e.slug} style={{ marginBottom: 6 }}>
-                  <a href={`${baseUrl}/e/${e.slug}`} target="_blank" rel="noreferrer">
-                    {e.slug}
-                  </a>
-                  {e.title ? <span> — {e.title}</span> : null}
-                </li>
+      <Card title="Editions slugs (server-side fetch, no-store)">
+        {!fetchError ? (
+          slugs.length > 0 ? (
+            <ul>
+              {slugs.map((slug) => (
+                <li key={slug}><code>{slug}</code></li>
               ))}
             </ul>
           ) : (
-            <p style={{ marginTop: 12 }}>No editions found.</p>
+            <p>No slugs returned.</p>
           )
         ) : (
-          <p style={{ marginTop: 12 }}>
-            Could not load editions from <code>/api/editions/slugs</code>.
-          </p>
+          <div>
+            <p><strong>Status:</strong> <code>{String(fetchError.status)}</code></p>
+            <p><strong>Message:</strong> <code>{fetchError.message}</code></p>
+          </div>
         )}
-      </section>
-
-      <p style={{ marginTop: 24 }}>
-        <Link href="/products">Back to products</Link>
-      </p>
-    </main>
+      </Card>
+    </div>
   );
 }
