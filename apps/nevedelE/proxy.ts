@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const PUBLIC_PREFIXES = [
@@ -16,6 +16,9 @@ const PUBLIC_PREFIXES = [
 ];
 
 const PROTECTED_PREFIXES = [
+  "/publish",
+  "/settings",
+  "/deploy",
   "/builder",
   "/editions",
   "/api/build",
@@ -61,3 +64,4 @@ export default function proxy(req: NextRequest) {
 export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };
+

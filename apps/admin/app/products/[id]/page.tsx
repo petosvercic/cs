@@ -1,101 +1,101 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { Card } from "@/app/ui/card";
-import { getProduct } from "@/lib/products";
-import { EditionsPanel } from "./editions-panel";
+﻿"use client";
 
-type PageProps = {
-  params: Promise<{ id: string }>;
+import { useState } from "react";
+
+type EditionsPanelProps = {
+  productId: string;
+baseUrl: string;
+  initialSlugs: string[];
+  initialError: { status: number | string; message: string } | null;
+  initialRefreshedAt: string;
 };
 
-export const dynamic = "force-dynamic";
+type FetchState = "idle" | "loading" | "ok" | "error";
 
-export default async function ProductDetailPage({ params }: PageProps) {
-  const { id } = await params;
-  const product = getProduct(id);
+export function EditionsPanel({ productId, baseUrl, initialSlugs, initialError, initialRefreshedAt }: EditionsPanelProps) {
+  const [slugs, setSlugs] = useState<string[]>(initialSlugs);
+  const [error, setError] = useState<{ status: number | string; message: string } | null>(initialError);
+  const [state, setState] = useState<FetchState>(initialError ? "error" : initialSlugs.length ? "ok" : "idle");
+  const [search, setSearch] = useState("");
+  const [lastRefreshAt, setLastRefreshAt] = useState(initialRefreshedAt);
 
-  if (!product) {
-    notFound();
-  }
+  const filteredSlugs = slugs.filter((slug) => slug.toLowerCase().includes(search.toLowerCase()));
 
-  const slugsUrl = `${product.baseUrl}/api/editions/slugs`;
-  const response = await fetch(slugsUrl, { cache: "no-store" }).catch(() => null);
-  const healthUrl = `${product.baseUrl}/api/health`;
-  const healthStart = Date.now();
-  const healthResponse = await fetch(healthUrl, { cache: "no-store" }).catch(() => null);
-  const healthMs = Date.now() - healthStart;
+  async function refresh() {
+    setState("loading");
+    setError(null);
 
-  let initialSlugs: string[] = [];
-  let initialError: { status: number | string; message: string } | null = null;
-  let healthStatus: "ok" | "error" = "error";
-  let healthVersion: string | null = null;
-  let healthError: string | null = null;
+    try {
+      const response = await fetch(`/api/products/${productId}/editions/slugs`, { cache: "no-store" });
+      const text = await response.text();
 
-  if (!response) {
-    initialError = { status: "network", message: "Failed to connect." };
-  } else {
-    const text = await response.text();
+      if (!response.ok) {
+        setState("error");
+        setError({ status: response.status, message: text.slice(0, 220) });
+        return;
+      }
 
-    if (!response.ok) {
-      initialError = {
-        status: response.status,
-        message: text.slice(0, 220)
-      };
-    } else {
+      let nextSlugs: string[] = [];
       try {
         const json = JSON.parse(text) as { editions?: Array<{ slug?: string }> };
         if (!Array.isArray(json.editions)) {
           throw new Error("unexpected-shape");
         }
-        initialSlugs = json.editions.map((item) => String(item.slug || "")).filter(Boolean);
+        nextSlugs = json.editions.map((item) => String(item.slug || "")).filter(Boolean);
       } catch {
-        initialError = { status: response.status, message: "Could not load editions" };
+        setState("error");
+        setError({ status: response.status, message: "Could not load editions" });
+        return;
       }
-    }
-  }
 
-  if (!healthResponse) {
-    healthError = "Health check failed";
-  } else {
-    const healthText = await healthResponse.text();
-
-    if (!healthResponse.ok) {
-      healthError = "Health check failed";
-    } else {
-      try {
-        const healthJson = JSON.parse(healthText) as { status?: unknown; ok?: unknown; version?: unknown };
-        healthStatus = healthJson.status === "ok" || healthJson.ok === true ? "ok" : "error";
-        healthVersion = typeof healthJson.version === "string" ? healthJson.version : null;
-      } catch {
-        healthError = "Health check failed";
-      }
+      setSlugs(nextSlugs);
+      setLastRefreshAt(new Date().toISOString());
+      setState("ok");
+    } catch {
+      setState("error");
+      setError({ status: "network", message: "Failed to connect." });
     }
   }
 
   return (
-    <div className="stack">
-      <h2 className="page-title">Product: {product.title}</h2>
+    <div>
+      <div className="row" style={{ justifyContent: "space-between", marginBottom: 8 }}>
+        <strong>Status: {state}</strong>
+        <button onClick={refresh} disabled={state === "loading"} style={{ padding: "6px 10px" }}>
+          {state === "loading" ? "Refreshing..." : "Refresh"}
+        </button>
+      </div>
 
-      <Card title="Bridge info">
-        <p><strong>baseUrl:</strong> <code>{product.baseUrl}</code></p>
-        <p><Link href={`${product.baseUrl}/list`}>Open {product.title} /list</Link></p>
-      </Card>
-
-      <Card title="Health">
-        <p><strong>Status:</strong> <code>{healthStatus}</code></p>
-        <p><strong>responseTimeMs:</strong> <code>{healthMs}</code></p>
-        {healthVersion ? <p><strong>Version:</strong> <code>{healthVersion}</code></p> : null}
-        {healthError ? <p>{healthError}</p> : null}
-      </Card>
-
-      <Card title="Editions slugs (server-side fetch, no-store)">
-        <EditionsPanel productId={id}
-          baseUrl={product.baseUrl}
-          initialSlugs={initialSlugs}
-          initialError={initialError}
-          initialRefreshedAt={new Date().toISOString()}
+      <p><strong>Total:</strong> {slugs.length}</p>
+      <p><strong>Last refresh:</strong> <code>{lastRefreshAt}</code></p>
+      <label style={{ display: "block", marginBottom: 8 }}>
+        <strong>Search slug:</strong>{" "}
+        <input
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          placeholder="Type slug"
+          style={{ padding: "6px 8px" }}
         />
-      </Card>
+      </label>
+
+      {!error ? (
+        filteredSlugs.length > 0 ? (
+          <ul>
+            {filteredSlugs.map((slug) => (
+              <li key={slug}><a href={`${baseUrl}/e/${slug}`} target="_blank" rel="noreferrer"><code>{slug}</code></a></li>
+            ))}
+          </ul>
+        ) : (
+          <p>{slugs.length > 0 ? "No matches for current search." : "No slugs returned."}</p>
+        )
+      ) : (
+        <div>
+          <p><strong>Status:</strong> <code>{String(error.status)}</code></p>
+          <p><strong>Message:</strong> <code>{error.message}</code></p>
+        </div>
+      )}
     </div>
   );
 }
+
+
