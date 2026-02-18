@@ -82,7 +82,14 @@ export function EditionsPanel({ productId, baseUrl, initialSlugs, initialError, 
         filteredSlugs.length > 0 ? (
           <ul>
             {filteredSlugs.map((slug) => (
-              <li key={slug}><a href={`${baseUrl}/e/${slug}`} target="_blank" rel="noreferrer"><code>{slug}</code></a></li>
+              <li key={slug}>
+  <a href={`${baseUrl}/e/${slug}`} target="_blank" rel="noreferrer">
+    <code>{slug}</code>
+  </a>{" "}
+  <a href={`/api/products/${productId}/editions/${slug}`} target="_blank" rel="noreferrer">
+    JSON
+  </a>
+</li>
             ))}
           </ul>
         ) : (
