@@ -1,7 +1,8 @@
 ﻿import { createElement } from "react";
 import BuilderUI from "./builder-ui";
-import type { EditionIndexEntry } from "../../../apps/nevedelE/lib/editions-store";
+import type { EditionIndexEntry } from "./types";
 
+export type { EditionIndexEntry };
 export default BuilderUI;
 
 export function FactoryBuilder({ editions }: { editions: EditionIndexEntry[] }) {
