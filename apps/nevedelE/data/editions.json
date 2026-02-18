@@ -1,3 +1,10 @@
 {
-  "editions": []
+  "editions": [
+    {
+      "slug": "tichy-reset-dna",
+      "title": "Tichý reset DNA",
+      "createdAt": "2026-02-18T00:00:00.000Z",
+      "updatedAt": "2026-02-18T00:00:00.000Z"
+    }
+  ]
 }

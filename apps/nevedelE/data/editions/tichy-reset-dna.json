@@ -1,0 +1,40 @@
+{
+  "slug": "tichy-reset-dna",
+  "title": "Tichý reset DNA",
+  "createdAt": "2026-02-18T00:00:00.000Z",
+  "updatedAt": "2026-02-18T00:00:00.000Z",
+  "engine": {
+    "subject": "tichy_reset_dna",
+    "locale": "sk"
+  },
+  "content": {
+    "heroSubtitle": "Rýchly osobný náhľad",
+    "intro": {
+      "title": "Úvod",
+      "text": "Vyplň dátum narodenia a zobraz náhľad výsledku."
+    },
+    "form": {
+      "title": "Výpočet",
+      "nameLabel": "Meno",
+      "birthDateLabel": "Dátum narodenia",
+      "submitLabel": "Vyhodnotiť"
+    },
+    "result": {
+      "teaserTitle": "Náhľad",
+      "teaserNote": "Ukážka výsledku",
+      "unlockHint": "Odomkni plný výsledok"
+    },
+    "paywall": {
+      "headline": "Odomkni celý výsledok",
+      "bullets": [
+        "Všetky kategórie",
+        "Detailné vysvetlenie"
+      ],
+      "cta": "Pokračovať"
+    }
+  },
+  "tasks": {
+    "pickPerCategory": 1,
+    "categories": []
+  }
+}
