@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 type EditionsPanelProps = {
+  productId: string;
   baseUrl: string;
   initialSlugs: string[];
   initialError: { status: number | string; message: string } | null;
@@ -11,7 +12,7 @@ type EditionsPanelProps = {
 
 type FetchState = "idle" | "loading" | "ok" | "error";
 
-export function EditionsPanel({ baseUrl, initialSlugs, initialError, initialRefreshedAt }: EditionsPanelProps) {
+export function EditionsPanel({ productId, baseUrl, initialSlugs, initialError, initialRefreshedAt }: EditionsPanelProps) {
   const [slugs, setSlugs] = useState<string[]>(initialSlugs);
   const [error, setError] = useState<{ status: number | string; message: string } | null>(initialError);
   const [state, setState] = useState<FetchState>(initialError ? "error" : initialSlugs.length ? "ok" : "idle");
@@ -81,7 +82,24 @@ export function EditionsPanel({ baseUrl, initialSlugs, initialError, initialRefr
         filteredSlugs.length > 0 ? (
           <ul>
             {filteredSlugs.map((slug) => (
-              <li key={slug}><code>{slug}</code></li>
+              <li key={slug} style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                <a
+                  href={`${baseUrl}/e/${slug}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ textDecoration: "underline" }}
+                >
+                  <code>{slug}</code>
+                </a>
+                <a
+                  href={`/api/products/${productId}/editions/${slug}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ fontSize: 12, textDecoration: "underline" }}
+                >
+                  JSON
+                </a>
+              </li>
             ))}
           </ul>
         ) : (
