@@ -82,7 +82,7 @@ export function EditionsPanel({ productId, baseUrl, initialSlugs, initialError, 
         filteredSlugs.length > 0 ? (
           <ul>
             {filteredSlugs.map((slug) => (
-              <li key={slug}><code>{slug}</code></li>
+              <li key={slug}><a href={`${baseUrl}/e/${slug}`} target="_blank" rel="noreferrer"><code>{slug}</code></a></li>
             ))}
           </ul>
         ) : (
