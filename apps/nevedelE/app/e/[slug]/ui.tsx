@@ -19,21 +19,25 @@ type EngineResult = { categories?: EngineCategory[] };
 type Edition = {
   title?: string;
   engine?: { locale?: string };
-  content?: any;
+  content?: {
+    heroSubtitle?: string;
+    intro?: { title?: string; text?: string };
+    form?: { title?: string; nameLabel?: string; birthDateLabel?: string; submitLabel?: string };
+    result?: { teaserTitle?: string; teaserNote?: string; unlockHint?: string };
+    paywall?: { headline?: string; bullets?: string[]; cta?: string };
+  };
 };
 
 function sanitizeBirthDateInput(s: string) {
   const raw = String(s || "").trim();
   const digitsOnly = raw.replace(/\D/g, "").slice(0, 8);
 
-  // user-friendly typing: dd.mm.rrrr
   if (/^\d*$/.test(raw)) {
     if (digitsOnly.length <= 2) return digitsOnly;
     if (digitsOnly.length <= 4) return `${digitsOnly.slice(0, 2)}.${digitsOnly.slice(2)}`;
     return `${digitsOnly.slice(0, 2)}.${digitsOnly.slice(2, 4)}.${digitsOnly.slice(4)}`;
   }
 
-  // allow manual paste like YYYY-MM-DD
   return raw.slice(0, 10);
 }
 
@@ -49,7 +53,6 @@ function normalizeBirthDate(s: string) {
   }
 
   if (/^\d{8}$/.test(t)) {
-    // ddMMyyyy
     return `${t.slice(4, 8)}-${t.slice(2, 4)}-${t.slice(0, 2)}`;
   }
 
@@ -69,7 +72,13 @@ function bandLabel(band?: string) {
   return band || "";
 }
 
-export default function EditionClient({ slug, edition }: { slug: string; edition: Edition }) {
+type EditionClientProps = {
+  slug: string;
+  edition: Edition;
+  previewMode?: boolean;
+};
+
+export default function EditionClient({ slug, edition, previewMode = false }: EditionClientProps) {
   const c = edition?.content ?? {};
   const locale = edition?.engine?.locale ?? "sk";
 
@@ -88,7 +97,11 @@ export default function EditionClient({ slug, edition }: { slug: string; edition
   const [autoComputeDone, setAutoComputeDone] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
+  const isUnlocked = paid || previewMode;
+
   function persistInputsToUrl(nextBirthDateRaw: string, nextNameRaw: string) {
+    if (previewMode) return;
+
     const bd = normalizeBirthDate(nextBirthDateRaw);
     const nm = (nextNameRaw || "").trim();
     const nextRid = bd ? makeRid(slug, bd) : "";
@@ -122,8 +135,8 @@ export default function EditionClient({ slug, edition }: { slug: string; edition
         editionSlug: slug,
         name: (displayName || "").trim() || "",
         birthDate: bd,
-        locale,
-      }),
+        locale
+      })
     });
 
     const json = await r.json();
@@ -137,11 +150,14 @@ export default function EditionClient({ slug, edition }: { slug: string; edition
 
     try {
       localStorage.setItem(storageKey(slug, bd), JSON.stringify(payload));
-    } catch {}
+    } catch {
+      // noop
+    }
   }
 
-  // Init from URL (canonical identity = slug + birthDate)
   useEffect(() => {
+    if (previewMode) return;
+
     try {
       const url = new URL(window.location.href);
       const birthDateFromUrl = (url.searchParams.get("birthDate") || "").trim();
@@ -153,16 +169,16 @@ export default function EditionClient({ slug, edition }: { slug: string; edition
 
       if (ridFromUrl) {
         setRid(ridFromUrl);
-
         const [, bdFromRid] = ridFromUrl.split(":", 2);
         if (bdFromRid && /^\d{4}-\d{2}-\d{2}$/.test(bdFromRid)) {
           setBirthDate(bdFromRid);
         }
       }
-    } catch {}
-  }, [slug]);
+    } catch {
+      // noop
+    }
+  }, [previewMode, slug]);
 
-  // Restore cached result for this slug+birthDate (so refresh doesn't wipe it)
   useEffect(() => {
     try {
       const bd = normalizeBirthDate(birthDate);
@@ -170,11 +186,14 @@ export default function EditionClient({ slug, edition }: { slug: string; edition
 
       const raw = localStorage.getItem(storageKey(slug, bd));
       if (raw) setResult(JSON.parse(raw));
-    } catch {}
+    } catch {
+      // noop
+    }
   }, [slug, birthDate]);
 
-  // Payment verify (return from Stripe + normal refresh)
   useEffect(() => {
+    if (previewMode) return;
+
     (async () => {
       try {
         const url = new URL(window.location.href);
@@ -185,32 +204,28 @@ export default function EditionClient({ slug, edition }: { slug: string; edition
 
         if (sessionId) {
           const r = await fetch(
-            `/api/pay/status?session_id=${encodeURIComponent(sessionId)}&rid=${encodeURIComponent(effectiveRid)}&slug=${encodeURIComponent(
-              slug
-            )}`,
+            `/api/pay/status?session_id=${encodeURIComponent(sessionId)}&rid=${encodeURIComponent(effectiveRid)}&slug=${encodeURIComponent(slug)}`,
             { cache: "no-store" }
           );
           const json = await r.json();
           if (json?.paid) setPaid(true);
 
-          // clean session_id from URL
           url.searchParams.delete("session_id");
           window.history.replaceState({}, "", url.toString());
           return;
         }
 
         const r = await fetch(`/api/pay/status?rid=${encodeURIComponent(effectiveRid)}&slug=${encodeURIComponent(slug)}`, {
-          cache: "no-store",
+          cache: "no-store"
         });
         const json = await r.json();
         if (json?.paid) setPaid(true);
-      } catch (e) {
-        console.warn(e);
+      } catch {
+        // noop
       }
     })();
-  }, [rid, slug]);
+  }, [previewMode, rid, slug]);
 
-  // Auto compute once when we have birthDate
   useEffect(() => {
     if (autoComputeDone || result) return;
 
@@ -230,23 +245,21 @@ export default function EditionClient({ slug, edition }: { slug: string; edition
         setAutoComputeDone(true);
       }
     })();
-    // intentionally not depending on persistInputsToUrl
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoComputeDone, birthDate, name, result, rid, slug]);
 
   const visible = useMemo(() => {
     if (!result?.categories?.length) return null;
-    if (paid) return result;
+    if (isUnlocked) return result;
 
-    // TEASER: show up to 2 categories, each with 1 item
     const cats = result.categories.slice(0, 2).map((cat) => ({
       ...cat,
       items: (cat.items ?? []).slice(0, 1).map((it) => ({ ...it })),
-      recommendation: undefined,
+      recommendation: undefined
     }));
 
     return { categories: cats } as EngineResult;
-  }, [result, paid]);
+  }, [result, isUnlocked]);
 
   async function onCompute() {
     setErr(null);
@@ -259,6 +272,8 @@ export default function EditionClient({ slug, edition }: { slug: string; edition
   }
 
   async function onCheckout() {
+    if (previewMode) return;
+
     setErr(null);
     setPayBusy(true);
 
@@ -281,8 +296,8 @@ export default function EditionClient({ slug, edition }: { slug: string; edition
         body: JSON.stringify({
           rid: effectiveRid,
           slug,
-          returnTo: `/e/${slug}?${returnSp.toString()}`,
-        }),
+          returnTo: `/e/${slug}?${returnSp.toString()}`
+        })
       });
 
       const json = await r.json();
@@ -297,126 +312,147 @@ export default function EditionClient({ slug, edition }: { slug: string; edition
   }
 
   return (
-    <div className="wrap">
-      <style>{`
-        .wrap { max-width: 980px; margin: 0 auto; padding: 56px 18px 120px; font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; color: #1a1a1a; }
-        .hero { margin-bottom: 28px; }
-        .title { font-size: 42px; letter-spacing: -0.02em; margin: 0 0 10px; }
-        .sub { margin: 0; opacity: .72; max-width: 720px; font-size: 16px; line-height: 1.6; }
-        .card { border: 1px solid #e5e7eb; border-radius: 16px; padding: 18px; background: #fff; box-shadow: 0 8px 20px rgba(15,23,42,.05); }
-        .grid { display: grid; gap: 14px; }
-        .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-        .input { padding: 10px 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; }
-        .btn { padding: 10px 14px; border-radius: 10px; border: 1px solid #2563eb; background: #2563eb; color: white; cursor: pointer; }
-        .btn.secondary { background: white; color: #111; border-color: #ddd; }
-        .btn:disabled { opacity: .6; cursor: not-allowed; }
-        .err { color: #b00020; font-weight: 600; }
-        .sectionTitle { font-size: 18px; margin: 0 0 10px; }
-        .cat { padding: 14px; border: 1px solid #eee; border-radius: 14px; background: #fafafa; }
-        .cat h2 { margin: 0; font-size: 16px; }
-        .catHead { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
-        .catMeta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-        .pill { display: inline-block; border: 1px solid #ddd; border-radius: 999px; padding: 2px 8px; font-size: 12px; background: #fff; }
-        .catText { font-size: 13px; opacity: .85; margin: 0 0 8px; }
-        .item { padding: 12px; border-radius: 12px; background: #fff; border: 1px solid #eee; }
-        .item h3 { margin: 0 0 6px; font-size: 15px; }
-        .meta { font-size: 12px; opacity: .6; margin-bottom: 8px; }
-        .pay { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
-        .badge { font-size: 12px; opacity: .55; }
-      `}</style>
-
-      <div className="hero">
-        <h1 className="title">{edition?.title ?? slug}</h1>
-        <p className="sub">{c?.heroSubtitle ?? ""}</p>
-      </div>
-
-      <div className="grid">
-        <div className="row" style={{ justifyContent: "space-between" }}>
-          <div className="row">
-            <a className="btn secondary" href="/">Domov</a>
-            <a className="btn secondary" href="/list">Späť na zoznam</a>
+    <main
+      className="min-h-screen px-4 py-10 text-neutral-100"
+      style={{
+        backgroundImage: "url('/brand/bg.png')",
+        backgroundSize: "contain",
+        backgroundPosition: "center bottom",
+        backgroundRepeat: "no-repeat",
+        backgroundAttachment: "fixed"
+      }}
+    >
+      <div className="mx-auto w-full max-w-5xl rounded-3xl border border-neutral-800 bg-neutral-950/60 p-6 shadow-2xl backdrop-blur-sm sm:p-8">
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{edition?.title ?? slug}</h1>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-neutral-200/80">{c?.heroSubtitle ?? ""}</p>
           </div>
-          <span className="badge">paid: {String(paid)}</span>
+          <img src="/brand/logo.png" alt="Brand" className="h-14 w-auto shrink-0 opacity-95" />
         </div>
 
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 text-sm">
+          <div className="flex gap-2">
+            <a className="rounded-lg border border-neutral-600 bg-neutral-900/60 px-3 py-2" href="/">Domov</a>
+            <a className="rounded-lg border border-neutral-600 bg-neutral-900/60 px-3 py-2" href="/list">Späť na zoznam</a>
+          </div>
+          <span className="rounded-full border border-neutral-700 px-3 py-1 text-xs text-neutral-300">
+            {previewMode ? "preview mode" : `paid: ${String(paid)}`}
+          </span>
+        </div>
+
+        {(c?.intro?.title || c?.intro?.text) && (
+          <section className="mb-4 rounded-2xl border border-neutral-800 bg-neutral-900/70 p-4">
+            {c?.intro?.title ? <h2 className="text-lg font-semibold">{c.intro.title}</h2> : null}
+            {c?.intro?.text ? <p className="mt-2 text-sm text-neutral-300">{c.intro.text}</p> : null}
+          </section>
+        )}
+
         {!result ? (
-          <div className="card">
-            <div className="row">
-              <input className="input" placeholder="Meno (voliteľné)" value={name} onChange={(e) => setName(e.target.value)} />
+          <section className="mb-4 rounded-2xl border border-neutral-800 bg-neutral-900/70 p-4">
+            <h2 className="mb-3 text-lg font-semibold">{c?.form?.title || "Zadaj údaje"}</h2>
+            <div className="flex flex-wrap gap-3">
               <input
-                className="input"
-                placeholder="dd.mm.rrrr alebo YYYY-MM-DD"
+                className="min-w-[220px] flex-1 rounded-lg border border-neutral-700 bg-neutral-950/80 px-3 py-2 text-sm"
+                placeholder={c?.form?.nameLabel || "Meno (voliteľné)"}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <input
+                className="min-w-[220px] flex-1 rounded-lg border border-neutral-700 bg-neutral-950/80 px-3 py-2 text-sm"
+                placeholder={c?.form?.birthDateLabel || "dd.mm.rrrr alebo YYYY-MM-DD"}
                 value={birthDate}
                 onChange={(e) => setBirthDate(sanitizeBirthDateInput(e.target.value))}
               />
-              <button className="btn" onClick={onCompute}>
-                Vyhodnotiť
+              <button
+                className="rounded-lg bg-neutral-100 px-4 py-2 font-semibold text-neutral-950"
+                onClick={onCompute}
+              >
+                {c?.form?.submitLabel || "Vyhodnotiť"}
               </button>
             </div>
 
-            {err ? (
-              <div style={{ marginTop: 10 }} className="err">
-                {err}
-              </div>
-            ) : null}
-          </div>
+            {err ? <p className="mt-3 text-sm font-semibold text-red-300">{err}</p> : null}
+          </section>
         ) : null}
 
         {visible?.categories?.length ? (
-          <div className="card">
-            <div className="pay">
+          <section className="rounded-2xl border border-neutral-800 bg-neutral-900/70 p-4">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
               <div>
-                <div className="sectionTitle">Výsledok</div>
-                {!paid ? (
-                  <div style={{ opacity: 0.75, fontSize: 13 }}>Zobrazený je len teaser. Zvyšok sa sprístupní po platbe.</div>
+                <h2 className="text-lg font-semibold">{c?.result?.teaserTitle || "Výsledok"}</h2>
+                {!isUnlocked ? (
+                  <p className="mt-1 text-sm text-neutral-300">
+                    {c?.result?.teaserNote || "Zobrazený je len teaser. Zvyšok sa sprístupní po platbe."}
+                  </p>
                 ) : null}
               </div>
 
-              {!paid ? (
-                <button className="btn secondary" disabled={payBusy || !normalizeBirthDate(birthDate)} onClick={onCheckout}>
-                  {payBusy ? "Presmerovávam..." : "Pokračovať na platbu"}
+              {!isUnlocked ? (
+                <button
+                  className="rounded-lg border border-neutral-500 bg-neutral-950/70 px-4 py-2 text-sm"
+                  disabled={payBusy || !normalizeBirthDate(birthDate)}
+                  onClick={onCheckout}
+                >
+                  {payBusy ? "Presmerovávam..." : c?.paywall?.cta || "Pokračovať na platbu"}
                 </button>
               ) : (
-                <div style={{ fontSize: 13, opacity: 0.75 }}>Sprístupnené</div>
+                <span className="text-sm text-emerald-300">Sprístupnené</span>
               )}
             </div>
 
-            <div style={{ height: 14 }} />
-
-            <div className="grid">
-              {visible.categories!.map((cat, ci) => (
-                <div className="cat" key={cat.key ?? ci}>
-                  <div className="catHead">
-                    <h2>{cat.title ?? `Kategória ${ci + 1}`}</h2>
-                    <div className="catMeta">
-                      {typeof cat.score === "number" ? <span className="pill">Skóre: {cat.score}</span> : null}
-                      {bandLabel(cat.band) ? <span className="pill">{bandLabel(cat.band)}</span> : null}
-                      {typeof cat.percentile === "number" ? <span className="pill">Percentil: {cat.percentile}</span> : null}
+            <div className="grid gap-3">
+              {visible.categories.map((cat, ci) => (
+                <article key={cat.key ?? ci} className="rounded-xl border border-neutral-800 bg-neutral-950/70 p-4">
+                  <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+                    <h3 className="text-base font-semibold">{cat.title ?? `Kategória ${ci + 1}`}</h3>
+                    <div className="flex flex-wrap gap-2 text-xs text-neutral-300">
+                      {typeof cat.score === "number" ? <span className="rounded-full border border-neutral-700 px-2 py-1">Skóre: {cat.score}</span> : null}
+                      {bandLabel(cat.band) ? <span className="rounded-full border border-neutral-700 px-2 py-1">{bandLabel(cat.band)}</span> : null}
+                      {typeof cat.percentile === "number" ? <span className="rounded-full border border-neutral-700 px-2 py-1">Percentil: {cat.percentile}</span> : null}
                     </div>
                   </div>
 
-                  {(cat.insight ?? "").trim() ? <p className="catText">{cat.insight}</p> : null}
-                  {(cat.recommendation ?? "").trim() && paid ? <p className="catText">{cat.recommendation}</p> : null}
+                  {(cat.insight ?? "").trim() ? <p className="mb-2 text-sm text-neutral-300">{cat.insight}</p> : null}
+                  {(cat.recommendation ?? "").trim() && isUnlocked ? (
+                    <p className="mb-3 text-sm text-neutral-300">{cat.recommendation}</p>
+                  ) : null}
 
-                  <div className="grid">
+                  <div className="grid gap-2">
                     {(cat.items ?? []).map((it, idx) => (
-                      <div className="item" key={it.id ?? idx}>
-                        <h3>{it.title ?? `Položka ${idx + 1}`}</h3>
-                        {typeof it.value === "number" ? <div className="meta">Hodnota: {it.value}</div> : null}
-                        {(it.text ?? "").trim() && (it.text ?? "").trim() !== (it.title ?? "").trim() ? <div>{it.text}</div> : null}
+                      <div key={it.id ?? idx} className="rounded-lg border border-neutral-800 bg-neutral-900/70 p-3">
+                        <h4 className="text-sm font-semibold">{it.title ?? `Položka ${idx + 1}`}</h4>
+                        {typeof it.value === "number" ? <p className="mt-1 text-xs text-neutral-400">Hodnota: {it.value}</p> : null}
+                        {(it.text ?? "").trim() && (it.text ?? "").trim() !== (it.title ?? "").trim() ? (
+                          <p className="mt-2 text-sm text-neutral-200">{it.text}</p>
+                        ) : null}
                       </div>
                     ))}
                   </div>
-                </div>
+                </article>
               ))}
             </div>
-          </div>
+
+            {!isUnlocked && c?.paywall?.headline ? (
+              <div className="mt-4 rounded-xl border border-neutral-700 bg-neutral-950/80 p-4">
+                <h3 className="text-sm font-semibold">{c.paywall.headline}</h3>
+                {Array.isArray(c?.paywall?.bullets) && c.paywall.bullets.length > 0 ? (
+                  <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-neutral-300">
+                    {c.paywall.bullets.map((bullet, idx) => (
+                      <li key={`${bullet}-${idx}`}>{bullet}</li>
+                    ))}
+                  </ul>
+                ) : null}
+                {c?.result?.unlockHint ? <p className="mt-2 text-xs text-neutral-400">{c.result.unlockHint}</p> : null}
+              </div>
+            ) : null}
+          </section>
         ) : (
-          <div className="card" style={{ opacity: 0.75 }}>
+          <section className="rounded-2xl border border-neutral-800 bg-neutral-900/70 p-4 text-sm text-neutral-300">
             Výsledok zatiaľ nie je vygenerovaný.
-          </div>
+          </section>
         )}
       </div>
-    </div>
+    </main>
   );
 }
