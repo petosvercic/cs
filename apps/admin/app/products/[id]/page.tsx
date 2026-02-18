@@ -89,7 +89,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
       </Card>
 
       <Card title="Editions slugs (server-side fetch, no-store)">
-        <EditionsPanel
+        <EditionsPanel productId={id}
           baseUrl={product.baseUrl}
           initialSlugs={initialSlugs}
           initialError={initialError}

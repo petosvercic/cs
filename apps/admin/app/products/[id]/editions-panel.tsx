@@ -3,7 +3,8 @@
 import { useState } from "react";
 
 type EditionsPanelProps = {
-  baseUrl: string;
+  productId: string;
+baseUrl: string;
   initialSlugs: string[];
   initialError: { status: number | string; message: string } | null;
   initialRefreshedAt: string;
@@ -11,7 +12,7 @@ type EditionsPanelProps = {
 
 type FetchState = "idle" | "loading" | "ok" | "error";
 
-export function EditionsPanel({ baseUrl, initialSlugs, initialError, initialRefreshedAt }: EditionsPanelProps) {
+export function EditionsPanel({ productId, baseUrl, initialSlugs, initialError, initialRefreshedAt }: EditionsPanelProps) {
   const [slugs, setSlugs] = useState<string[]>(initialSlugs);
   const [error, setError] = useState<{ status: number | string; message: string } | null>(initialError);
   const [state, setState] = useState<FetchState>(initialError ? "error" : initialSlugs.length ? "ok" : "idle");
@@ -25,7 +26,7 @@ export function EditionsPanel({ baseUrl, initialSlugs, initialError, initialRefr
     setError(null);
 
     try {
-      const response = await fetch(`${baseUrl}/api/editions/slugs`, { cache: "no-store" });
+      const response = await fetch(`/api/products/${productId}/editions/slugs`, { cache: "no-store" });
       const text = await response.text();
 
       if (!response.ok) {
