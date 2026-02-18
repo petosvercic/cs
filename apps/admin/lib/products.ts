@@ -1,9 +1,8 @@
-export type ProductRegistryItem = {
+﻿export type ProductRegistryItem = {
   id: string;
   title: string;
   baseUrl: string;
   description: string;
-  capabilities?: string[];
 };
 
 function normalizeBaseUrl(value: string | undefined, fallback: string) {
@@ -17,10 +16,10 @@ export const products: ProductRegistryItem[] = [
     title: "nevedelE",
     baseUrl: normalizeBaseUrl(process.env.NEVEDEL_BASE_URL, "http://localhost:3000"),
     description: "Production app bridge",
-    capabilities: ["editions", "factory"]
-  }
+  },
 ];
 
-export function getProduct(id: string): ProductRegistryItem | undefined {
-  return products.find((item) => item.id === id);
+export function getProduct(id: string) {
+  return products.find((p) => p.id === id);
 }
+

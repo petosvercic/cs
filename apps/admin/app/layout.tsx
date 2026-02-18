@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { ReactNode } from "react";
 import { NavLink } from "./ui/nav-link";
-import { products } from "@/lib/products";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -10,8 +9,6 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-  const factoryProduct = products.find((item) => item.capabilities?.includes("factory"));
-
   return (
     <html lang="en">
       <body>
@@ -21,9 +18,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <ul className="nav-list">
               <li><NavLink href="/">Dashboard</NavLink></li>
               <li><NavLink href="/products">Products</NavLink></li>
-              {factoryProduct ? <li><NavLink href={`/products/${factoryProduct.id}/factory`}>Factory</NavLink></li> : null}
-              <li><NavLink href="/editions">Editions</NavLink></li>
-              <li><NavLink href="/deploy">Deploy</NavLink></li>
+<li><NavLink href="/deploy">Deploy</NavLink></li>
               <li><NavLink href="/settings">Settings</NavLink></li>
               <li><NavLink href="/publish">Publish</NavLink></li>
             </ul>

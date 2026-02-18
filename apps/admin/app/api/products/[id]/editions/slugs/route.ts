@@ -1,28 +1,42 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { getProduct } from "@/lib/products";
 
-type RouteContext = { params: Promise<{ id: string }> };
+export const dynamic = "force-dynamic";
 
-export async function GET(_: Request, { params }: RouteContext) {
-  const { id } = await params;
+type Params = { id: string };
+
+export async function GET(_req: Request, ctx: { params: Promise<Params> }) {
+  const { id } = await ctx.params;
+
   const product = getProduct(id);
-
   if (!product) {
     return NextResponse.json({ ok: false, error: "not-found" }, { status: 404 });
   }
 
-  const upstream = await fetch(`${product.baseUrl}/api/editions/slugs`, { cache: "no-store" }).catch(() => null);
+  const url = `${product.baseUrl}/api/editions/slugs`;
 
-  if (!upstream) {
-    return NextResponse.json({ ok: false, error: "upstream-unreachable" }, { status: 502 });
+  const res = await fetch(url, { cache: "no-store" }).catch(() => null);
+  if (!res) {
+    return NextResponse.json(
+      { ok: false, error: { status: "network", message: "Failed to connect." } },
+      { status: 502 }
+    );
   }
 
-  const text = await upstream.text();
+  const text = await res.text();
 
-  try {
-    const parsed = JSON.parse(text);
-    return NextResponse.json(parsed, { status: upstream.status });
-  } catch {
-    return NextResponse.json({ ok: false, error: "invalid-upstream-json" }, { status: 502 });
+  if (!res.ok) {
+    return NextResponse.json(
+      { ok: false, error: { status: res.status, message: text.slice(0, 220) } },
+      { status: 502 }
+    );
   }
+
+  return new NextResponse(text, {
+    status: 200,
+    headers: {
+      "content-type": "application/json; charset=utf-8",
+      "cache-control": "no-store",
+    },
+  });
 }

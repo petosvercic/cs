@@ -79,8 +79,6 @@ export default async function ProductDetailPage({ params }: PageProps) {
       <Card title="Bridge info">
         <p><strong>baseUrl:</strong> <code>{product.baseUrl}</code></p>
         <p><Link href={`${product.baseUrl}/list`}>Open {product.title} /list</Link></p>
-        <p><Link href={`/products/${id}/editions`}>Editions</Link></p>
-        {product.capabilities?.includes("factory") ? <p><Link href={`/products/${id}/factory`}>Factory</Link></p> : null}
       </Card>
 
       <Card title="Health">
@@ -91,8 +89,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
       </Card>
 
       <Card title="Editions slugs (server-side fetch, no-store)">
-        <EditionsPanel
-          productId={id}
+        <EditionsPanel productId={id}
           baseUrl={product.baseUrl}
           initialSlugs={initialSlugs}
           initialError={initialError}

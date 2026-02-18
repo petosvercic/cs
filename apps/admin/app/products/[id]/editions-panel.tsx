@@ -1,11 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 
 type EditionsPanelProps = {
   productId: string;
-  baseUrl: string;
+baseUrl: string;
   initialSlugs: string[];
   initialError: { status: number | string; message: string } | null;
   initialRefreshedAt: string;
@@ -27,7 +26,7 @@ export function EditionsPanel({ productId, baseUrl, initialSlugs, initialError, 
     setError(null);
 
     try {
-      const response = await fetch(`${baseUrl}/api/editions/slugs`, { cache: "no-store" });
+      const response = await fetch(`/api/products/${productId}/editions/slugs`, { cache: "no-store" });
       const text = await response.text();
 
       if (!response.ok) {
@@ -83,27 +82,7 @@ export function EditionsPanel({ productId, baseUrl, initialSlugs, initialError, 
         filteredSlugs.length > 0 ? (
           <ul>
             {filteredSlugs.map((slug) => (
-              <li key={slug} style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                <a
-                  href={`${baseUrl}/e/${slug}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{ textDecoration: "underline" }}
-                >
-                  <code>{slug}</code>
-                </a>
-                <a
-                  href={`/api/products/${productId}/editions/${slug}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{ fontSize: 12, textDecoration: "underline" }}
-                >
-                  JSON
-                </a>
-                <Link href={`/products/${productId}/editions/${slug}`} style={{ fontSize: 12, textDecoration: "underline" }}>
-                  Detail
-                </Link>
-              </li>
+              <li key={slug}><a href={`${baseUrl}/e/${slug}`} target="_blank" rel="noreferrer"><code>{slug}</code></a></li>
             ))}
           </ul>
         ) : (

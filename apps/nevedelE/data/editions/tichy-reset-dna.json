@@ -1,40 +1,39 @@
 {
   "slug": "tichy-reset-dna",
-  "title": "Tichý reset DNA",
-  "createdAt": "2026-02-18T00:00:00.000Z",
-  "updatedAt": "2026-02-18T00:00:00.000Z",
+  "title": "Tichý reset dňa",
   "engine": {
     "subject": "tichy_reset_dna",
     "locale": "sk"
   },
   "content": {
-    "heroSubtitle": "Rýchly osobný náhľad",
+    "heroTitle": "Tichý reset dňa",
+    "heroSubtitle": "Krátky, praktický reset pozornosti a energie bez moralizovania a bez ezoteriky.",
     "intro": {
-      "title": "Úvod",
-      "text": "Vyplň dátum narodenia a zobraz náhľad výsledku."
+      "title": "Na čo to je",
+      "text": "Táto edícia ti pomôže rýchlo zistiť, kde sa ti počas dňa rozpadá smer (pozornosť, hranice, regenerácia) a dá ti malé kroky, ktoré sú realistické aj v chaose."
     },
     "form": {
-      "title": "Výpočet",
-      "nameLabel": "Meno",
+      "title": "Spusti vyhodnotenie",
+      "nameLabel": "Meno (voliteľné)",
       "birthDateLabel": "Dátum narodenia",
       "submitLabel": "Vyhodnotiť"
     },
     "result": {
-      "teaserTitle": "Náhľad",
-      "teaserNote": "Ukážka výsledku",
+      "teaserTitle": "Preview",
+      "teaserNote": "Ukážka výsledku (bez platby len krátky náhľad).",
       "unlockHint": "Odomkni plný výsledok"
     },
     "paywall": {
-      "headline": "Odomkni celý výsledok",
+      "headline": "Odomkni plnú verziu",
       "bullets": [
-        "Všetky kategórie",
-        "Detailné vysvetlenie"
+        "Detailný profil tvojho dnešného rytmu",
+        "Konkrétne odporúčania pre 3 oblasti",
+        "Krátky plán na zajtra (3 kroky)",
+        "Zhrnutie v jednej vete"
       ],
-      "cta": "Pokračovať"
+      "cta": "Zaplatiť"
     }
   },
-  "tasks": {
-    "pickPerCategory": 1,
-    "categories": []
-  }
+  "createdAt": "2026-02-16T17:30:57.007Z",
+  "updatedAt": "2026-02-16T17:30:57.007Z"
 }
