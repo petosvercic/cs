@@ -1,0 +1,39 @@
+{
+  "slug": "tichy-reset-dna",
+  "title": "Tichý reset dňa",
+  "engine": {
+    "subject": "tichy_reset_dna",
+    "locale": "sk"
+  },
+  "content": {
+    "heroTitle": "Tichý reset dňa",
+    "heroSubtitle": "Krátky, praktický reset pozornosti a energie bez moralizovania a bez ezoteriky.",
+    "intro": {
+      "title": "Na čo to je",
+      "text": "Táto edícia ti pomôže rýchlo zistiť, kde sa ti počas dňa rozpadá smer (pozornosť, hranice, regenerácia) a dá ti malé kroky, ktoré sú realistické aj v chaose."
+    },
+    "form": {
+      "title": "Spusti vyhodnotenie",
+      "nameLabel": "Meno (voliteľné)",
+      "birthDateLabel": "Dátum narodenia",
+      "submitLabel": "Vyhodnotiť"
+    },
+    "result": {
+      "teaserTitle": "Preview",
+      "teaserNote": "Ukážka výsledku (bez platby len krátky náhľad).",
+      "unlockHint": "Odomkni plný výsledok"
+    },
+    "paywall": {
+      "headline": "Odomkni plnú verziu",
+      "bullets": [
+        "Detailný profil tvojho dnešného rytmu",
+        "Konkrétne odporúčania pre 3 oblasti",
+        "Krátky plán na zajtra (3 kroky)",
+        "Zhrnutie v jednej vete"
+      ],
+      "cta": "Zaplatiť"
+    }
+  },
+  "createdAt": "2026-02-16T17:30:57.007Z",
+  "updatedAt": "2026-02-16T17:30:57.007Z"
+}

@@ -1,4 +1,4 @@
-export type ProductRegistryItem = {
+﻿export type ProductRegistryItem = {
   id: string;
   title: string;
   baseUrl: string;
@@ -15,10 +15,11 @@ export const products: ProductRegistryItem[] = [
     id: "nevedelE",
     title: "nevedelE",
     baseUrl: normalizeBaseUrl(process.env.NEVEDEL_BASE_URL, "http://localhost:3000"),
-    description: "Production app bridge"
-  }
+    description: "Production app bridge",
+  },
 ];
 
-export function getProduct(id: string): ProductRegistryItem | undefined {
-  return products.find((item) => item.id === id);
+export function getProduct(id: string) {
+  return products.find((p) => p.id === id);
 }
+

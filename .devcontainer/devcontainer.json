@@ -1,0 +1,5 @@
+npm install
+git status
+git add package-lock.json
+git commit -m "chore(lock): update lockfile for apps/admin workspace"
+git push
