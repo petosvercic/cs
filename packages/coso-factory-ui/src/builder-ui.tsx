@@ -1,8 +1,8 @@
 "use client";
 import { useMemo, useState } from "react";
 import { normalizeEditionJsonForBuilder, normalizeEditionJsonRaw, validateEditionJson } from "../../../apps/nevedelE/lib/edition-json";
+import type { EditionIndexEntry } from "./types";
 
-type EditionIndexEntry = { slug: string; title: string; createdAt?: string };
 
 function buildPrompt(existingSlugs: string[]) {
   const deployed = existingSlugs.map((s) => `- ${s}`).join("\n");
