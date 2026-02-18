@@ -6,14 +6,19 @@ type EditionsPanelProps = {
   baseUrl: string;
   initialSlugs: string[];
   initialError: { status: number | string; message: string } | null;
+  initialRefreshedAt: string;
 };
 
 type FetchState = "idle" | "loading" | "ok" | "error";
 
-export function EditionsPanel({ baseUrl, initialSlugs, initialError }: EditionsPanelProps) {
+export function EditionsPanel({ baseUrl, initialSlugs, initialError, initialRefreshedAt }: EditionsPanelProps) {
   const [slugs, setSlugs] = useState<string[]>(initialSlugs);
   const [error, setError] = useState<{ status: number | string; message: string } | null>(initialError);
   const [state, setState] = useState<FetchState>(initialError ? "error" : initialSlugs.length ? "ok" : "idle");
+  const [search, setSearch] = useState("");
+  const [lastRefreshAt, setLastRefreshAt] = useState(initialRefreshedAt);
+
+  const filteredSlugs = slugs.filter((slug) => slug.toLowerCase().includes(search.toLowerCase()));
 
   async function refresh() {
     setState("loading");
@@ -43,6 +48,7 @@ export function EditionsPanel({ baseUrl, initialSlugs, initialError }: EditionsP
       }
 
       setSlugs(nextSlugs);
+      setLastRefreshAt(new Date().toISOString());
       setState("ok");
     } catch {
       setState("error");
@@ -59,15 +65,27 @@ export function EditionsPanel({ baseUrl, initialSlugs, initialError }: EditionsP
         </button>
       </div>
 
+      <p><strong>Total:</strong> {slugs.length}</p>
+      <p><strong>Last refresh:</strong> <code>{lastRefreshAt}</code></p>
+      <label style={{ display: "block", marginBottom: 8 }}>
+        <strong>Search slug:</strong>{" "}
+        <input
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          placeholder="Type slug"
+          style={{ padding: "6px 8px" }}
+        />
+      </label>
+
       {!error ? (
-        slugs.length > 0 ? (
+        filteredSlugs.length > 0 ? (
           <ul>
-            {slugs.map((slug) => (
+            {filteredSlugs.map((slug) => (
               <li key={slug}><code>{slug}</code></li>
             ))}
           </ul>
         ) : (
-          <p>No slugs returned.</p>
+          <p>{slugs.length > 0 ? "No matches for current search." : "No slugs returned."}</p>
         )
       ) : (
         <div>
