@@ -1,11 +1,12 @@
 import fs from "node:fs";
 import path from "node:path";
 
-export type EditionIndexEntry = { slug: string; title: string; createdAt?: string };
+export type EditionIndexEntry = { slug: string; title: string; createdAt?: string; updatedAt?: string };
 export type EditionDocument = {
   slug: string;
   title: string;
   createdAt?: string;
+  updatedAt?: string;
   engine?: { subject?: string; locale?: "sk" | "cz" | "en" };
   content?: Record<string, any>;
   tasks?: any;
@@ -50,7 +51,7 @@ export function persistEditionLocally(edition: EditionDocument): void {
   fs.mkdirSync(editionsDir, { recursive: true });
 
   const now = new Date().toISOString();
-  const normalizedEdition = { ...edition, createdAt: edition.createdAt || now };
+  const normalizedEdition = { ...edition, createdAt: edition.createdAt || now, updatedAt: edition.updatedAt || now };
 
   const edPath = path.join(editionsDir, `${edition.slug}.json`);
   fs.writeFileSync(edPath, JSON.stringify(normalizedEdition, null, 2) + "\n", "utf8");
@@ -61,12 +62,22 @@ export function persistEditionLocally(edition: EditionDocument): void {
   }
   if (!Array.isArray(idx.editions)) idx.editions = [];
 
-  if (!idx.editions.some((e) => e?.slug === edition.slug)) {
+  const existingIndex = idx.editions.findIndex((e) => e?.slug === edition.slug);
+  if (existingIndex === -1) {
     idx.editions.unshift({
       slug: edition.slug,
       title: edition.title,
       createdAt: normalizedEdition.createdAt,
+      updatedAt: normalizedEdition.updatedAt
     });
+  } else {
+    idx.editions[existingIndex] = {
+      ...idx.editions[existingIndex],
+      slug: edition.slug,
+      title: edition.title,
+      createdAt: idx.editions[existingIndex]?.createdAt || normalizedEdition.createdAt,
+      updatedAt: normalizedEdition.updatedAt
+    };
   }
 
   fs.writeFileSync(indexPath, JSON.stringify(idx, null, 2) + "\n", "utf8");
@@ -80,7 +91,7 @@ export function listEditions(): EditionIndexEntry[] {
     if (Array.isArray(idx?.editions)) {
       return idx.editions
         .filter((e: any) => e && typeof e.slug === "string" && typeof e.title === "string")
-        .map((e: any) => ({ slug: e.slug, title: e.title, createdAt: e.createdAt }));
+        .map((e: any) => ({ slug: e.slug, title: e.title, createdAt: e.createdAt, updatedAt: e.updatedAt }));
     }
   } catch {
     // fallback below
@@ -97,6 +108,7 @@ export function listEditions(): EditionIndexEntry[] {
         slug: String(doc.slug || name.replace(/\.json$/, "")),
         title: String(doc.title || doc.slug || name),
         createdAt: typeof doc.createdAt === "string" ? doc.createdAt : undefined,
+        updatedAt: typeof doc.updatedAt === "string" ? doc.updatedAt : undefined,
       } as EditionIndexEntry;
     });
 }

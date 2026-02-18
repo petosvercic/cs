@@ -1,64 +1,10 @@
 {
   "editions": [
     {
-      "slug": "fialovy-baner-ritmus-smerv5",
-      "title": "Fialovy baner: Rytmus a smer",
-      "createdAt": "2026-02-15T11:30:56.136Z"
-    },
-    {
-      "slug": "fialovy-baner-ritmus-smerv4",
-      "title": "Fialovy baner: Rytmus a smer",
-      "createdAt": "2026-02-15T11:15:22.350Z"
-    },
-    {
-      "slug": "fialovy-baner-ritmus-smerv3",
-      "title": "Fialovy baner: Rytmus a smer",
-      "createdAt": "2026-02-15T10:56:27.275Z"
-    },
-    {
-      "slug": "fialovy-baner-ritmus-smerxx",
-      "title": "Fialovy baner: Rytmus a smer",
-      "createdAt": "2026-02-15T02:26:01.698Z"
-    },
-    {
-      "slug": "fialovy-baner-ritmus-smer",
-      "title": "Fialovy baner: Rytmus a smer",
-      "createdAt": "2026-02-15T02:11:40.302Z"
-    },
-    {
-      "slug": "test-kanon-rovnovaha-v1",
-      "title": "Test: Kanón rovnováhy (v1)",
-      "createdAt": "2026-02-13T14:59:15.727Z"
-    },
-    {
-      "slug": "test-rovnovaha-v1",
-      "title": "Test: Rovnováha (v1)",
-      "createdAt": "2026-02-13T13:24:03.918Z"
-    },
-    {
-      "slug": "test-edicia-rovnovaha",
-      "title": "Test rovnováha",
-      "createdAt": "2026-02-13T12:49:21.050Z"
-    },
-    {
-      "slug": "plna-test-edicia-001",
-      "title": "Plná testovacia edícia 5×25 (funkčné odomykanie)",
-      "createdAt": "2026-02-06T11:39:59.779Z"
-    },
-    {
-      "slug": "demo-odomykanie",
-      "title": "Demo odomykanie 5×25",
-      "createdAt": "2026-02-02T22:36:55Z"
-    },
-    {
-      "slug": "test-002",
-      "title": "Test 002",
-      "createdAt": "2026-02-02T10:28:37.149Z"
-    },
-    {
-      "slug": "test-001",
-      "title": "Test Edition",
-      "createdAt": "2026-02-02T10:14:36.945Z"
+      "slug": "tichy-reset-dna",
+      "title": "Tichý reset DNA",
+      "createdAt": "2026-02-18T00:00:00.000Z",
+      "updatedAt": "2026-02-18T00:00:00.000Z"
     }
   ]
 }
