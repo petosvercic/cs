@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { validateEditionJson } from "../../../../lib/edition-json";
-import { listEditions } from "../../../../lib/editions-store";
+import { listEditions, persistEditionLocally } from "../../../../lib/editions-store";
 
 function resolveRepoParts() {
   const repoRaw = (process.env.GITHUB_REPO || "").trim();
@@ -26,7 +26,7 @@ function ghHeaders(token: string) {
     accept: "application/vnd.github+json",
     authorization: `Bearer ${token}`,
     "x-github-api-version": "2022-11-28",
-    "content-type": "application/json",
+    "content-type": "application/json"
   };
 }
 
@@ -57,14 +57,14 @@ async function ghPutContent(args: {
   const body: any = {
     message: args.message,
     branch: args.ref,
-    content: Buffer.from(args.content, "utf8").toString("base64"),
+    content: Buffer.from(args.content, "utf8").toString("base64")
   };
   if (args.sha) body.sha = args.sha;
 
   const res = await fetch(u, {
     method: "PUT",
     headers: ghHeaders(args.token),
-    body: JSON.stringify(body),
+    body: JSON.stringify(body)
   });
 
   if (!res.ok) {
@@ -94,8 +94,11 @@ async function persistEditionInGithub(args: { owner: string; repo: string; token
   }
   if (!Array.isArray(idx.editions)) idx.editions = [];
 
-  if (!idx.editions.some((e: any) => e?.slug === slug)) {
-    idx.editions.unshift({ slug, title: String(edition.title || slug), createdAt: edition.createdAt });
+  const existingIdx = idx.editions.findIndex((e: any) => e?.slug === slug);
+  if (existingIdx === -1) {
+    idx.editions.unshift({ slug, title: String(edition.title || slug), createdAt: edition.createdAt, updatedAt: now });
+  } else {
+    idx.editions[existingIdx] = { ...idx.editions[existingIdx], title: String(edition.title || slug), updatedAt: now };
   }
 
   await ghPutContent({
@@ -103,7 +106,7 @@ async function persistEditionInGithub(args: { owner: string; repo: string; token
     path: idxPath,
     sha: idxSha,
     message: `chore(factory): update index for ${slug}`,
-    content: JSON.stringify(idx, null, 2) + "\n",
+    content: JSON.stringify(idx, null, 2) + "\n"
   });
 
   const existingEdition = await ghGetContent({ ...args, path: edPath });
@@ -112,10 +115,17 @@ async function persistEditionInGithub(args: { owner: string; repo: string; token
     path: edPath,
     sha: existingEdition?.sha,
     message: `chore(factory): add edition ${slug}`,
-    content: JSON.stringify(edition, null, 2) + "\n",
+    content: JSON.stringify({ ...edition, updatedAt: now }, null, 2) + "\n"
   });
 
   return { slug };
+}
+
+function persistEditionInRepo(edition: any) {
+  const now = new Date().toISOString();
+  const withDates = { ...edition, createdAt: edition.createdAt || now, updatedAt: now };
+  persistEditionLocally(withDates);
+  return { slug: String(withDates.slug) };
 }
 
 export async function POST(req: Request) {
@@ -133,34 +143,9 @@ export async function POST(req: Request) {
     const editionInBody = (body as any)?.edition;
     const inputJson = rawEditionJson || JSON.stringify(editionInBody ?? {});
 
-    // default slugs = z lokalneho store
-    let existingSlugs = listEditions().map((e) => e.slug);
-
-    // source of truth slugs = GitHub index (aby neboli duplicity)
-    try {
-      const tokenForSlugs = (process.env.GITHUB_TOKEN || "").trim();
-      if (tokenForSlugs) {
-        const { owner, repo } = resolveRepoParts();
-        const refForSlugs = (process.env.GITHUB_REF || "main").trim();
-        const idx = await ghGetContent({
-          owner,
-          repo,
-          token: tokenForSlugs,
-          path: "apps/nevedelE/data/editions.json",
-          ref: refForSlugs,
-        });
-        if (idx?.content) {
-          const parsed = JSON.parse(idx.content.replace(/^\uFEFF/, ""));
-          const arr = Array.isArray(parsed?.editions) ? parsed.editions : [];
-          const slugs = arr.map((x: any) => String(x?.slug || "")).filter(Boolean);
-          if (slugs.length) existingSlugs = slugs;
-        }
-      }
-    } catch {
-      // ignore, fallback na local
-    }
-
+    const existingSlugs = listEditions().map((e) => e.slug);
     const validated = validateEditionJson(inputJson, existingSlugs);
+
     if (!validated.ok) {
       return NextResponse.json(
         { ok: false, error: validated.error, details: (validated as any).details, debug: (validated as any).debug },
@@ -169,25 +154,35 @@ export async function POST(req: Request) {
     }
 
     const token = (process.env.GITHUB_TOKEN || "").trim();
-    if (!token) throw new Error("Missing env: GITHUB_TOKEN");
+    if (token) {
+      const { owner, repo } = resolveRepoParts();
+      const ref = (process.env.GITHUB_REF || "main").trim();
 
-    const { owner, repo } = resolveRepoParts();
-    const ref = (process.env.GITHUB_REF || "main").trim();
+      const { slug } = await persistEditionInGithub({ owner, repo, token, ref, edition: validated.obj });
+      const indexUrl = `https://github.com/${owner}/${repo}/blob/${ref}/apps/nevedelE/data/editions.json`;
+      const editionUrl = `https://github.com/${owner}/${repo}/blob/${ref}/apps/nevedelE/data/editions/${encodeURIComponent(slug)}.json`;
 
-    // REZIM B: iba persist do GitHubu, ziadne Actions
-    const { slug } = await persistEditionInGithub({ owner, repo, token, ref, edition: validated.obj });
+      return NextResponse.json(
+        {
+          ok: true,
+          slug,
+          mode: "github-contents-only",
+          indexUrl,
+          editionUrl,
+          message: "Edition persisted directly to GitHub (no Actions)."
+        },
+        { status: 200 }
+      );
+    }
 
-    const indexUrl = `https://github.com/${owner}/${repo}/blob/${ref}/apps/nevedelE/data/editions.json`;
-    const editionUrl = `https://github.com/${owner}/${repo}/blob/${ref}/apps/nevedelE/data/editions/${encodeURIComponent(slug)}.json`;
+    const { slug } = persistEditionInRepo(validated.obj);
 
     return NextResponse.json(
       {
         ok: true,
         slug,
-        mode: "github-contents-only",
-        indexUrl,
-        editionUrl,
-        message: "Edition persisted directly to GitHub (no Actions). Vercel deploy will follow from main.",
+        mode: "local",
+        message: "Edition persisted to local repo data."
       },
       { status: 200 }
     );
