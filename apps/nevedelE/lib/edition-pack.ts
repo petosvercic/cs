@@ -12,6 +12,7 @@ export type EditionPackDocument = {
   title: string;
   pack: {
     uiCopy: { heroTitle: string; heroSubtitle: string; unlockCta: string };
+    theme?: { backgroundImageUrl?: string; backgroundOverlay?: "none" | "soft" | "strong" };
     categories: EditionPackCategory[];
   };
   createdAt?: string;
