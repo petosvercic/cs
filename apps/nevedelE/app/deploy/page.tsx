@@ -1,6 +1,13 @@
-﻿export const dynamic = "force-dynamic";
+﻿import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function DeployPage() {
+export const dynamic = "force-dynamic";
+
+export default async function DeployPage() {
+  const c = await cookies();
+  const ok = c.get("factory")?.value === "1";
+  if (!ok) redirect("/factory-login");
+
   return (
     <main style={{ padding: 24, fontFamily: "system-ui", maxWidth: 900 }}>
       <h1>Deploy</h1>
