@@ -33,3 +33,4 @@ node_modules/
 .env
 .env.*
 "@ | Out-File -Encoding utf8 ".gitignore"
+*.bak_*
