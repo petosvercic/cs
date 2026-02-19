@@ -1,0 +1,53 @@
+﻿Skupina 0: Zafixovať cieľový tvar (bez stavania, len rozhodnutie architektúry)
+
+Výstup tejto skupiny je 3–5 viet, ktoré platia navždy.
+
+1) nevedelE (apps/nevedelE) je jeden autonómny produkčný systém: obsahuje end-user /e/<slug> a zároveň interné tools (builder/publish/deploy/settings/editions) chránené tokenom/loginom.
+2) Publikovanie edícií (PR alebo direct) prebieha výhradne v nevedelE; globálny admin nič nepublikuje.
+3) Admin (apps/admin) je iba portfólio dohľad a rozcestník: health, zoznam produktov, odkazy do nevedelE tools.
+4) Admin nesmie obsahovať builder/factory/publish UI ani API logiku.
+
+Skupina 1: Udržať Admin shell ako portfólio rozcestník
+
+Cieľ: admin beží, má navigáciu a vie zobraziť produkty v portfóliu (dnes nevedelE).
+
+Minimálne routy:
+/ dashboard
+/products zoznam produktov
+/products/<id> detail produktu (health + odkazy do nevedelE tools)
+
+Kontrolné body:
+npm run dev -w apps/admin funguje
+npm run build -w apps/admin prejde
+Admin ukáže nevedelE a vie prekliknúť na jeho tools
+
+Skupina 2: Zafixovať nevedelE ako “single autonomous system”
+
+Cieľ: v nevedelE sú všetky interné produkčné nástroje + publish.
+
+Úkony:
+- nevedelE má /builder (prompt + JSON + refresh slugs + publish)
+- nevedelE má /deploy /settings /publish /editions (tools UI) a sú chránené
+- publish ide buď PR flow alebo direct commit flow (jeden vybraný spôsob)
+
+Kontrolné body:
+- bez tokenu sa tools nedajú otvoriť
+- refresh slugov vracia 200
+- publish vytvorí PR alebo zapíše edíciu (podľa zvoleného spôsobu)
+
+Skupina 3: Admin len linkuje, nič nevkladá
+
+Cieľ: admin neembeduje factory UI ani neobsahuje publish API. Iba odkazuje na nevedelE.
+
+Úkony:
+- v admin product detail zobraziť baseUrl, health a linky na /list, /builder, /deploy, /settings, /publish, /editions
+- zmazať/zakázať factory/publish/editions route-y a API v apps/admin
+
+Skupina 4: Guardrails (aby sa to už nikdy nerozliezlo)
+
+Cieľ: technicky vynútiť, že admin zostane hub.
+
+Úkony:
+- pridať CI check: v apps/admin nesmie existovať /factory, /builder, /api/publish, /editions route-y
+- pridať krátky docs/SPEC_NEVEDELE_SYSTEM.md s rovnakou “Skupina 0” ústavou
+
