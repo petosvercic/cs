@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-import { parseEditionPackDocument } from "../../../../lib/edition-pack";
+import { validateEditionPackJson } from "../../../../lib/edition-pack";
 import { listEditions, persistEditionLocally } from "../../../../lib/editions-store";
 
 function resolveRepoParts() {
@@ -92,9 +92,9 @@ export async function POST(req: Request) {
     const body: any = await req.json().catch(() => null);
     const raw = typeof body?.rawEditionJson === "string" ? body.rawEditionJson : JSON.stringify(body?.edition ?? {});
 
-    const validated = parseEditionPackDocument(raw);
-    if ("error" in validated) {
-      return NextResponse.json({ ok: false, error: validated.error, details: validated.details }, { status: 400 });
+    const validated = validateEditionPackJson(raw, listEditions().map((e) => e.slug));
+    if ("errors" in validated) {
+      return NextResponse.json({ ok: false, error: validated.error, errors: validated.errors }, { status: 400 });
     }
 
     const exists = listEditions().some((e) => e.slug === validated.data.slug);

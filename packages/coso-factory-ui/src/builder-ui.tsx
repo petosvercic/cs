@@ -1,112 +1,149 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { parseEditionPackDocument } from "../../../apps/nevedelE/lib/edition-pack";
+import {
+  ALLOWLIST_TOKENS,
+  type CopyPayload,
+  type EditionPackDocument,
+  validateCopyPayloadJson,
+  validateEditionPackJson,
+} from "../../../apps/nevedelE/lib/edition-pack";
 import type { EditionIndexEntry } from "./types";
 
-const BASE_PROMPT = `You are generating a single JSON document called EditionPackDocument.
-It will be committed into the repository at:
-- apps/nevedelE/data/editions/<slug>.json
+const SKELETON_CATEGORY_IDS = ["cat-1", "cat-2", "cat-3", "cat-4", "cat-5"] as const;
+const FIXED_UNLOCK_CTA = "Odomknúť";
+const ITEMS_PER_CATEGORY = 9;
 
-This JSON MUST match the schema below EXACTLY. Do not add extra keys.
-Do not include markdown. Output ONLY valid JSON.
+const PROMPT_TEMPLATE = `You are a copywriting assistant. Output ONLY valid JSON (no markdown).
+Return a JSON object with this EXACT shape and NO extra keys:
 
-SCHEMA (EditionPackDocument):
 {
-  "slug": string,                 // kebab-case, 3-64 chars, lowercase letters/numbers/hyphens
-  "title": string,                // human readable title, non-empty
-  "pack": {
-    "uiCopy": {
-      "heroTitle": string,        // main headline (short, strong)
-      "heroSubtitle": string,     // supportive line (1 sentence)
-      "unlockCta": string         // CTA button label (2-4 words)
-    },
-    "theme": {
-      "backgroundImageUrl": string,          // optional, either "/backgrounds/<file>" or absolute URL
-      "backgroundOverlay": "none" | "soft" | "strong"
-    },
-    "categories": [
-      {
-        "id": string,             // kebab-case identifier (e.g. "work", "love", "health"...)
-        "title": string,          // category title shown in UI
-        "intro": string,          // 1-2 sentences shown before unlocked results
-        "lockedIntro": string,    // 1 sentence shown when locked
-        "items": [
-          {
-            "id": string,         // kebab-case identifier unique within category
-            "title": string,      // short label shown as row title
-            "template": string    // template string with placeholders
-          }
-        ]
-      }
-    ]
-  }
+  "heroTitle": "string",
+  "heroSubtitle": "string",
+  "categories": [
+    {
+      "title": "string",
+      "intro": "string",
+      "lockedIntro": "string",
+      "items": [
+        { "title": "string", "template": "string" }
+      ]
+    }
+  ]
 }
 
-TEMPLATE RULES
-- Each category MUST have at least 5 items (recommended 8-12).
-- Each item.template MUST be a single sentence and MUST use placeholders in curly braces.
-- Allowed placeholders: {name}, {birthYear}, {age}, {day}, {month}, {year}.
-- Each template should produce a believable personalized line when placeholders are replaced.
-- Do NOT use any other placeholder names.
-- Do NOT include profanity, hate, sexual content, or medical diagnoses. Keep it playful but safe.
-
-STYLE RULES
+Rules:
 - Language: Slovak.
-- Tone: witty, slightly mysterious, not cringe, not spiritual cultish.
-- heroTitle: max 7 words.
-- heroSubtitle: max 140 characters.
-- intros: max 240 characters each.
-- unlockCta: 2-4 words, action oriented.
+- This is NOT a horoscope. Do not create “life advice” categories like work/relationships/money/health as a theme. Keep categories abstract/neutral.
+- Do NOT include user data placeholders like {name}, {age}, {day}, {month}, {year}.
+- Each item.template must be a single sentence and must contain 1–3 placeholders in curly braces.
+- Allowed placeholders ONLY from this allowlist:
+{{ALLOWLIST_TOKENS}}
+- No other placeholders allowed.
+- heroTitle max 6 words.
+- heroSubtitle max 140 characters.
+- intro max 240 characters.
+- lockedIntro max 160 characters.
+- Exactly 5 categories.
+- Each category must include 9 items.
 
-LEGACY BAN (IMPORTANT)
-- DO NOT output keys like: "engine", "tasks", "pickPerCategory", "variants", "result", "paywall".
-- If you include any banned keys, the JSON will be rejected.
+Return ONLY the JSON object.`;
 
-OUTPUT
-Return ONLY the JSON document.`;
+function buildPrompt() {
+  return PROMPT_TEMPLATE.replace("{{ALLOWLIST_TOKENS}}", ALLOWLIST_TOKENS.join(", "));
+}
 
-function withExistingSlugs(existingSlugs: string[]) {
-  if (!existingSlugs.length) return BASE_PROMPT;
-  return `${BASE_PROMPT}\n\nAlready used slugs:\n${existingSlugs.map((s) => `- ${s}`).join("\n")}`;
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 64);
+}
+
+function buildEditionFromCopy(slug: string, title: string, copy: CopyPayload): EditionPackDocument {
+  return {
+    slug,
+    title,
+    pack: {
+      uiCopy: {
+        heroTitle: copy.heroTitle,
+        heroSubtitle: copy.heroSubtitle,
+        unlockCta: FIXED_UNLOCK_CTA,
+      },
+      categories: SKELETON_CATEGORY_IDS.map((catId, catIdx) => {
+        const fromCopy = copy.categories[catIdx];
+        const normalizedItems = fromCopy.items.slice(0, ITEMS_PER_CATEGORY).map((item, itemIdx) => ({
+          id: `item-${catIdx + 1}-${itemIdx + 1}`,
+          title: item.title,
+          template: item.template,
+        }));
+
+        return {
+          id: catId,
+          title: fromCopy.title,
+          intro: fromCopy.intro,
+          lockedIntro: fromCopy.lockedIntro,
+          items: normalizedItems,
+        };
+      }),
+    },
+  };
 }
 
 export function FactoryBuilder({ editions }: { editions: EditionIndexEntry[] }) {
   const existingSlugs = useMemo(() => editions.map((e) => e.slug), [editions]);
-  const [prompt, setPrompt] = useState(withExistingSlugs(existingSlugs));
-  const [editionJson, setEditionJson] = useState("");
-  const [backgroundImageUrl, setBackgroundImageUrl] = useState("");
-  const [backgroundOverlay, setBackgroundOverlay] = useState<"none" | "soft" | "strong">("soft");
+  const [slug, setSlug] = useState("");
+  const [title, setTitle] = useState("");
+  const [prompt, setPrompt] = useState(buildPrompt());
+  const [copyPayloadJson, setCopyPayloadJson] = useState("");
+  const [errors, setErrors] = useState<string[]>([]);
+  const [previewJson, setPreviewJson] = useState("");
   const [status, setStatus] = useState("");
 
-  async function onDispatch() {
-    let candidate = editionJson.trim();
-    if (!candidate) return;
+  function onGeneratePrompt() {
+    setPrompt(buildPrompt());
+  }
 
-    try {
-      const obj = JSON.parse(candidate);
-      if (backgroundImageUrl.trim()) {
-        obj.pack = obj.pack || {};
-        obj.pack.theme = obj.pack.theme || {};
-        obj.pack.theme.backgroundImageUrl = backgroundImageUrl.trim();
-        obj.pack.theme.backgroundOverlay = backgroundOverlay;
-        candidate = JSON.stringify(obj, null, 2);
-      }
-    } catch {
-      setStatus("Invalid JSON");
+  function onValidateAndPreview() {
+    const nextErrors: string[] = [];
+    const normalizedSlug = slugify(slug || title);
+    if (!normalizedSlug) nextErrors.push("Slug is required (or inferable from title).");
+    if (!title.trim()) nextErrors.push("Title is required.");
+
+    const payload = validateCopyPayloadJson(copyPayloadJson);
+    if ("errors" in payload) nextErrors.push(...payload.errors);
+
+    if ("errors" in payload || nextErrors.length > 0) {
+      setErrors(nextErrors);
+      setPreviewJson("");
       return;
     }
 
-    const parsed = parseEditionPackDocument(candidate);
-    if ("error" in parsed) {
-      setStatus(`Invalid JSON: ${parsed.error}${parsed.details ? ` (${parsed.details})` : ""}`);
+    const edition = buildEditionFromCopy(normalizedSlug, title.trim(), payload.data);
+    const validatedEdition = validateEditionPackJson(edition, existingSlugs);
+    if ("errors" in validatedEdition) {
+      setErrors(validatedEdition.errors);
+      setPreviewJson("");
+      return;
+    }
+
+    setErrors([]);
+    setPreviewJson(JSON.stringify(validatedEdition.data, null, 2));
+  }
+
+  async function onDispatch() {
+    if (!previewJson) {
+      setStatus("Preview first (Validate & Build). ");
       return;
     }
 
     const res = await fetch("/api/factory/dispatch", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ edition: parsed.data, rawEditionJson: candidate }),
+      body: JSON.stringify({ rawEditionJson: previewJson }),
     });
 
     const data = await res.json().catch(() => null);
@@ -114,28 +151,49 @@ export function FactoryBuilder({ editions }: { editions: EditionIndexEntry[] }) 
       setStatus(`Dispatch failed: ${data?.error ?? res.status}`);
       return;
     }
+
     setStatus(String(data?.message || `OK (${data?.slug})`));
-    setEditionJson("");
   }
 
   return (
     <main className="min-h-screen px-4 py-10 text-neutral-100" style={{ backgroundImage: "url(/brand/bg.png)", backgroundSize: "cover" }}>
-      <div className="mx-auto w-full max-w-4xl rounded-2xl border border-neutral-800 bg-neutral-900/70 p-6">
+      <div className="mx-auto w-full max-w-5xl rounded-2xl border border-neutral-800 bg-neutral-900/70 p-6">
         <h1 className="text-3xl font-semibold">Factory Builder</h1>
-        <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} rows={16} className="mt-4 w-full rounded border border-neutral-700 bg-neutral-950/80 p-3 font-mono text-sm" />
 
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          <input value={backgroundImageUrl} onChange={(e) => setBackgroundImageUrl(e.target.value)} placeholder="/backgrounds/my-bg.jpg or https://..." className="rounded border border-neutral-700 bg-neutral-950/80 p-2 text-sm" />
-          <select value={backgroundOverlay} onChange={(e) => setBackgroundOverlay(e.target.value as any)} className="rounded border border-neutral-700 bg-neutral-950/80 p-2 text-sm">
-            <option value="none">Overlay: none</option>
-            <option value="soft">Overlay: soft</option>
-            <option value="strong">Overlay: strong</option>
-          </select>
+          <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Edition title" className="rounded border border-neutral-700 bg-neutral-950/80 p-2 text-sm" />
+          <input value={slug} onChange={(e) => setSlug(e.target.value)} placeholder="edition-slug (optional, auto from title)" className="rounded border border-neutral-700 bg-neutral-950/80 p-2 text-sm" />
         </div>
 
-        <textarea value={editionJson} onChange={(e) => setEditionJson(e.target.value)} rows={14} className="mt-4 w-full rounded border border-neutral-700 bg-neutral-950/80 p-3 font-mono text-sm" placeholder="Paste EditionPackDocument JSON" />
-        <button onClick={onDispatch} className="mt-3 rounded bg-emerald-300 px-3 py-2 text-sm font-semibold text-emerald-950">Dispatch build</button>
-        {status ? <p className="mt-3 text-sm text-neutral-200">{status}</p> : null}
+        <div className="mt-6 flex gap-3">
+          <button onClick={onGeneratePrompt} className="rounded bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-950">Generate prompt</button>
+        </div>
+        <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} rows={16} className="mt-3 w-full rounded border border-neutral-700 bg-neutral-950/80 p-3 font-mono text-sm" />
+
+        <h2 className="mt-6 text-lg font-semibold">Paste LLM copy payload JSON</h2>
+        <textarea value={copyPayloadJson} onChange={(e) => setCopyPayloadJson(e.target.value)} rows={14} className="mt-2 w-full rounded border border-neutral-700 bg-neutral-950/80 p-3 font-mono text-sm" />
+
+        <div className="mt-3 flex gap-3">
+          <button onClick={onValidateAndPreview} className="rounded bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-950">Validate & Build</button>
+          <button onClick={onDispatch} className="rounded bg-emerald-300 px-3 py-2 text-sm font-semibold text-emerald-950" disabled={!previewJson}>Dispatch / Publish</button>
+        </div>
+
+        {errors.length > 0 ? (
+          <ul className="mt-4 list-disc rounded border border-red-500/60 bg-red-950/30 p-4 pl-8 text-sm text-red-200">
+            {errors.map((err) => (
+              <li key={err}>{err}</li>
+            ))}
+          </ul>
+        ) : null}
+
+        {previewJson ? (
+          <>
+            <h3 className="mt-6 text-lg font-semibold">Final EditionPackDocument preview</h3>
+            <textarea value={previewJson} readOnly rows={16} className="mt-2 w-full rounded border border-neutral-700 bg-neutral-950/80 p-3 font-mono text-sm" />
+          </>
+        ) : null}
+
+        {status ? <p className="mt-4 text-sm text-neutral-200">{status}</p> : null}
       </div>
     </main>
   );

@@ -70,8 +70,8 @@ export default function EditionClient({ edition }: { edition: EditionPackDocumen
     return applyPoolingA({ categories }, 1, isPaid);
   }, [submitted, birthISO, name, edition, isPaid]);
 
-  const bg = edition.pack.theme?.backgroundImageUrl || "/brand/bg.png";
-  const overlay = edition.pack.theme?.backgroundOverlay || "soft";
+  const bg = "/brand/bg.png";
+  const overlay = "soft";
 
   return (
     <main className="relative min-h-screen text-neutral-100">
