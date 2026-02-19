@@ -1,0 +1,47 @@
+﻿Skupina 0: KANONICKÝ CIEĽ ARCHITEKTÚRY (PLATÍ NAVŽDY)
+
+1) nevedelE (apps/nevedelE) je JEDEN autonómny produkčný systém.
+   Obsahuje:
+   - end-user /e/<slug>
+   - interné tools: /builder, /deploy, /settings, /publish, /editions
+   - publish pipeline (PR alebo direct)
+   - ochranu tokenom/loginom pre interné tools
+
+2) Publikovanie edícií prebieha výhradne v nevedelE.
+   Globálny admin nikdy nevytvára PR ani nezapisuje edície.
+
+3) Admin (apps/admin) je iba dohľad a rozcestník.
+   Obsahuje:
+   - dashboard
+   - zoznam produktov
+   - health check
+   - odkazy na tools v nevedelE
+
+4) Admin NESMIE obsahovať:
+   - factory/builder UI
+   - publish API
+   - editions route
+   - deploy/settings workflow
+
+Skupina 1: Admin = hub
+- /dashboard
+- /products
+- /products/<id> (health + odkazy do nevedelE)
+
+Skupina 2: nevedelE = produkčný systém
+- /e/<slug> (public)
+- /builder (protected)
+- /deploy (protected)
+- /settings (protected)
+- /publish (protected)
+- /editions (protected)
+
+Kontrolné body:
+- bez tokenu sa tools nedajú otvoriť
+- refresh slugov vracia 200
+- publish vytvorí PR alebo zapíše edíciu
+- admin neobsahuje factory ani publish logiku
+
+Skupina 3: Guardrails
+- CI check: v apps/admin nesmie existovať /factory, /builder, /api/publish, /editions
+- Tento dokument je záväzný pre všetky budúce úpravy.
