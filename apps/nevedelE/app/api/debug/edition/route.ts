@@ -1,26 +1,29 @@
 import { NextResponse } from "next/server";
-import fs from "node:fs";
-import path from "node:path";
+import { loadEditionBySlug } from "../../../../lib/editions-store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+function resolveBackground(edition: any) {
+  const theme = edition?.pack?.theme ?? {};
+  return {
+    backgroundImageUrl: typeof theme.backgroundImageUrl === "string" && theme.backgroundImageUrl.trim() ? theme.backgroundImageUrl : "/brand/bg.png",
+    backgroundOverlay: theme.backgroundOverlay === "none" || theme.backgroundOverlay === "strong" ? theme.backgroundOverlay : "soft",
+  };
+}
+
 export async function GET(req: Request) {
   const u = new URL(req.url);
-  const slug = String(u.searchParams.get("slug") ?? "").trim() || "demo-odomykanie";
+  const slug = String(u.searchParams.get("slug") ?? "").trim();
+  if (!slug) return NextResponse.json({ ok: false, error: "MISSING_SLUG" }, { status: 400 });
 
-  const cwd = process.cwd();
-
-  const p1 = path.join(cwd, "data", "editions", `${slug}.json`);
-  const p2 = path.join(cwd, "apps", "nevedelE", "data", "editions", `${slug}.json`);
-
-  const e1 = fs.existsSync(p1);
-  const e2 = fs.existsSync(p2);
+  const edition = loadEditionBySlug(slug);
+  if (!edition) return NextResponse.json({ ok: false, error: "NOT_FOUND" }, { status: 404 });
 
   return NextResponse.json({
-    cwd,
-    slug,
-    paths: { p1, p2 },
-    exists: { p1: e1, p2: e2 },
+    ok: true,
+    edition,
+    resolvedBackground: resolveBackground(edition),
+    stripeConfigured: Boolean((process.env.STRIPE_SECRET_KEY || "").trim()),
   });
 }
