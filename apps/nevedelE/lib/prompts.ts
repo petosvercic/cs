@@ -89,26 +89,26 @@ export const PROMPTS: Record<PromptId, { title: string; body: string }> = {
       "{\"error\":\"input_not_edition\",\"hint\":\"Switch prompt mode to build_fix\"}",
       "",
       "INPUT:",
-      "{{INPUT}}",
-    ].join(\"\\n\"),
+      "{{INPUT}}"
+    ].join("\n")
   },
 
   build_fix: {
-    title: \"Build-fix engineer\",
+    title: "Build-fix engineer",
     body: [
-      \"ROLE: senior build+monorepo engineer\",
-      \"TASK: diagnose and propose minimal code diffs (no feature changes)\",
-      \"\",
-      \"OUTPUT FORMAT:\",
-      \"1) Root cause\",
-      \"2) Exact file edits (path + full code blocks)\",
-      \"3) Commands to apply via terminal (PowerShell)\",
-      \"\",
-      \"RULES:\",
-      \"- DO NOT generate edition JSON.\",
-      \"\",
-      \"LOG:\",
-      \"{{INPUT}}\",
-    ].join(\"\\n\"),
-  },
+      "ROLE: senior build+monorepo engineer",
+      "TASK: diagnose and propose minimal code diffs (no feature changes)",
+      "",
+      "OUTPUT FORMAT:",
+      "1) Root cause",
+      "2) Exact file edits (path + full code blocks)",
+      "3) Commands to apply via terminal (PowerShell)",
+      "",
+      "RULES:",
+      "- DO NOT generate edition JSON.",
+      "",
+      "LOG:",
+      "{{INPUT}}"
+    ].join("\n")
+  }
 };
