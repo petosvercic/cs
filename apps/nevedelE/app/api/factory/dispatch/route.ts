@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { validateEditionJson } from "../../../../lib/edition-json";
@@ -31,7 +31,9 @@ function ghHeaders(token: string) {
 }
 
 async function ghGetContent(args: { owner: string; repo: string; token: string; path: string; ref: string }) {
-  const u = `https://api.github.com/repos/${args.owner}/${args.repo}/contents/${args.path}?ref=${encodeURIComponent(args.ref)}`;
+  const u = `https://api.github.com/repos/${args.owner}/${args.repo}/contents/${args.path}?ref=${encodeURIComponent(
+    args.ref
+  )}`;
   const res = await fetch(u, { headers: ghHeaders(args.token) });
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(`GITHUB_CONTENT_GET_FAILED:${res.status}`);
@@ -128,8 +130,27 @@ function persistEditionInRepo(edition: any) {
   return { slug: String(withDates.slug) };
 }
 
+function requireFactoryAuth(req: Request) {
+  const expected = (process.env.FACTORY_TOKEN || "").trim();
+  if (!expected) return { ok: false as const, status: 401, error: "FACTORY_TOKEN_MISSING" };
+
+  const hdr = (req.headers.get("x-factory-token") || "").trim();
+  if (hdr && hdr === expected) return { ok: true as const };
+
+  const cookie = req.headers.get("cookie") || "";
+  const hasCookie = /(?:^|;\s*)factory=1(?:;|$)/.test(cookie);
+  if (hasCookie) return { ok: true as const };
+
+  return { ok: false as const, status: 401, error: "UNAUTHORIZED" };
+}
+
 export async function POST(req: Request) {
   try {
+    const auth = requireFactoryAuth(req);
+    if (!auth.ok) {
+      return NextResponse.json({ ok: false, error: auth.error }, { status: auth.status });
+    }
+
     const body = await req.json().catch(() => null);
 
     const rawEditionJsonInput = (body as any)?.rawEditionJson;
@@ -160,7 +181,9 @@ export async function POST(req: Request) {
 
       const { slug } = await persistEditionInGithub({ owner, repo, token, ref, edition: validated.obj });
       const indexUrl = `https://github.com/${owner}/${repo}/blob/${ref}/apps/nevedelE/data/editions.json`;
-      const editionUrl = `https://github.com/${owner}/${repo}/blob/${ref}/apps/nevedelE/data/editions/${encodeURIComponent(slug)}.json`;
+      const editionUrl = `https://github.com/${owner}/${repo}/blob/${ref}/apps/nevedelE/data/editions/${encodeURIComponent(
+        slug
+      )}.json`;
 
       return NextResponse.json(
         {
@@ -187,6 +210,9 @@ export async function POST(req: Request) {
       { status: 200 }
     );
   } catch (e: any) {
-    return NextResponse.json({ ok: false, error: "INTERNAL_ERROR", message: String(e?.message ?? e) }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, error: "INTERNAL_ERROR", message: String(e?.message ?? e) },
+      { status: 500 }
+    );
   }
 }
