@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
-import { assertServerEnv } from "../lib/env";
 import "./globals.css";
-
-assertServerEnv();
 
 export const metadata: Metadata = {
   title: "nevedelE",
-  description: "Modern UI pre coso-system",
+  description: "Deterministický runtime produkt",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
