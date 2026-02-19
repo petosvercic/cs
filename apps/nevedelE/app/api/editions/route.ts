@@ -1,21 +1,6 @@
-﻿import { NextResponse } from "next/server";
-import fs from "node:fs";
-import path from "node:path";
+import { NextResponse } from "next/server";
+import { listEditions } from "../../../lib/editions-store";
 
 export async function GET() {
-  try {
-    const editionsDir = path.join(process.cwd(), "data", "editions");
-    const files = fs.readdirSync(editionsDir);
-
-    const slugs = files
-      .filter((f) => f.endsWith(".json"))
-      .map((f) => f.replace(".json", ""));
-
-    return NextResponse.json({ slugs });
-  } catch (err) {
-    return NextResponse.json(
-      { error: "Failed to read editions" },
-      { status: 500 }
-    );
-  }
+  return NextResponse.json({ ok: true, slugs: listEditions().map((e) => e.slug) });
 }
