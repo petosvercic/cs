@@ -21,5 +21,8 @@ jobs:
       - name: Install
         run: npm ci
 
+      - name: Guardrails
+        run: npm run guardrails
+
       - name: Build
         run: npm run build
