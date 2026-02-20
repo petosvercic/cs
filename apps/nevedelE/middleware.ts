@@ -11,14 +11,14 @@ function isAuthorized(req: NextRequest) {
   const expected = (process.env.FACTORY_TOKEN || "").trim();
   if (!expected) return false;
 
-  const cookieOk = req.cookies.get("factory")?.value === "1";
-  if (cookieOk) return true;
+  const cookieToken = req.cookies.get("FACTORY_TOKEN")?.value;
+  if (cookieToken && cookieToken === expected) return true;
 
-  const headerOk = req.headers.get("x-factory-token") === expected;
-  return Boolean(headerOk);
+  const headerToken = (req.headers.get("x-factory-token") || "").trim();
+  return headerToken === expected;
 }
 
-export default function proxy(req: NextRequest) {
+export default function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
   if (!isProtected(pathname)) return NextResponse.next();
   if (isAuthorized(req)) return NextResponse.next();
