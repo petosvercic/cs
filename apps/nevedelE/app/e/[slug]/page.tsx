@@ -1,22 +1,13 @@
-import EditionClient from "./ui";
-import { loadEditionBySlug } from "../../../lib/editions-store";
+import { notFound } from "next/navigation";
 
-export const dynamic = "force-dynamic";
+type Ctx = { params: Promise<{slug:string}> };
 
-export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const edition = loadEditionBySlug(slug);
-
-  if (!edition) {
-    return (
-      <main className="mx-auto max-w-3xl px-4 py-14">
-        <h1 className="text-3xl font-semibold">404</h1>
-        <p className="mt-2 text-neutral-500">
-          Edícia <b>{slug}</b> neexistuje alebo sa nedá načítať.
-        </p>
-      </main>
-    );
-  }
-
-  return <EditionClient slug={slug} edition={edition} />;
+export default async function EditionPage({params}:Ctx){
+  const {slug}=await params;
+  const base = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const r = await fetch(`${base}/api/editions/${encodeURIComponent(slug)}`, { cache: "no-store" }).catch(()=>null as any);
+  if(!r || !r.ok) notFound();
+  const j = await r.json();
+  const title = j?.edition?.title || slug;
+  return <main className="p-8"><h1 className="text-3xl font-bold">{title}</h1><pre className="mt-4 text-xs whitespace-pre-wrap">{JSON.stringify(j.edition,null,2)}</pre></main>;
 }

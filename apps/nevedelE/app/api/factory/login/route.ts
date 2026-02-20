@@ -1,27 +1,20 @@
 import { NextResponse } from "next/server";
 
-export const runtime = "nodejs";
-
 export async function POST(req: Request) {
+  const body: any = await req.json().catch(() => null);
+  const token = String(body?.token || "").trim();
   const expected = (process.env.FACTORY_TOKEN || "").trim();
-  if (!expected) {
-    return NextResponse.json({ ok: false, error: "FACTORY_TOKEN_MISSING" }, { status: 401 });
-  }
+  if (!expected) return NextResponse.json({ ok: false, error: "FACTORY_TOKEN_MISSING" }, { status: 500 });
+  if (!token || token !== expected) return NextResponse.json({ ok: false, error: "UNAUTHORIZED" }, { status: 401 });
 
-  const body = await req.json().catch(() => ({} as any));
-  const got = String(body?.token ?? "").trim();
-
-  if (!got || got !== expected) {
-    return NextResponse.json({ ok: false, error: "LOGIN_FAILED" }, { status: 401 });
-  }
-
-  const res = NextResponse.json({ ok: true });
+  const isProd = process.env.NODE_ENV === "production";
+  const res = NextResponse.json({ ok: true }, { status: 200 });
   res.cookies.set("factory", "1", {
     httpOnly: true,
     sameSite: "lax",
-    secure: true,
+    secure: isProd,
     path: "/",
-    maxAge: 60 * 60 * 24 * 30,
+    maxAge: 60 * 60 * 8,
   });
   return res;
 }

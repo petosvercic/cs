@@ -1,67 +1,34 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const PUBLIC_PREFIXES = [
-  "/",
-  "/list",
-  "/soc-stat",
-  "/factory-login",
-  "/api/factory/login",
-  "/e/",
-  "/api/compute",
-  "/api/stripe/",
-  "/api/pay/",
-  "/_next/",
-  "/favicon.ico",
-];
-
-const PROTECTED_PREFIXES = [
-  "/publish",
-  "/settings",
-  "/deploy",
-  "/builder",
-  "/editions",
-  "/api/build",
-  "/api/builder",
-  "/api/github",
-  "/api/factory",
-];
-
-function isPublic(pathname: string) {
-  return PUBLIC_PREFIXES.some((p) => pathname === p || pathname.startsWith(p));
-}
+const PROTECTED_PREFIXES = ["/builder", "/deploy", "/settings", "/publish", "/editions"];
 
 function isProtected(pathname: string) {
-  return PROTECTED_PREFIXES.some((p) => pathname === p || pathname.startsWith(p + "/"));
+  return PROTECTED_PREFIXES.some((p) => pathname === p || pathname.startsWith(`${p}/`));
+}
+
+function isAuthorized(req: NextRequest) {
+  const expected = (process.env.FACTORY_TOKEN || "").trim();
+  if (!expected) return false;
+
+  const cookieOk = req.cookies.get("factory")?.value === "1";
+  if (cookieOk) return true;
+
+  const headerOk = req.headers.get("x-factory-token") === expected;
+  return Boolean(headerOk);
 }
 
 export default function proxy(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
+  if (!isProtected(pathname)) return NextResponse.next();
+  if (isAuthorized(req)) return NextResponse.next();
 
-  if (pathname === "/api/factory/login") return NextResponse.next();
-
-  if (isPublic(pathname) || !isProtected(pathname)) return NextResponse.next();
-
-  const token = (process.env.FACTORY_TOKEN || "").trim();
-  if (!token) {
-    if (process.env.VERCEL === "1") {
-      return new NextResponse("FACTORY_TOKEN_MISSING", { status: 401 });
-    }
-    return NextResponse.next();
-  }
-
-  const cookieOk = req.cookies.get("factory")?.value === "1";
-  const headerOk = req.headers.get("x-factory-token") === token;
-
-  if (cookieOk || headerOk) return NextResponse.next();
-
-  const url = req.nextUrl.clone();
-  url.pathname = "/factory-login";
-  url.searchParams.set("next", pathname);
-  return NextResponse.redirect(url);
+  const nextUrl = req.nextUrl.clone();
+  nextUrl.pathname = "/factory-login";
+  nextUrl.searchParams.set("next", pathname);
+  return NextResponse.redirect(nextUrl);
 }
 
 export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };
-
