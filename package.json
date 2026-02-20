@@ -10,12 +10,12 @@
         "node": ">=20"
     },
     "scripts": {
-        "build": "npm run build -w packages/coso-contract && npm run build -w packages/coso-nevedel-core && npm run build -w packages/coso-engine && npm run build -w apps/nevedelE",
+        "build": "npm run build -w packages/coso-nevedel-core && npm run build -w apps/nevedelE && npm run build -w apps/admin",
         "dev": "npm run dev -w apps/nevedelE",
         "start": "npm run start -w apps/nevedelE",
         "fix": "node scripts/doctor.mjs --fix-bom",
         "verify": "node scripts/doctor.mjs && npm run build && node scripts/doctor.mjs --postbuild",
-        "build:nevedelE": "npm run build -w packages/coso-contract && npm run build -w packages/coso-nevedel-core && npm run build -w packages/coso-engine && npm run build -w apps/nevedelE",
-        "guardrails": "node scripts/guardrails.mjs"
+        "build:nevedelE": "npm run build -w packages/coso-contract && npm run build -w packages/coso-nevedel-core && npm run build -w packages/coso-engine && npm run build -w apps/nevedelE"
     }
 }
+
