@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getAppUrl } from "../../../../lib/env";
 import Stripe from "stripe";
 
 function baseUrl(req: Request) {
