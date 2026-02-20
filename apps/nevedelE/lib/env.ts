@@ -1,4 +1,4 @@
-﻿export type EnvCheck = { ok: boolean; missing: string[] };
+export type EnvCheck = { ok: boolean; missing: string[] };
 
 const TRUE = new Set(["1", "true", "yes", "on", "enabled", "y", "t"]);
 const FALSE = new Set(["0", "false", "no", "off", "disabled", "n", "f"]);
