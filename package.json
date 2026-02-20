@@ -18,7 +18,8 @@
     "verify": "node scripts/doctor.mjs && npm run build && node scripts/doctor.mjs --postbuild",
     "guardrails": "node scripts/guardrails.mjs",
     "validate:env": "node scripts/validate-env.mjs",
-    "release:check": "node scripts/doctor.mjs && node scripts/guardrails.mjs && node scripts/audit-repo.mjs"
+    "release:check": "node scripts/doctor.mjs && node scripts/guardrails.mjs && node scripts/audit-repo.mjs",
+    "build:nevedelE": "npm run build -w apps/nevedelE",
+    "build:admin": "npm run build -w apps/admin"
   }
 }
-
