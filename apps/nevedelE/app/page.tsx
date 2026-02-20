@@ -97,7 +97,7 @@ export default function Home() {
   }, [rid]);
 
   return (
-    <main className="min-h-screen bg-neutral-950 px-4 py-10 text-neutral-100">
+    <main data-build="2026-02-20T09:17:42.985Z" className="min-h-screen bg-neutral-950 px-4 py-10 text-neutral-100">
       <div className="mx-auto max-w-4xl rounded-2xl border border-neutral-800 bg-neutral-900 p-6">
         <h1 className="text-3xl font-bold">nevedelE</h1>
         <p className="mt-2 text-sm text-neutral-300">Deterministický runtime výsledok + paywall.</p>
