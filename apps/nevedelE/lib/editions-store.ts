@@ -1,8 +1,24 @@
 ﻿import fs from "node:fs";
 import path from "node:path";
-import type { EditionPackDocument } from "./edition-pack";
 
-export type EditionIndexEntry = { slug: string; title: string; createdAt?: string; updatedAt?: string };
+// Minimal type used by store + factory.
+// Keep it loose to avoid cross-file type import breakage during builds.
+export type EditionPackDocument = {
+  slug: string;
+  title: string;
+  createdAt?: string;
+  updatedAt?: string;
+  // optional payload
+  content?: unknown;
+  [key: string]: unknown;
+};
+
+export type EditionIndexEntry = {
+  slug: string;
+  title: string;
+  createdAt?: string;
+  updatedAt?: string;
+};
 
 function readJsonNoBom(filePath: string) {
   return JSON.parse(fs.readFileSync(filePath, "utf8").replace(/^\uFEFF/, ""));
@@ -28,18 +44,30 @@ export function persistEditionLocally(edition: EditionPackDocument): void {
   fs.mkdirSync(editionsDir, { recursive: true });
 
   const now = new Date().toISOString();
-  const normalizedEdition = { ...edition, createdAt: edition.createdAt || now, updatedAt: now };
-  fs.writeFileSync(path.join(editionsDir, `${edition.slug}.json`), JSON.stringify(normalizedEdition, null, 2) + "\n", "utf8");
+  const normalizedEdition: EditionPackDocument = {
+    ...edition,
+    createdAt: edition.createdAt || now,
+    updatedAt: now,
+  };
+
+  fs.writeFileSync(
+    path.join(editionsDir, `${edition.slug}.json`),
+    JSON.stringify(normalizedEdition, null, 2) + "\n",
+    "utf8"
+  );
 
   let idx: { editions: EditionIndexEntry[] } = { editions: [] };
   if (fs.existsSync(indexPath)) idx = readJsonNoBom(indexPath);
   if (!Array.isArray(idx.editions)) idx.editions = [];
 
   const existingIndex = idx.editions.findIndex((e) => e?.slug === edition.slug);
-  const nextEntry = {
+  const nextEntry: EditionIndexEntry = {
     slug: edition.slug,
     title: edition.title,
-    createdAt: existingIndex >= 0 ? idx.editions[existingIndex]?.createdAt || normalizedEdition.createdAt : normalizedEdition.createdAt,
+    createdAt:
+      existingIndex >= 0
+        ? (idx.editions[existingIndex]?.createdAt || normalizedEdition.createdAt)
+        : normalizedEdition.createdAt,
     updatedAt: now,
   };
 
@@ -58,7 +86,12 @@ export function listEditions(): EditionIndexEntry[] {
     if (!Array.isArray(idx?.editions)) return [];
     return idx.editions
       .filter((e: any) => e && typeof e.slug === "string" && typeof e.title === "string")
-      .map((e: any) => ({ slug: e.slug, title: e.title, createdAt: e.createdAt, updatedAt: e.updatedAt }));
+      .map((e: any) => ({
+        slug: e.slug,
+        title: e.title,
+        createdAt: e.createdAt,
+        updatedAt: e.updatedAt,
+      }));
   } catch {
     return [];
   }
