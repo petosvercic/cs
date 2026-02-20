@@ -1,9 +1,1 @@
-﻿import BuilderUi from "./ui";
-import { listEditions } from "../../lib/editions-store";
-
-export const dynamic = "force-dynamic";
-
-export default function Page() {
-  const editions = listEditions();
-  return <BuilderUi editions={editions} />;
-}
+export default function Page(){return <main className="p-8"><h1>builder</h1><p>Protected internal tool page.</p></main>;}
