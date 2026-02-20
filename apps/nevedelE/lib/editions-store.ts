@@ -1,44 +1,21 @@
-import fs from "node:fs";
+﻿import fs from "node:fs";
 import path from "node:path";
+import type { EditionPackDocument } from "./edition-pack";
 
 export type EditionIndexEntry = { slug: string; title: string; createdAt?: string; updatedAt?: string };
-export type EditionDocument = {
-  slug: string;
-  title: string;
-  createdAt?: string;
-  updatedAt?: string;
-  engine?: { subject?: string; locale?: "sk" | "cz" | "en" };
-  content?: Record<string, any>;
-  tasks?: any;
-};
 
 function readJsonNoBom(filePath: string) {
   return JSON.parse(fs.readFileSync(filePath, "utf8").replace(/^\uFEFF/, ""));
 }
 
-function resolveDataRoot() {
+function getCanonicalDataRoot() {
   const cwd = process.cwd();
-  const envRoot = (process.env.EDITIONS_ROOT || "").trim();
-  const roots = [
-    ...(envRoot ? [envRoot] : []),
-    cwd,
-    path.resolve(cwd, ".."),
-    path.resolve(cwd, "..", ".."),
-  ];
-
-  for (const root of roots) {
-    const direct = path.join(root, "data", "editions.json");
-    if (fs.existsSync(direct)) return path.join(root, "data");
-
-    const appScoped = path.join(root, "apps", "nevedelE", "data", "editions.json");
-    if (fs.existsSync(appScoped)) return path.join(root, "apps", "nevedelE", "data");
-  }
-
-  return path.join(cwd, "data");
+  if (cwd.endsWith(path.join("apps", "nevedelE"))) return path.join(cwd, "data");
+  return path.resolve(cwd, "apps", "nevedelE", "data");
 }
 
 export function getDataPaths() {
-  const dataRoot = resolveDataRoot();
+  const dataRoot = getCanonicalDataRoot();
   return {
     dataRoot,
     indexPath: path.join(dataRoot, "editions.json"),
@@ -46,74 +23,48 @@ export function getDataPaths() {
   };
 }
 
-export function persistEditionLocally(edition: EditionDocument): void {
+export function persistEditionLocally(edition: EditionPackDocument): void {
   const { indexPath, editionsDir } = getDataPaths();
   fs.mkdirSync(editionsDir, { recursive: true });
 
   const now = new Date().toISOString();
-  const normalizedEdition = { ...edition, createdAt: edition.createdAt || now, updatedAt: edition.updatedAt || now };
-
-  const edPath = path.join(editionsDir, `${edition.slug}.json`);
-  fs.writeFileSync(edPath, JSON.stringify(normalizedEdition, null, 2) + "\n", "utf8");
+  const normalizedEdition = { ...edition, createdAt: edition.createdAt || now, updatedAt: now };
+  fs.writeFileSync(path.join(editionsDir, `${edition.slug}.json`), JSON.stringify(normalizedEdition, null, 2) + "\n", "utf8");
 
   let idx: { editions: EditionIndexEntry[] } = { editions: [] };
-  if (fs.existsSync(indexPath)) {
-    idx = readJsonNoBom(indexPath);
-  }
+  if (fs.existsSync(indexPath)) idx = readJsonNoBom(indexPath);
   if (!Array.isArray(idx.editions)) idx.editions = [];
 
   const existingIndex = idx.editions.findIndex((e) => e?.slug === edition.slug);
-  if (existingIndex === -1) {
-    idx.editions.unshift({
-      slug: edition.slug,
-      title: edition.title,
-      createdAt: normalizedEdition.createdAt,
-      updatedAt: normalizedEdition.updatedAt
-    });
-  } else {
-    idx.editions[existingIndex] = {
-      ...idx.editions[existingIndex],
-      slug: edition.slug,
-      title: edition.title,
-      createdAt: idx.editions[existingIndex]?.createdAt || normalizedEdition.createdAt,
-      updatedAt: normalizedEdition.updatedAt
-    };
-  }
+  const nextEntry = {
+    slug: edition.slug,
+    title: edition.title,
+    createdAt: existingIndex >= 0 ? idx.editions[existingIndex]?.createdAt || normalizedEdition.createdAt : normalizedEdition.createdAt,
+    updatedAt: now,
+  };
+
+  if (existingIndex === -1) idx.editions.unshift(nextEntry);
+  else idx.editions[existingIndex] = nextEntry;
 
   fs.writeFileSync(indexPath, JSON.stringify(idx, null, 2) + "\n", "utf8");
 }
 
 export function listEditions(): EditionIndexEntry[] {
-  const { indexPath, editionsDir } = getDataPaths();
+  const { indexPath } = getDataPaths();
+  if (!fs.existsSync(indexPath)) return [];
 
   try {
     const idx = readJsonNoBom(indexPath);
-    if (Array.isArray(idx?.editions)) {
-      return idx.editions
-        .filter((e: any) => e && typeof e.slug === "string" && typeof e.title === "string")
-        .map((e: any) => ({ slug: e.slug, title: e.title, createdAt: e.createdAt, updatedAt: e.updatedAt }));
-    }
+    if (!Array.isArray(idx?.editions)) return [];
+    return idx.editions
+      .filter((e: any) => e && typeof e.slug === "string" && typeof e.title === "string")
+      .map((e: any) => ({ slug: e.slug, title: e.title, createdAt: e.createdAt, updatedAt: e.updatedAt }));
   } catch {
-    // fallback below
+    return [];
   }
-
-  if (!fs.existsSync(editionsDir)) return [];
-
-  return fs
-    .readdirSync(editionsDir)
-    .filter((name) => name.endsWith(".json"))
-    .map((name) => {
-      const doc = readJsonNoBom(path.join(editionsDir, name));
-      return {
-        slug: String(doc.slug || name.replace(/\.json$/, "")),
-        title: String(doc.title || doc.slug || name),
-        createdAt: typeof doc.createdAt === "string" ? doc.createdAt : undefined,
-        updatedAt: typeof doc.updatedAt === "string" ? doc.updatedAt : undefined,
-      } as EditionIndexEntry;
-    });
 }
 
-export function loadEditionBySlug(slug: string): EditionDocument | null {
+export function loadEditionBySlug(slug: string): EditionPackDocument | null {
   const safeSlug = String(slug || "").trim();
   if (!safeSlug) return null;
 
@@ -122,7 +73,7 @@ export function loadEditionBySlug(slug: string): EditionDocument | null {
   if (!fs.existsSync(filePath)) return null;
 
   try {
-    return readJsonNoBom(filePath) as EditionDocument;
+    return readJsonNoBom(filePath) as EditionPackDocument;
   } catch {
     return null;
   }
