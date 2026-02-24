@@ -3,19 +3,16 @@
   "private": true,
   "version": "0.0.0",
   "dependencies": {
-    "@upstash/redis": "^1.36.2",
-    "coso-contract": "1.0.0",
-    "coso-engine": "1.0.0",
+    "coso-nevedel-core": "*",
     "next": "16.1.6",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "stripe": "^20.3.0",
-    "zod": "^4.3.6",
-    "@coso/coso-factory-ui": "*"
+    "stripe": "^20.3.0"
   },
   "scripts": {
+    "predev": "npm --prefix ../../packages/coso-nevedel-core run build",
     "dev": "next dev --webpack",
-    "prebuild": "npm --prefix ../../packages/coso-contract run build && npm --prefix ../../packages/coso-engine run build && npm --prefix ../../packages/coso-nevedel-core run build",
+    "prebuild": "npm --prefix ../../packages/coso-nevedel-core run build",
     "build": "next build",
     "start": "next start"
   },
@@ -26,7 +23,8 @@
     "autoprefixer": "^10.4.24",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.5.4",
-    "@types/react-dom": "^19.1.9"
+    "@types/react-dom": "^19.1.9",
+    "vitest": "^4.0.18"
   },
   "engines": {
     "node": ">=20"

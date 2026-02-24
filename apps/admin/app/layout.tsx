@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <h1>Coso Admin</h1>
             <ul className="nav-list">
               <li>
-                <NavLink href="/">Dashboard</NavLink>
+                <NavLink href="/dashboard">Dashboard</NavLink>
               </li>
               <li>
                 <NavLink href="/products">Products</NavLink>

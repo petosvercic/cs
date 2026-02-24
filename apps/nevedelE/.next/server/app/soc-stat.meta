@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/soc-stat/layout,_N_T_/soc-stat/page,_N_T_/soc-stat"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/soc-stat/__PAGE__",
+    "/soc-stat",
+    "/_index",
+    "/_head"
+  ]
+}

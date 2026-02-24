@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "functions": {
+    "/_middleware": {
+      "runtime": "nodejs",
+      "matchers": [
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?(?:\\/((?!_next\\/static|_next\\/image|favicon.ico).*))(\\.json)?[\\/#\\?]?$",
+          "originalSource": "/((?!_next/static|_next/image|favicon.ico).*)"
+        }
+      ]
+    },
+    "/api/compute": {},
+    "/api/debug/edition": {},
+    "/api/factory/login": {},
+    "/api/health": {},
+    "/api/kv/diag": {},
+    "/api/pay/status": {},
+    "/api/stripe/checkout": {},
+    "/api/stripe/webhook": {}
+  }
+}

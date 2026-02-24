@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/gold/layout,_N_T_/gold/cancel/layout,_N_T_/gold/cancel/page,_N_T_/gold/cancel"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/gold/cancel/__PAGE__",
+    "/gold/cancel",
+    "/gold",
+    "/_index",
+    "/_head"
+  ]
+}

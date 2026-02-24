@@ -1,0 +1,1 @@
+self.__BUILD_MANIFEST = (function(a){return {__rewrites:{afterFiles:[{has:a,source:"\u002F:slug((?!api|_next|list|builder|factory-login|e|soc-stat).*)",destination:"\u002Fe\u002F:slug"}],beforeFiles:[],fallback:[]},__routerFilterStatic:a,__routerFilterDynamic:a,sortedPages:["\u002F_app"]}}(void 0));self.__BUILD_MANIFEST_CB && self.__BUILD_MANIFEST_CB()
